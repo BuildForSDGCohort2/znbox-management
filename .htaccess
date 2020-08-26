@@ -1,0 +1,19 @@
+RewriteEngine On
+
+#RewriteCond %{ENV:HTTPS} !on
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+RewriteRule ^(authentication)/$ pages/auth.php
+RewriteRule ^(authentication)$ pages/auth.php
+
+RewriteRule ^(home)/$ pages/index.php
+RewriteRule ^(home)$ pages/index.php
+
+RewriteRule ^()/$ pages/index.php
+RewriteRule ^()$ pages/index.php
+
+RewriteRule ^(print-invoice)/$ endpoint/invoice/print.php
+RewriteRule ^(print-invoice)$ endpoint/invoice/print.php
+
+RewriteRule ^(print-proforma)/$ endpoint/proforma/print.php
+RewriteRule ^(print-proforma)$ endpoint/proforma/print.php

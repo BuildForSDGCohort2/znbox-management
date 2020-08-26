@@ -1,0 +1,62 @@
+html,body{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#sidebar {
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+#content {
+	z-index: 1;
+	margin-left: 235px; /* Same as the width of the sidebar */
+	padding: 0px 20px;
+	margin-top: 100px;
+}
+
+/* Mobile */
+@media screen and (max-width: 700px) {
+	#sidebar {
+		display: none;
+	}
+	#content {
+		margin-left: 0px;
+	}
+}
+
+/* Desktop */
+@media screen and (min-width: 700px) {
+	#bars_side_bar_button {
+		display: none;
+	}
+}
+
+/* Clock */
+.zn-clock {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    color: #17D4FE;
+    font-size: 13px;
+    font-weight: 60px;
+    font-family: Orbitron;
+    letter-spacing: 2px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield !important;
+  -webkit-appearance: textfield !important;
+  appearance: textfield !important;
+}
