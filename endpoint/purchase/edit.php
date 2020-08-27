@@ -43,6 +43,20 @@ if(isset($_POST["value"]["isDeleted"])) {
 	]));
 }
 
+/* Submit purchase itens to stock */
+if(isset($_POST["value"]["isStock"])) {
+	Purchase::update($purchase->id, [
+		"isStock" => 1,
+	]);
+	die(json_encode([
+		"code" => "1102",
+		"title" => Translator::translate("Success"),
+		"message" => Translator::translate("Updated successfuly"),
+		"status" => "success",
+		"href" => "purchase/purchase",
+	]));
+}
+
 if(
 	!isset($_POST["description"]) ||
 	!isset($_POST["purchase_date"]) ||

@@ -29,6 +29,7 @@
 				<th><?=Translator::translate("id");?></th>
 				<th><?=Translator::translate("Description");?></th>
 				<th><?=Translator::translate("purchase date");?></th>
+				<th><?=Translator::translate("Total spent");?></th>
 				<th><?=Translator::translate("Actions");?></th>
 			</thead>
 			<tbody>
@@ -42,15 +43,27 @@
 						<td><?=$item["description"]?></td>
 						<td><?=Helper::date($item["purchase_date"])?></td>
 						<td>
+							<label class="ui label blue mini">
+								<?=Helper::formatnumber(Purchase::getTotalPrice($item["id"]))?>
+							</label>
+						</td>
+						<td>
+							<?php if(!$item['isStock']): ?>
+							<a class="ui mini basic circular icon button pink zn-link-dialog" href="purchase/to_stock_form" data="<?=$item['id']?>" data-tooltip="<?=Translator::translate("Submit to stock")?>">
+								<i class="ui send alternate icon"></i>
+							</a>
+							<?php endif; ?>
 							<a class="ui mini basic circular icon button blue zn-link-dialog" href="purchase/view" data="<?=$item['id']?>" data-tooltip="<?=Translator::translate("view details")?>">
 								<i class="ui eye icon"></i>
 							</a>
+							<?php if(!$item['isStock']): ?>
 							<a class="ui mini basic circular icon button green zn-link" href="purchase/edit_form" data="<?=$item['id']?>" data-tooltip="<?=Translator::translate("edit details")?>">
 								<i class="ui edit icon"></i>
 							</a>
 							<a class="ui mini basic circular icon button red zn-link-dialog" href="purchase/delete_form" data="<?=$item['id']?>" data-tooltip="<?=Translator::translate("delete")?>">
 								<i class="ui trash alternate icon"></i>
 							</a>
+							<?php endif; ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

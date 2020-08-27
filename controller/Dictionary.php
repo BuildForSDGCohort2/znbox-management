@@ -1303,21 +1303,21 @@ class Dictionary {
 				if ($lang == 'pt') { return "Pedido inválido"; }
 				if ($lang == 'eng') { return "Invalid request"; }
 				break;
-			case '':
-				if ($lang == 'pt') { return ""; }
-				if ($lang == 'eng') { return ""; }
+			case 'total spent':
+				if ($lang == 'pt') { return "Total gasto"; }
+				if ($lang == 'eng') { return "Total spent"; }
 				break;
-			case '':
-				if ($lang == 'pt') { return ""; }
-				if ($lang == 'eng') { return ""; }
+			case 'submit to stock':
+				if ($lang == 'pt') { return "Submeter ao estoque"; }
+				if ($lang == 'eng') { return "Submit to stock"; }
 				break;
-			case '':
-				if ($lang == 'pt') { return ""; }
-				if ($lang == 'eng') { return ""; }
+			case 'do you wish to submit to stock':
+				if ($lang == 'pt') { return "Deseja submeter ao estoque"; }
+				if ($lang == 'eng') { return "Do you wish to submit to stock"; }
 				break;
-			case '':
-				if ($lang == 'pt') { return ""; }
-				if ($lang == 'eng') { return ""; }
+			case 'you will not be able to revert this action':
+				if ($lang == 'pt') { return "Não poderá reverter esta acção"; }
+				if ($lang == 'eng') { return "You will not be able to revert this action"; }
 				break;
 			case '':
 				if ($lang == 'pt') { return ""; }

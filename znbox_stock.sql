@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 26-Ago-2020 às 23:22
+-- Generation Time: 27-Ago-2020 às 19:45
 -- Versão do servidor: 10.1.10-MariaDB
 -- versão do PHP: 7.3.1
 
@@ -78,7 +78,7 @@ CREATE TABLE `enterprise` (
 --
 
 INSERT INTO `enterprise` (`id`, `name`, `address`, `email`, `phone1`, `phone2`, `postal_code`, `logo`, `nuit`, `user_modify`, `date_modify`, `currency`) VALUES
-(1, 'ZNBOX', 'Av. Moçambique', 'support@znbox.net', '+258 829707047', '+258 850375093', 1111, '8d43efb93f88574c809639704bdec6d2.png', 4674423454, 7, '2020-08-22 07:32:10', '');
+(1, 'ZNBOX', 'Av. Moçambique', 'support@znbox.net', '+258 829707047', '+258 850375093', 1111, '8d43efb93f88574c809639704bdec6d2.png', 4674423454, 7, '2020-08-27 07:08:04', '');
 
 -- --------------------------------------------------------
 
@@ -180,6 +180,7 @@ CREATE TABLE `purchase` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modify` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user_modify` int(11) NOT NULL,
+  `isStock` tinyint(1) NOT NULL DEFAULT '0',
   `isDeleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -187,12 +188,12 @@ CREATE TABLE `purchase` (
 -- Extraindo dados da tabela `purchase`
 --
 
-INSERT INTO `purchase` (`id`, `description`, `purchase_date`, `file`, `observation`, `user_added`, `date_added`, `date_modify`, `user_modify`, `isDeleted`) VALUES
-(2, 'Compra de sapatilhas da puma', '2020-05-30', 'resources/uploads/15702877034k_2515841.jpg', 'OBSERVATION', 7, '2019-10-05 14:52:47', '2020-08-26 19:37:50', 7, 1),
-(3, 'Compra de T-shirt adidas', '2020-08-26', 'resources/uploads/1570288841galaxy-2643089.jpg', 'OBS', 7, '2019-10-05 16:19:32', '2020-08-26 19:38:01', 7, 1),
-(19, 'First purchase', '2020-08-23', '4dbf3da2f9e53637bd881dc27be169e7PNG', NULL, 7, '2020-08-23 18:16:16', '2020-08-26 19:38:16', 7, 1),
-(22, 'First purchase', '2020-08-26', '6d1b704ded97ce274c70c16b566ae22dPNG', NULL, 7, '2020-08-23 18:23:00', '2020-08-26 19:24:04', 7, 0),
-(23, 'Second purchase', '2020-08-26', 'dac2df850eb956d206dd42734be31558PNG', NULL, 7, '2020-08-23 18:24:13', '2020-08-26 19:19:07', 7, 0);
+INSERT INTO `purchase` (`id`, `description`, `purchase_date`, `file`, `observation`, `user_added`, `date_added`, `date_modify`, `user_modify`, `isStock`, `isDeleted`) VALUES
+(2, 'Compra de sapatilhas da puma', '2020-05-30', 'resources/uploads/15702877034k_2515841.jpg', 'OBSERVATION', 7, '2019-10-05 14:52:47', '2020-08-26 19:37:50', 7, 0, 1),
+(3, 'Compra de T-shirt adidas', '2020-08-26', 'resources/uploads/1570288841galaxy-2643089.jpg', 'OBS', 7, '2019-10-05 16:19:32', '2020-08-26 19:38:01', 7, 0, 1),
+(19, 'First purchase', '2020-08-23', '4dbf3da2f9e53637bd881dc27be169e7PNG', NULL, 7, '2020-08-23 18:16:16', '2020-08-26 19:38:16', 7, 0, 1),
+(22, 'First purchase', '2020-08-27', '6d1b704ded97ce274c70c16b566ae22dPNG', NULL, 7, '2020-08-23 18:23:00', '2020-08-27 19:44:18', 7, 1, 0),
+(23, 'Second purchase', '2020-08-26', 'dac2df850eb956d206dd42734be31558PNG', NULL, 7, '2020-08-23 18:24:13', '2020-08-27 19:41:30', 7, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -218,8 +219,9 @@ INSERT INTO `purchase_item` (`id`, `quantity`, `price_unity`, `purchase`, `stock
 (38, 25, 750, 23, 29),
 (39, 200, 150, 23, 33),
 (42, 30, 750, 3, 31),
-(43, 12, 1500, 22, 30),
-(44, 10, 750, 22, 29);
+(45, 12, 1500, 22, 30),
+(46, 10, 750, 22, 29),
+(47, 60, 800, 22, 31);
 
 -- --------------------------------------------------------
 
@@ -334,7 +336,7 @@ INSERT INTO `stock` (`id`, `name`, `price_sell`, `price_purchase`, `quantity`, `
 (31, 'Adidas t-shirt red small', 200, 150, 2, 9, 1, 1, '', '2020-02-21 17:54:11', 7, '2020-06-18 11:38:59', 7, 0),
 (32, 'Cap Adidas - small', 0, 0, 12, 9, 1, 2, '', '2020-02-29 16:16:01', 7, '2020-05-05 08:53:30', 7, 1),
 (33, 'Cap Adidas - small', 0, 0, 12, 9, 1, 2, 'Cap', '2020-02-29 16:21:23', 7, '2020-05-05 08:53:33', 7, 0),
-(34, 'Limpeza de escritórios', 0, 0, 0, 13, 2, 1, '', '2020-06-21 22:50:57', 7, '2020-08-08 00:28:08', 7, 0);
+(34, 'Limpeza de escritórios', 0, 0, 0, 13, 2, 1, '', '2020-06-21 22:50:57', 7, '2020-08-27 19:42:24', 7, 1);
 
 -- --------------------------------------------------------
 
@@ -896,7 +898,7 @@ ALTER TABLE `purchase`
 -- AUTO_INCREMENT for table `purchase_item`
 --
 ALTER TABLE `purchase_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `sale`

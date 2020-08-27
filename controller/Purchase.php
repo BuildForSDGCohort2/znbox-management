@@ -78,10 +78,18 @@ class Purchase {
 					"columns" => [
 						"stock" => $stock,
 						"purchase.isDeleted" => 0,
+						"purchase.isStock" => 1,
 					]
 				]
 			]
 		])->execute();
 		return $result;
+	}
+	public static function getTotalPrice($id) {
+		$total = 0;
+		foreach(PurchaseItem::getBy("purchase", $id)->data as $item) {
+			$total += $item["price_unity"];
+		}
+		return $total;
 	}
 }
