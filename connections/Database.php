@@ -2,25 +2,30 @@
 
 namespace connections;
 
-use queryBuilder\JsonQB as JQB;
-
 class Database {
 
-	public const HOST = "localhost";
-	public const DATABASE = "znbox_stock";
-	public const USERNAME = "root";
-	public const PORT = "3306";
-	public const PASSWORD = "";
-	public const CHARSET = "utf8";
+	private const HOST = "localhost";
+	private const PORT = "3306";
+	private const DATABASE = "znbox_stock";
+	private const USERNAME = "root";
+	private const PASSWORD = "";
+	private const CHARSET = "utf8";
+	private static $connection = null;
 
 	public static function conn() {
-		JQB::connect([
-			'database' => Database::DATABASE,	# Database name
-			'host' => Database::HOST,			# Host name
-			'port' => Database::PORT,			# Connection port
-			'username' => Database::USERNAME,	# Username
-			'password' => Database::PASSWORD,	# Password
-			'charset' => Database::CHARSET,	# Charset
-		]);
+
+		$host = self::HOST;
+		$port = self::PORT;
+		$database = self::DATABASE;
+		$username = self::USERNAME;
+		$password = self::PASSWORD;
+		$charset = self::CHARSET;
+
+		if(self::$connection) {
+			return self::$connection;
+		}
+		$connection = new \PDO("mysql:host=$host;port=$port;dbname=$database;charset=$charset", $username, $password);
+		self::$connection = $connection;
+		return self::$connection;
 	}
 }

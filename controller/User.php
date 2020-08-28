@@ -4,7 +4,7 @@ namespace controller;
 
 use ReallySimpleJWT\Token;
 use connections\Database;
-use queryBuilder\JsonQB as JQB;
+use controller\QueryBuilder;
 use stdClass;
 
 class User extends Database {
@@ -20,7 +20,6 @@ class User extends Database {
 		$token = Token::create($userId, $secret, $expiration, $issuer);
 		return $token;
 	}
-
 	public static function validate_token($token) {
 		$secret = self::secret_token_key;
 		if(Token::validate($token, $secret)) {
@@ -28,68 +27,48 @@ class User extends Database {
 		}
 		return false;
 	}
-
 	public static function with_token($object, $token) {
 		$object->token = $token;
 		return $object;
 	}
-
-	public static function add($request) {
-		$result = JQB::Insert('user', $request)->execute();
-		return $result;
+	public static function add($data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::insert("user", $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
-
-	public static function update($id, $values) {
-		$result = JQB::Update('user', [
-			'value' => $values, 
-			'where' => [
-				[
-					"columns" => [
-						"id" => $id
-					]
-				]
-			]
-		])->execute();
-		return $result;
+	public static function update($id, $data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::update("user", "id", $id, $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
-
 	public static function getBy($column, $value) {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['user'],
-			'where' => [
-				[
-					"columns" => [
-						"$column" => $value
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM user WHERE user.$column = $value;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
 	}
-
+	public static function getAllBy($column, $value) {
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM user WHERE user.$column = $value;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
+	}
 	public static function getAll() {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['user']
-		])->execute();
-		return $result;
-	}
-
-	public static function where($where) {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['user'],
-			'where' => $where,
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$sql = "SELECT * FROM user;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 
 	public static function authenticate($email, $password) {
-		$user = self::getBy('email', $email)->first;
-		if($user) {
+		if($user = self::getBy('email', $email)) {
+			$user = (object) $user;
 			if(password_verify($password, $user->password)) {
-				$user = (object) $user;
 				$response = new stdClass;
 				$response->id = $user->id;
 				$response->email = $user->email;
@@ -98,7 +77,6 @@ class User extends Database {
 				$response->date_added = $user->date_added;
 				$response->status = $user->status;
 				$response->user_type = $user->user_type;
-
 				return self::with_token($response, self::create_token($response));
 			} else {
 				return false;

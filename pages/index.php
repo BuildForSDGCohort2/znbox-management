@@ -1,25 +1,27 @@
 <?php 
 
-	require __DIR__."/../autoload.php";
+require __DIR__."/../autoload.php";
 
-	use controller\Translator;
-	use controller\Helper;
-	use controller\User;
+use controller\Translator;
+use controller\Helper;
+use controller\User;
 
-	if (!isset($_COOKIE['lang'])) {
-		setcookie("lang", "eng", time() + 3600 * (24 * 365), "/", "", false, false);
-	}
+if (!isset($_COOKIE['lang'])) {
+	setcookie("lang", "eng", time() + 3600 * (24 * 365), "/", "", false, false);
+}
 
-	if(!Helper::endsWith($_SERVER['REDIRECT_URL'], 'home')) {
-		if(!Helper::endsWith($_SERVER['REDIRECT_URL'], 'home/')) {
-			header('Location: home');
-		}
-	}
-	if (!isset($_SESSION['token'])) { header('Location: authentication'); }
+/* if is home */
+if(!Helper::endsWith($_SERVER['REDIRECT_URL'], 'home') && !Helper::endsWith($_SERVER['REDIRECT_URL'], 'home/')) {
+	header('Location: home/');
+}
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-		header('Location: authentication');
-	}
+/* if session token exists */
+if(!isset($_SESSION['token'])) { header('Location: authentication'); }
+
+/* Validate session token */
+if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])) {
+	header('Location: authentication');
+}
 ?>
 
 <!DOCTYPE html>
@@ -29,17 +31,16 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" type="image/x-icon" href="znbox_mobile_app_icon.ico"/>
-	<link rel="stylesheet" type="text/css" href="assets/libs/mdl/material.min.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/icons.css">
-	<link rel="stylesheet" type="text/css" href="assets/libs/semantic/semantic.min.css">
-	<link rel="stylesheet" type="text/css" href="assets/libs/datatable/dataTables.semanticui.min.css">
-	<link rel="stylesheet" type="text/css" href="assets/libs/flatpickr/flatpickr.min.css">
-	<link rel="stylesheet" type="text/css" href="assets/libs/flatpickr/theme/dark.css">
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/mdl/material.min.css")?>">
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/css/icons.css")?>">
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/semantic/semantic.min.css")?>">
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/datatable/dataTables.semanticui.min.css")?>">
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/flatpickr/flatpickr.min.css")?>">
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/flatpickr/theme/dark.css")?>">
 	<link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="assets/libs/uikit/css/uikit.min.css">
-	<script type="text/javascript" src="assets/libs/jquery/jquery.min.js"></script>
-	<!-- <link rel="stylesheet" type="text/css" href="assets/libs/bootstrap/bootstrap.min.css"> -->
-	<link rel="stylesheet" type="text/css" href="assets/css/app.css">
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/uikit/css/uikit.min.css")?>">
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/jquery/jquery.min.js")?>"></script>
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/css/app.css")?>">
 </head>
 <body style="scrollbar-width: thin;">
 	<div id="root">
@@ -57,7 +58,7 @@
 					        	</li>
 					            <li>
 					            	<a style="touch-action: manipulation; margin-left: 15px;">
-					            		<img src="res/img/logo.png" width="40">
+					            		<img src="<?=Helper::url("res/img/logo.png")?>" width="40">
 					            		<h2 class="uk-padding-small" style="color: white; margin-top: 0;">ZNBOX</h2>
 					            	</a>
 					            </li>
@@ -67,14 +68,14 @@
 					        <ul class="uk-navbar-nav">
 					        	<li>
 					        		<a class="uk-margin-small-right">
-					        			<img class="ui avatar image" src="res/uploads/<?=$user->picture?>">
+					        			<img class="ui avatar image" src="<?=Helper::url("res/uploads/".$user->picture)?>">
 					        		</a>
 					        		<div class="uk-navbar-dropdown" uk-dropdown="mode: click">
 						        		<ul class="uk-nav uk-navbar-dropdown-nav">
 											<li>
-												<a class="zn-link" href="user/profile" id="profileButton"><i class="ui user icon"></i><?=Translator::translate('profile')?></a>
+												<a class="zn-link" href="<?=Helper::url("user/profile")?>" id="profileButton"><i class="ui user icon"></i><?=Translator::translate('profile')?></a>
 												<a class="zn-link" href="user/settings"><i class="ui settings icon"></i><?=Translator::translate('settings')?></a>
-												<a href="./authentication"><i class="ui sign out icon"></i><?=Translator::translate('logout')?></a>
+												<a href="<?=Helper::url("authentication")?>"><i class="ui sign out icon"></i><?=Translator::translate('logout')?></a>
 											</li>
 				                        </ul>
 			                        </div>
@@ -141,16 +142,16 @@
 		</div>
 	</div>
 
-	<script type="text/javascript" src="assets/libs/mdl/material.min.js"></script>
-	<script type="text/javascript" src="assets/libs/semantic/semantic.min.js"></script>
-	<script type="text/javascript" src="assets/libs/datatable/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" src="assets/libs/datatable/dataTables.semanticui.min.js"></script>
-	<script type="text/javascript" src="assets/libs/uikit/js/uikit.min.js"></script>
-	<script type="text/javascript" src="assets/libs/uikit/js/uikit-icons.min.js"></script>
-	<script type="text/javascript" src="assets/libs/flatpickr/flatpickr.min.js"></script>
-	<script type="text/javascript" src="assets/libs/flatpickr/lang/pt.js"></script>
-	<script type="text/javascript" src="assets/js/app.js"></script>
-	<script type="text/javascript" src="assets/js/sales.js"></script>
-	<script type="text/javascript" src="assets/js/purchase.js"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/mdl/material.min.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/semantic/semantic.min.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/datatable/jquery.dataTables.min.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/datatable/dataTables.semanticui.min.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/uikit/js/uikit.min.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/uikit/js/uikit-icons.min.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/flatpickr/flatpickr.min.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/flatpickr/lang/pt.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/js/app.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/js/sales.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/js/purchase.js")?>"></script>
 </body>
 </html>
