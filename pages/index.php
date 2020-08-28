@@ -28,7 +28,7 @@ if(!$user = (object) User::getBy('id', User::validate_token($_SESSION['token'])[
 <html>
 <head>
 	<title>ZNBOX</title>
-	<meta charset="utf-8">
+	<meta charset="utf-8" id="znbox" href="<?=Helper::url("")?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" type="image/x-icon" href="znbox_mobile_app_icon.ico"/>
 	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/mdl/material.min.css")?>">

@@ -22,6 +22,8 @@ var init = function() {
 	}
 };
 
+var home_url = $("#znbox").attr("href");
+
 // Function to change the content
 var change_content = function(data, href) {
 	$.ajax({
@@ -170,7 +172,7 @@ $(document).on('click', '.zn-link-dialog', function(event) {
 $(document).on('submit', 'form.zn-form-complex', function(event) {
 	var _this = $(this);
 	$.ajax({
-		url: 'endpoint/' + $(this).attr('action') + '.php',
+		url: $(this).attr('action'),
 		type: 'POST',
 		dataType: 'json',
 		processData: false,
@@ -198,7 +200,7 @@ $(document).on('submit', 'form.zn-form-complex', function(event) {
 						window.dialog.modal('hide');
 					}
 				} else {
-					window.location.href = './';
+					window.location.href = home_url;
 				}
 			} else {
 				UIkit.notification({
@@ -302,7 +304,7 @@ $(document).on('submit', 'form.zn-form-update', function(event) {
 						window.dialog.modal('hide');
 					}
 				} else {
-					window.location.href = './';
+					window.location.href = home_url;
 				}
 			} else {
 				UIkit.notification({
@@ -361,7 +363,7 @@ $(document).on('submit', 'form.zn-form-complex-update', function(event) {
 						window.dialog.modal('hide');
 					}
 				} else {
-					window.location.href = './';
+					window.location.href = home_url;
 				}
 			} else {
 				UIkit.notification({
