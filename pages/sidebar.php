@@ -1,7 +1,7 @@
 <?php 
 
 use controller\Translator;
-
+use controller\Helper;
 ?>
 
 <ul class="uk-nav uk-nav-default tm-nav" uk-nav style="font-size: 13px;">
@@ -11,7 +11,7 @@ use controller\Translator;
 		</h4>
 	</li>
 	<li>
-		<a class="zn-link" style="" href="user/home">
+		<a class="zn-link" style="" href="<?=Helper::url("api/user/home.php")?>">
 			<i class="ui home icon"></i> <?= Translator::translate('home') ?>
 		</a>
 	</li>
@@ -22,12 +22,12 @@ use controller\Translator;
 		</h4>
 	</li>
 	<li>
-		<a class="zn-link" href="user/users" style="">
+		<a class="zn-link" href="<?=Helper::url("api/user/users.php")?>" style="">
 			<i class="ui users icon"></i> <?= Translator::translate('users') ?>
 		</a>
 	</li>
 	<li>
-		<a class="zn-link" href="enterprise/enterprise" style="">
+		<a class="zn-link" href="<?=Helper::url("api/enterprise/enterprise.php")?>" style="">
 			<i class="ui building icon"></i> <?= Translator::translate('enterprise') ?>
 		</a>
 	</li>
@@ -38,22 +38,22 @@ use controller\Translator;
 		</h4>
 	</li>
 	<li>
-		<a class="zn-link" href="stock/stock" style="">
+		<a class="zn-link" href="<?=Helper::url("api/stock/stock.php")?>" style="">
 			<i class="ui box icon"></i> <?=Translator::translate('stock')?>
 		</a>
 	</li>
 	<li>
-		<a class="zn-link" href="supplier/supplier" style="">
+		<a class="zn-link" href="<?=Helper::url("api/supplier/supplier.php")?>" style="">
 			<i class="ui dolly flatbed icon"></i> <?=Translator::translate('supplier')?>
 		</a>
 	</li>
 	<li>
-		<a class="zn-link" href="stock_category/stock_category" style="">
+		<a class="zn-link" href="<?=Helper::url("api/stock_category/stock_category.php")?>" style="">
 			<i class="ui list icon"></i> <?=Translator::translate('category')?>
 		</a>
 	</li>
 	<li>
-		<a class="zn-link" href="warehouse/warehouse" style="">
+		<a class="zn-link" href="<?=Helper::url("api/warehouse/warehouse.php")?>" style="">
 			<i class="ui warehouse icon"></i> <?=Translator::translate('warehouse')?>
 		</a>
 	</li>
@@ -64,7 +64,7 @@ use controller\Translator;
 		</h4>
 	</li>
 	<li>
-		<a class="zn-link" href="purchase/purchase" style="">
+		<a class="zn-link" href="<?=Helper::url("api/purchase/purchase.php")?>" style="">
 			<i class="ui cart icon"></i> <?=Translator::translate('purchase')?>
 		</a>
 	</li>
@@ -75,17 +75,17 @@ use controller\Translator;
 		</h4>
 	</li>
 	<li>
-		<a class="zn-link" href="sale/sale" style="">
+		<a class="zn-link" href="<?=Helper::url("api/sale/sale.php")?>" style="">
 			<i class="ui handshake icon"></i> <?=Translator::translate('sales')?>
 		</a>
 	</li>
 	<li>
-		<a class="zn-link" href="proforma/proforma" style="">
+		<a class="zn-link" href="<?=Helper::url("api/proforma/proforma.php")?>" style="">
 			<i class="ui file alternate icon"></i> <?=Translator::translate('Proformas')?>
 		</a>
 	</li>
 	<li>
-		<a class="zn-link" href="invoice/invoice" style="">
+		<a class="zn-link" href="<?=Helper::url("api/invoice/invoice.php")?>" style="">
 			<i class="ui file alternate icon"></i> <?=Translator::translate('Invoices')?>
 		</a>
 	</li>
@@ -96,7 +96,7 @@ use controller\Translator;
 		</h4>
 	</li>
 	<li>
-		<a class="zn-link" href="payment/payment" style="">
+		<a class="zn-link" href="<?=Helper::url("api/payment/payment.php")?>" style="">
 			<i class="credit card icon"></i> <?=Translator::translate('Payments')?>
 		</a>
 	</li>
@@ -107,7 +107,7 @@ use controller\Translator;
 		</h4>
 	</li>
 	<li>
-		<a class="zn-link" href="customer/customer" style="">
+		<a class="zn-link" href="<?=Helper::url("api/customer/customer.php")?>" style="">
 			<i class="ui users icon"></i> <?=Translator::translate('Customers')?>
 		</a>
 	</li>

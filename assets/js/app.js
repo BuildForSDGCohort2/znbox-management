@@ -27,7 +27,7 @@ var home_url = $("#znbox").attr("href");
 // Function to change the content
 var change_content = function(data, href) {
 	$.ajax({
-		url: 'endpoint/' + href + '.php',
+		url: href,
 		type: 'GET',
 		dataType: 'html',
 		data: data,
@@ -53,7 +53,7 @@ var change_content = function(data, href) {
 /* Request send */
 var send_request = function(_method, _type, _data, href, callback) {
 	$.ajax({
-		url: 'endpoint/' + href + '.php',
+		url: href,
 		type: _method,
 		dataType: _type,
 		beforeSend: function() {
@@ -80,7 +80,7 @@ var send_request = function(_method, _type, _data, href, callback) {
 // Function to change the content
 var submit_simple_data = function(data, href) {
 	$.ajax({
-		url: 'endpoint/' + href + '.php',
+		url: href,
 		type: 'POST',
 		dataType: 'json',
 		data: data,
@@ -117,7 +117,7 @@ var submit_simple_data = function(data, href) {
 // Function to open dialog
 var open_dialog = function(data, href) {
 	$.ajax({
-		url: 'endpoint/' + href + '.php',
+		url: href,
 		type: 'GET',
 		dataType: 'html',
 		data: data,
@@ -229,7 +229,7 @@ $(document).on('submit', 'form.zn-form-complex', function(event) {
 $(document).on('submit', 'form.zn-form', function(event) {
 	var _this = $(this);
 	$.ajax({
-		url: 'endpoint/' + $(this).attr('action') + '.php' + ($(this).attr('data') ? '?id=' + $(this).attr('data') : ''),
+		url: $(this).attr('action') + ($(this).attr('data') ? '?id=' + $(this).attr('data') : ''),
 		type: 'POST',
 		dataType: 'json',
 		data: $(this).serialize(),
@@ -253,7 +253,7 @@ $(document).on('submit', 'form.zn-form', function(event) {
 						window.dialog.modal('hide');
 					}
 				} else {
-					window.location.href = 'home';
+					window.location.href = home_url;
 				}
 			} else {
 				UIkit.notification({
@@ -282,7 +282,7 @@ $(document).on('submit', 'form.zn-form', function(event) {
 $(document).on('submit', 'form.zn-form-update', function(event) {
 	var _this = $(this);
 	$.ajax({
-		url: 'endpoint/' + $(this).attr('action') + '.php',
+		url: $(this).attr('action'),
 		type: 'POST',
 		dataType: 'json',
 		data: $(this).serialize() + '&id=' + $(this).attr('data'),
@@ -335,7 +335,7 @@ $(document).on('submit', 'form.zn-form-complex-update', function(event) {
 	var fd = new FormData(_this[0]);
 	fd.append('id', $(this).attr('data'));
 	$.ajax({
-		url: 'endpoint/' + $(this).attr('action') + '.php',
+		url: $(this).attr('action'),
 		type: 'POST',
 		dataType: 'json',
 		processData: false,
