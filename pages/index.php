@@ -19,7 +19,7 @@ if(!Helper::endsWith($_SERVER['REDIRECT_URL'], 'home') && !Helper::endsWith($_SE
 if(!isset($_SESSION['token'])) { header('Location: authentication'); }
 
 /* Validate session token */
-if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])) {
+if(!$user = (object) User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])) {
 	header('Location: authentication');
 }
 ?>
@@ -73,8 +73,8 @@ if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'
 					        		<div class="uk-navbar-dropdown" uk-dropdown="mode: click">
 						        		<ul class="uk-nav uk-navbar-dropdown-nav">
 											<li>
-												<a class="zn-link" href="<?=Helper::url("user/profile")?>" id="profileButton"><i class="ui user icon"></i><?=Translator::translate('profile')?></a>
-												<a class="zn-link" href="user/settings"><i class="ui settings icon"></i><?=Translator::translate('settings')?></a>
+												<a class="zn-link" href="<?=Helper::url("api/user/profile.php")?>" id="profileButton"><i class="ui user icon"></i><?=Translator::translate('profile')?></a>
+												<a class="zn-link" href="<?=Helper::url("api/user/settings.php")?>"><i class="ui settings icon"></i><?=Translator::translate('settings')?></a>
 												<a href="<?=Helper::url("authentication")?>"><i class="ui sign out icon"></i><?=Translator::translate('logout')?></a>
 											</li>
 				                        </ul>
