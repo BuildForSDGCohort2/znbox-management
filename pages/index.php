@@ -29,6 +29,8 @@ if(!$user = (object) User::getBy('id', User::validate_token($_SESSION['token'])[
 <head>
 	<title>ZNBOX</title>
 	<meta charset="utf-8" id="znbox" href="<?=Helper::url("")?>">
+	<meta id="znbox-sale-line" href="<?=Helper::url("api/sale/line.php")?>">
+	<meta id="znbox-purchase-line" href="<?=Helper::url("api/purchase/line.php")?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" type="image/x-icon" href="znbox_mobile_app_icon.ico"/>
 	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/mdl/material.min.css")?>">
@@ -114,7 +116,7 @@ if(!$user = (object) User::getBy('id', User::validate_token($_SESSION['token'])[
 
 		<div class="splashscreen" style="position: fixed; width: 100%; height: 100%; background: linear-gradient(to left, #00578f, #000); z-index: 9000; top: 0; overflow: hidden;">
 			<div align="center">
-				<img src="res/img/logo.png" width="100" style="margin-top: 150px;">
+				<img src="<?=Helper::url("res/img/logo.png")?>" width="100" style="margin-top: 150px;">
 				<h1 style="color: white;">ZNBOX</h1>
 			</div>
 		</div>

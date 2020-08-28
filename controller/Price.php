@@ -2,7 +2,8 @@
 
 namespace controller;
 
-use queryBuilder\JsonQB as JQB;
+use connections\Database;
+use controller\QueryBuilder;
 use stdClass;
 
 class Price {
@@ -28,19 +29,12 @@ class Price {
 		return $result;
 	}
 	public static function getDefault($stock) {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['price'],
-			'where' => [
-				[
-					"columns" => [
-						"stock" => $stock,
-						"isDefault" => 1,
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM price WHERE price.stock = $stock AND price.isDefault = 1;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
 	}
 	public static function getAll() {
 		$result = JQB::Select([

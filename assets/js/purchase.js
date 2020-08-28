@@ -1,9 +1,10 @@
 
+var purchase_line_url = $("#znbox-purchase-line").attr("href");
 
 /* Get purchase line */
 function getPurchaseLine() {
 	$.ajax({
-		url: "endpoint/purchase/line.php",
+		url: purchase_line_url,
 		type: "GET",
 		dataType: "html",
 		beforeSend: function() {

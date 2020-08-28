@@ -2,96 +2,64 @@
 
 namespace controller;
 
-use queryBuilder\JsonQB as JQB;
+use connections\Database;
+use controller\QueryBuilder;
 use stdClass;
 
 class SaleStock {
 
-	public static function add($request) {
-		$result = JQB::Insert('sale_stock', $request)->execute();
-		return $result;
+	public static function add($data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::insert("sale_stock", $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
-
+	public static function update($id, $data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::update("sale_stock", "id", $id, $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
+	}
 	public static function getBy($column, $value) {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['sale_stock'],
-			'where' => [
-				[
-					"columns" => [
-						"$column" => $value,
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM sale_stock WHERE sale_stock.$column = $value;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
+	}
+	public static function getAllBy($column, $value) {
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM sale_stock WHERE sale_stock.$column = $value;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 	public static function getAll() {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['sale_stock'],
-			'where' => [
-				[
-					"columns" => [
-						"isDeleted" => 0
-					]
-				]
-			]
-		])->execute();
-		return $result;
-	}
-
-	public static function update($id, $values) {
-		$result = JQB::Update('sale_stock', [
-			'value' => $values, 
-			'where' => [
-				[
-					"columns" => [
-						"id" => $id
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$sql = "SELECT * FROM sale_stock;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 
 	public static function delete($id) {
-		$result = JQB::Delete('sale_stock', [
-			'where' => [
-				[
-					"columns" => [
-						"id" => $id,
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$sql = "DELETE FROM sale_stock WHERE sale_stock.id = $id;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 	public static function deleteBySale($sale) {
-		$result = JQB::Delete('sale_stock', [
-			'where' => [
-				[
-					"columns" => [
-						"sale" => $sale,
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$sql = "DELETE FROM sale_stock WHERE sale_stock.sale = $sale;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 
 	public static function getTotalAmount($stock) {
-		$result = JQB::Select([
-			'columns' => ['*', 'SUM(quantity) AS total'],
-			'from' => ['sale_stock'],
-			'where' => [
-				[
-					"columns" => [
-						"stock" => $stock,
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$sql = "SELECT SUM(quantity) AS total FROM sale_stock WHERE sale_stock.stock = $stock;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
 	}
 }

@@ -3,6 +3,7 @@ var subtotal = 0;
 var vat = 0;
 var vat_tax = 0.17;
 
+var sale_line_url = $("#znbox-sale-line").attr("href");
 
 /* Add item to table */
 var add_to_table = function(line) {
@@ -89,7 +90,7 @@ var remove_from_table = function(line) {
 function get_line() {
 	/* get line of table sale */
 	$.ajax({
-		url: 'endpoint/sale/line.php',
+		url: sale_line_url,
 		type: 'GET',
 		dataType: 'html',
 		beforeSend: function() {

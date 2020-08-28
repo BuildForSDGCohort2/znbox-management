@@ -1,20 +1,29 @@
+<?php 
+
+require __DIR__."/../autoload.php";
+
+use controller\Translator;
+use controller\Helper;
+use controller\User;
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>ZNBOX</title>
-	<meta charset="utf-8">
+	<meta charset="utf-8" id="znbox" href="<?=Helper::url("")?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" type="image/x-icon" href="znbox_mobile_app_icon.ico"/>
-	<link rel="stylesheet" type="text/css" href="assets/libs/mdl/material.min.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/icons.css">
-	<link rel="stylesheet" type="text/css" href="assets/libs/semantic/semantic.min.css">
-	<link rel="stylesheet" type="text/css" href="assets/libs/uikit/css/uikit.min.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/app.css">
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/mdl/material.min.css")?>">
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/css/icons.css")?>">
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/semantic/semantic.min.css")?>">
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/uikit/css/uikit.min.css")?>">
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/css/app.css")?>">
 
-	<script type="text/javascript" src="assets/libs/jquery/jquery.min.js"></script>
-	<script type="text/javascript" src="assets/libs/mdl/material.min.js"></script>
-	<script type="text/javascript" src="assets/libs/semantic/semantic.min.js"></script>
-	<script type="text/javascript" src="assets/libs/uikit/js/uikit.min.js"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/jquery/jquery.min.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/mdl/material.min.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/semantic/semantic.min.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/uikit/js/uikit.min.js")?>"></script>
 </head>
 <body>
 
@@ -26,7 +35,7 @@
 			    <div class="uk-navbar-left">
 			        <ul class="uk-navbar-nav">
 			        	<li>
-			        		<a><img src="res/img/logo.png" width="40"></a>
+			        		<a><img src="<?=Helper::url("res/img/logo.png")?>" width="40"></a>
 			        	</li>
 			            <li>
 			            	<a>
@@ -43,7 +52,7 @@
 				<div class="ui header dividing">
 					<h3><i class="ui users icon"></i> Authentication</h3>
 				</div>
-				<form class="ui form zn-form" action="user/auth">
+				<form class="ui form zn-form" action="<?=Helper::url("api/user/auth.php")?>">
 					<div class="ui field">
 						<label>E-mail:</label>
 						<input type="email" name="email" required placeholder="E-mail">
@@ -60,6 +69,6 @@
 		</div>
 	</div>
 	
-	<script type="text/javascript" src="assets/js/app.js"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/js/app.js")?>"></script>
 </body>
 </html>

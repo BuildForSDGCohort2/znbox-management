@@ -5,57 +5,39 @@ namespace controller;
 use queryBuilder\JsonQB as JQB;
 use controller\Purchase;
 use controller\SaleStock;
+use connections\Database;
+use controller\QueryBuilder;
 use stdClass;
 
 class Stock {
 
-	public static function add($request) {
-		$result = JQB::Insert('stock', $request)->execute();
-		return $result;
+	public static function add($data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::insert("stock", $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 
 	public static function getBy($column, $value) {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['stock'],
-			'where' => [
-				[
-					"columns" => [
-						"$column" => $value,
-						"isDeleted" => 0
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM stock WHERE stock.$column = $value;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
 	}
 	public static function getAll() {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['stock'],
-			'where' => [
-				[
-					"columns" => [
-						"isDeleted" => 0
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$sql = "SELECT * FROM stock WHERE stock.isDeleted = 0;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 
-	public static function update($id, $values) {
-		$result = JQB::Update('stock', [
-			'value' => $values, 
-			'where' => [
-				[
-					"columns" => [
-						"id" => $id
-					]
-				]
-			]
-		])->execute();
-		return $result;
+	public static function update($id, $data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::update("stock", "id", $id, $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 
 	public static function getStockAmount($id) {
