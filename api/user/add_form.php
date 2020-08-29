@@ -1,52 +1,53 @@
 <?php
 
-	require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-	use controller\User;
-	use controller\UserType;
-	use controller\Translator;
+use controller\User;
+use controller\UserType;
+use controller\Translator;
+use controller\Helper;
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-		die("user_session");
-	}
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+	die("user_session");
+}
 ?>
 
-<form class="ui small modal form zn-form" action="user/add">
+<form class="ui small modal form zn-form" action="<?=Helper::url("api/user/add.php")?>">
 	<div class="header">
 		<h3 class="ui header diviving color red"><i class="ui users icon"></i><?=Translator::translate("Create new user");?></h3>
 	</div>
 	<div class="scrolling content">
 		<div class="ui field required">
 			<label><?=Translator::translate("First name");?>:</label>
-			<input type="text" name="value[first]" placeholder="<?=Translator::translate("First Name");?>">
+			<input type="text" name="first" placeholder="<?=Translator::translate("First Name");?>">
 		</div>
 		<div class="ui field required">
 			<label><?=Translator::translate("Last name");?>:</label>
-			<input type="text" name="value[last]" placeholder="<?=Translator::translate("Last Name");?>">
+			<input type="text" name="last" placeholder="<?=Translator::translate("Last Name");?>">
 		</div>
 		<div class="ui field required">
 			<label><?=Translator::translate("Username");?>:</label>
-			<input type="text" name="value[username]" placeholder="<?=Translator::translate("User Name");?>">
+			<input type="text" name="username" placeholder="<?=Translator::translate("User Name");?>">
 		</div>
 		<div class="ui field required">
 			<label><?=Translator::translate("Email");?>:</label>
-			<input type="text" name="value[email]" placeholder="<?=Translator::translate("Email");?>">
+			<input type="text" name="email" placeholder="<?=Translator::translate("Email");?>">
 		</div>
 		<div class="ui field required">
 			<label><?=Translator::translate("User type");?>:</label>
-			<select name="value[user_type]" class="ui dropdown">
-			<?php foreach(UserType::getAll()->data as $item) {?>
+			<select name="user_type" class="ui dropdown">
+			<?php foreach(UserType::getAll() as $item) {?>
 				<option value="<?=$item["id"]; ?>"><?=$item["type"]; ?></option>
 			<?php } ?>
 			</select>
 		</div>
 		<div class="ui field required">
 			<label><?=Translator::translate("Password");?>:</label>
-			<input type="password" name="value[password]" placeholder="<?=Translator::translate("Password");?>">
+			<input type="password" name="password" placeholder="<?=Translator::translate("Password");?>">
 		</div>
 		<div class="ui field required">
 			<label><?=Translator::translate("Confirm Password");?>:</label>
-			<input type="password" name="value[confirm]" placeholder="<?=Translator::translate("Confirm Password");?>">
+			<input type="password" name="confirm" placeholder="<?=Translator::translate("Confirm Password");?>">
 		</div>
 	</div>
 	<div class="actions stackable">
@@ -61,51 +62,51 @@
 	</div>
 	<script type="text/javascript">
 		$(function() {
-			$('.ui.dropdown').dropdown();
+			$(".ui.dropdown").dropdown();
 			$("form").form({
-				on:'blur',
+				on:"blur",
 				inline:true,
 				fields:{
 					first:{
-						identifier:'value[first]',
+						identifier:"first",
 						rules:[{
-							type:'empty',
-							prompt:'{name} <?=Translator::translate("Please fill this field")?>'
+							type:"empty",
+							prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 						}]
 					},
 					last:{
-						identifier:'value[last]',
+						identifier:"last",
 						rules:[{
-							type:'empty',
-							prompt:'{name} <?=Translator::translate("Please fill this field")?>'
+							type:"empty",
+							prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 						}]
 					},
 					username : {
-						identifier : 'value[username]',
+						identifier : "username",
 						rules:[{
-							type:'empty',
-							prompt:'{name} <?=Translator::translate("Please fill this field")?>'
+							type:"empty",
+							prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 						}]
 					},
 					email:{
-						identifier:'value[email]',
+						identifier:"email",
 						rules:[{
-							type:'empty',
-							prompt:'{name} <?=Translator::translate("Please fill this field")?>'
+							type:"empty",
+							prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 						}]
 					},
 					password:{
-						identifier:'value[password]',
+						identifier:"password",
 						rules:[{
-							type:'empty',
-							prompt:'{name} <?=Translator::translate("Please fill this field")?>'
+							type:"empty",
+							prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 						}]
 					},
 					confirm:{
-						identifier:'value[confirm]',
+						identifier:"confirm",
 						rules:[{
-							type:'empty',
-							prompt:'{name} <?=Translator::translate("Please fill this field")?>'
+							type:"empty",
+							prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 						}]
 					},
 				}

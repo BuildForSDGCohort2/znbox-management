@@ -56,7 +56,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 							</label>
 						</td>
 						<td>
-							<img style="width: 40px; height: 40px;" src="<?=Resources::stream("uploads/".$item["picture"]);?>">
+							<img style="width: 40px; height: 40px; border-radius: 50%;" src="<?=Resources::stream("uploads/".$item["picture"]);?>">
 						</td>
 						<td><?=$item["first"]?></td>
 						<td><?=$item["last"]?></td>
@@ -85,7 +85,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 		                    </div>
 	                    </td>
 						<td>
-							<a class="ui mini inverted circular icon button blue zn-link-dialog" href="<?=Helper::url("api/user/view.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("User details")?>">
+							<a class="ui mini circular icon button violet zn-link-dialog" href="<?=Helper::url("api/user/view.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("User details")?>">
 								<i class="ui eye icon"></i>
 							</a>
 							<a class="ui mini circular icon button purple zn-link-dialog" href="<?=Helper::url("api/user/changepassword_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("Change user password")?>">

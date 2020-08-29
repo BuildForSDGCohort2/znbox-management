@@ -1,50 +1,72 @@
 <?php 
 
-	require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-	use controller\User;
-	use controller\UserType;
-	use controller\Translator;
+use controller\User;
+use controller\UserType;
+use controller\Translator;
+use controller\Helper;
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-		echo json_encode([
-			'code' => '5000',
-			'title' => Translator::translate("Error"),
-			'message' => Translator::translate("Session Expired"),
-			'status' => 'danger',
-		]); die();
-	}
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+	die(json_encode([
+		"code" => "5000",
+		"title" => Translator::translate("Error"),
+		"message" => Translator::translate("Session Expired"),
+		"status" => "danger",
+	]));
+}
 
-	$password = $_POST['value']['password'];
-	$confirm = $_POST['value']['confirm'];
+if(
+	!isset($_POST["first"]) ||
+	!isset($_POST["last"]) ||
+	!isset($_POST["username"]) ||
+	!isset($_POST["email"]) ||
+	!isset($_POST["user_type"]) ||
+	!isset($_POST["password"]) ||
+	!isset($_POST["confirm"])
+) {
+	die(json_encode([
+		"code" => "5000",
+		"title" => Translator::translate("Error"),
+		"message" => Translator::translate("Invalid request"),
+		"status" => "danger",
+	]));
+}
 
-	if($password != $confirm) {
-		echo json_encode([
-			'code' => '1101',
-			'title' => Translator::translate("Error"),
-			'message' => Translator::translate("different passwords"),
-			'status' => 'danger',
-		]); die();
-	}
+$password = $_POST["password"];
+$confirm = $_POST["confirm"];
 
-	unset($_POST['value']['confirm']);
+if($password != $confirm) {
+	die(json_encode([
+		"code" => "1101",
+		"title" => Translator::translate("Error"),
+		"message" => Translator::translate("different passwords"),
+		"status" => "danger",
+	]));
+}
 
-	$_POST['value']['password'] = password_hash($_POST['value']['password'], PASSWORD_DEFAULT);
+$data = [
+	"first" => $_POST["first"],
+	"last" => $_POST["last"],
+	"username" => $_POST["username"],
+	"email" => $_POST["email"],
+	"user_type" => $_POST["user_type"],
+	"password" => password_hash($_POST["password"], PASSWORD_DEFAULT),
+];
 
-	if(User::add($_POST)) {
-		echo json_encode([
-			'code' => '1102',
-			'title' => Translator::translate("Success"),
-			'message' => Translator::translate("Added successfuly"),
-			'status' => 'success',
-			'href' => 'user/users',
-		]); die();
-	} else {
-		echo json_encode([
-			'code' => '1103',
-			'title' => Translator::translate("Server error"),
-			'message' => Translator::translate("Error do servidor"),
-			'status' => 'danger',
-		]); die();
-	}
-
+if(User::add($data)) {
+	die(json_encode([
+		"code" => "1102",
+		"title" => Translator::translate("Success"),
+		"message" => Translator::translate("Added successfuly"),
+		"status" => "success",
+		"href" => Helper::url("api/user/users.php"),
+	]));
+} else {
+	die(json_encode([
+		"code" => "1103",
+		"title" => Translator::translate("Server error"),
+		"message" => Translator::translate("Error do servidor"),
+		"status" => "danger",
+	]));
+}

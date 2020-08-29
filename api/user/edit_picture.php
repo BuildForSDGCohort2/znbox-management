@@ -33,6 +33,10 @@ if(!in_array(strtolower($extension), $allowed)) {
 
 if(isset($_FILES["picture"]) && $_FILES["picture"]["name"]) {
 	if($file = Resources::upload("uploads", $_FILES["picture"])) {
+		if($user["picture"]) {
+			/* Delete the last pirture */
+			Resources::deleteFile("uploads/".$user["picture"]);
+		}
 		if(User::update($user["id"], ["picture" => $file["name"]])) {
 			die(json_encode([
 				"code" => "1102",

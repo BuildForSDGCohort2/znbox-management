@@ -1,43 +1,44 @@
 <?php 
 
-	require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-	use controller\User;
-	use controller\UserType;
-	use controller\Translator;
+use controller\User;
+use controller\UserType;
+use controller\Translator;
+use controller\Helper;
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-		echo json_encode([
-			'code' => '5000',
-			'title' => Translator::translate("Error"),
-			'message' => Translator::translate("Session Expired"),
-			'status' => 'danger',
-		]); die();
-	}
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+	die(json_encode([
+		"code" => "5000",
+		"title" => Translator::translate("Error"),
+		"message" => Translator::translate("Session Expired"),
+		"status" => "danger",
+	]));
+}
 
-	if($_POST['value']['newpassword'] != $_POST['value']['confirmnew']) {
-		echo json_encode([
-			'code' => '1201',
-			'title' => Translator::translate("Error"),
-			'message' => Translator::translate("different passwords"),
-			'status' => 'danger',
-		]); die();
-	}
-	$password = password_hash($_POST['value']['newpassword'], PASSWORD_DEFAULT);
+if($_POST["newpassword"] != $_POST["confirmnew"]) {
+	die(json_encode([
+		"code" => "1201",
+		"title" => Translator::translate("Error"),
+		"message" => Translator::translate("different passwords"),
+		"status" => "danger",
+	]));
+}
+$password = password_hash($_POST["newpassword"], PASSWORD_DEFAULT);
 
-	if(User::update($_POST['id'], ["password" => $password])) {
-		echo json_encode([
-			'code' => '1202',
-			'title' => Translator::translate("Success"),
-			'message' => Translator::translate("Updated successfuly"),
-			'status' => 'success',
-			'href' => 'user/users',
-		]); die();
-	} else {
-		echo json_encode([
-			'code' => '1203',
-			'title' => Translator::translate("Server error"),
-			'message' => Translator::translate("Error do servidor"),
-			'status' => 'danger',
-		]); die();
-	}
+if(User::update($_POST["id"], ["password" => $password])) {
+	die(json_encode([
+		"code" => "1202",
+		"title" => Translator::translate("Success"),
+		"message" => Translator::translate("Updated successfuly"),
+		"status" => "success",
+		"href" => Helper::url("api/user/users.php"),
+	]));
+} else {
+	die(json_encode([
+		"code" => "1203",
+		"title" => Translator::translate("Server error"),
+		"message" => Translator::translate("Error do servidor"),
+		"status" => "danger",
+	]));
+}

@@ -1,32 +1,33 @@
 <?php
 
-	require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-	use controller\User;
-	use controller\UserType;
-	use controller\Translator;
+use controller\User;
+use controller\UserType;
+use controller\Translator;
+use controller\Helper;
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-		die("user_session");
-	}
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+	die("user_session");
+}
 ?>
 
-<form class="ui modal tiny form zn-form-update" action="user/changepassword_user" data="<?=$user->id?>">
+<form class="ui modal tiny form zn-form-update" action="<?=Helper::url("api/user/changepassword_user.php")?>" data="<?=$user["id"]?>">
 	<div class="header">
 		<h3 class="ui header diviving color red"><i class="ui users icon"></i><?=Translator::translate("Change password");?></h3>
 	</div>
 	<div class="scrolling content">
 		<div class="ui field required">
 			<label><?=Translator::translate("Password");?>:</label>
-			<input type="password"  name="value[password]" placeholder="<?=Translator::translate("Current Password");?>">
+			<input type="password"  name="password" placeholder="<?=Translator::translate("Current Password");?>">
 		</div>
 		<div class="ui field required">
 			<label><?=Translator::translate("New Password");?>:</label>
-			<input type="password"  name="value[newpassword]" placeholder="<?=Translator::translate("New Password");?>">
+			<input type="password"  name="newpassword" placeholder="<?=Translator::translate("New Password");?>">
 		</div>
 		<div class="ui field required">
 			<label><?=Translator::translate("Confirm New Password");?>:</label>
-			<input type="password"  name="value[confirmnew]" placeholder="<?=Translator::translate("Confirm Password");?>">
+			<input type="password"  name="confirmnew" placeholder="<?=Translator::translate("Confirm Password");?>">
 		</div>
 	</div>
 	<div class="actions stackable">
@@ -42,28 +43,28 @@
 	<script type="text/javascript">
 		$(function(){
 			$("form").form({
-				on:'blur',
+				on:"blur",
 				inline:true,
 				fields:{
 					password:{
-						identifier:'value[password]',
+						identifier:"password",
 						rules:[{
-							type:'empty',
-							prompt:'{name} <?=Translator::translate("Please fill this field")?>'
+							type:"empty",
+							prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 						}]
 					},
 					confirmnew:{
-						identifier:'value[confirmnew]',
+						identifier:"confirmnew",
 						rules:[{
-							type:'empty',
-							prompt:'{name} <?=Translator::translate("Please fill this field")?>'
+							type:"empty",
+							prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 						}]
 					},
 					newpassword:{
-						identifier:'value[newpassword]',
+						identifier:"newpassword",
 						rules:[{
-							type:'empty',
-							prompt:'{name} <?=Translator::translate("Please fill this field")?>'
+							type:"empty",
+							prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 						}]
 					},
 				}
