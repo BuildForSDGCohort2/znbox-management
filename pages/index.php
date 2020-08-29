@@ -112,12 +112,14 @@ if(!$user = (object) User::getBy('id', User::validate_token($_SESSION['token'])[
 		<!-- End Mobile sidebar -->
 
 		<div id="content"></div>
+		<div class="zn-blocker active">
+		</div>
 		<div class="mdl-spinner mdl-js-spinner mdl-spinner--single-color" style="position: fixed; top: 45%; right: 50%; z-index: 8999;"></div>
 
 		<div class="splashscreen" style="position: fixed; width: 100%; height: 100%; background: linear-gradient(to left, #00578f, #000); z-index: 9000; top: 0; overflow: hidden;">
 			<div align="center">
 				<img src="<?=Helper::url("res/img/logo.png")?>" width="100" style="margin-top: 150px;">
-				<h1 style="color: white;">ZNBOX</h1>
+				<h1 style="color: white; user-select: none;">ZNBOX</h1>
 			</div>
 		</div>
 

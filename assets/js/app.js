@@ -1,12 +1,14 @@
 //  Display progress loader on screen
 var progress_loading = function(xhr) {
 	$(".mdl-spinner.mdl-js-spinner").addClass('is-active');
+	$(".zn-blocker").addClass('active');
 };
 
 //  Remove the progress loader
 var progress_loaded = function(xhr) {
 	setTimeout(function() {
 		$(".mdl-spinner.mdl-js-spinner").removeClass('is-active');
+		$(".zn-blocker").removeClass('active');
 	}, 1000);
 	UIkit.offcanvas('#mobile_sidebar').hide();
 };
