@@ -1,17 +1,18 @@
 <?php
 
-	require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-	use controller\User;
-	use controller\UserType;
-	use controller\Translator;
+use controller\User;
+use controller\UserType;
+use controller\Translator;
+use controller\Helper;
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-		die("user_session");
-	}
+if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])) {
+	die("user_session");
+}
 ?>
 
-<div class="ui small modal zn-form-update" action="user/edit_picture" data="<?=$user->id?>">
+<div class="ui small modal zn-form-update" action="<?=Helper::url("api/user/edit_picture.php")?>" data="<?=$user["id"]?>">
 	<div class="header">
 		<h3 class="ui header diviving color red"><i class="ui users icon"></i><?=Translator::translate("Edit profile picture");?></h3>
 	</div>
@@ -28,10 +29,9 @@
 		<script>
 		    var bar = document.getElementById('js-progressbar');
 		    UIkit.upload('.js-upload', {
-
-		        url: 'endpoint/user/edit_picture.php',
+		        url: "<?=Helper::url("api/user/edit_picture.php")?>",
 		        multiple: false,
-		        params: { id: <?=$user->id?> },
+		        params: { id: <?=$user["id"]?> },
 		        mime: 'image/*',
 		        name: 'picture',
 		        beforeSend: function () {
@@ -68,9 +68,7 @@
 					});
 					progress_loaded();
 		        },
-
 		    });
-
 		</script>
 	</div>
 	<div class="actions stackable">

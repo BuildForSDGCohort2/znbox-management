@@ -16,7 +16,7 @@ var progress_loaded = function(xhr) {
 // When application initializes
 var init = function() {
 	if(!window.location.href.endsWith('authentication') && !window.location.href.endsWith('authentication/')) {
-		change_content({}, 'user/home');
+		change_content({}, $("#znbox-init").attr("href"));
 		startTime();
 		setTimeout(function() {
 			$('.splashscreen').fadeOut();

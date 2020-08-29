@@ -29,6 +29,7 @@ if(!$user = (object) User::getBy('id', User::validate_token($_SESSION['token'])[
 <head>
 	<title>ZNBOX</title>
 	<meta charset="utf-8" id="znbox" href="<?=Helper::url("")?>">
+	<meta charset="utf-8" id="znbox-init" href="<?=Helper::url("api/user/home.php")?>">
 	<meta id="znbox-sale-line" href="<?=Helper::url("api/sale/line.php")?>">
 	<meta id="znbox-purchase-line" href="<?=Helper::url("api/purchase/line.php")?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
