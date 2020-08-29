@@ -50,11 +50,32 @@ if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'
 		            bar.max = e.total;
 		            bar.value = e.loaded;
 		        },
-		        completeAll: function () {
-		            progress_loaded();
-		            window.dialog.modal('hide');
-		            window.location.reload();
-
+		        completeAll: function (data) {
+		        	(async function(response) {
+		        		response = JSON.parse(response);
+		        		if(response.code == "5000") {
+		        			window.location.href = "authentication";
+		        		}
+		        		if(response.status == "success") {
+		        			window.location.reload();
+		        		} else {
+		        			UIkit.notification({
+							    message: response.message,
+							    status: response.status,
+							    pos: 'top-right',
+							    timeout: 3000,
+							});
+		        		}
+		        	})(data.response).catch(function(error) {
+		        		UIkit.notification({
+						    message: 'Something went wrong! Please try again later!',
+						    status: 'danger',
+						    pos: 'top-right',
+						    timeout: 3000,
+						});
+						console.log(error);
+		        	});
+		        	progress_loaded();
 		            setTimeout(function () {
 		                bar.setAttribute('hidden', 'hidden');
 		            }, 1000);

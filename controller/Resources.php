@@ -18,7 +18,7 @@ class Resources {
 
 		$file_extension = pathinfo($file["name"], PATHINFO_EXTENSION);
 		$original_filename = $file["name"];
-		$filename = md5(time() . $original_filename) . $file_extension;
+		$filename = md5(time() . $original_filename) . ($file_extension ? ".".$file_extension : "");
 		$filepath = $dir."/$filename";
 
 		if(move_uploaded_file($file["tmp_name"], $filepath)) {
