@@ -1,17 +1,18 @@
 <?php
 
-	require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-	use controller\User;
-	use controller\UserType;
-	use controller\Translator;
+use controller\User;
+use controller\UserType;
+use controller\Translator;
+use controller\Helper;
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-		die("user_session");
-	}
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+	die("user_session");
+}
 ?>
 
-<div class="ui small modal zn-form-update" action="user/edit_logo" data="<?=$user->id?>">
+<div class="ui small modal zn-form-update" action="<?=Helper::url("api/user/edit_logo.php")?>" data="<?=$user["id"]?>">
 	<div class="header">
 		<h3 class="ui header diviving color red">
 			<i class="ui building icon"></i><?=Translator::translate("Change logo");?>
@@ -28,19 +29,19 @@
 		</div>
 		<progress id="js-progressbar" class="uk-progress" value="0" max="100" hidden></progress>
 		<script>
-		    var bar = document.getElementById('js-progressbar');
-		    UIkit.upload('.js-upload', {
+		    var bar = document.getElementById("js-progressbar");
+		    UIkit.upload(".js-upload", {
 
-		        url: 'endpoint/enterprise/edit_logo.php',
+		        url: "<?=Helper::url("api/enterprise/edit_logo.php")?>",
 		        multiple: false,
-		        params: { id: <?=$user->id?> },
-		        mime: 'image/*',
-		        name: 'logo',
+		        params: { id: <?=$user["id"]?> },
+		        mime: "image/*",
+		        name: "logo",
 		        beforeSend: function () {
 		        	progress_loading();
 		        },
 		        loadStart: function (e) {
-		            bar.removeAttribute('hidden');
+		            bar.removeAttribute("hidden");
 		            bar.max = e.total;
 		            bar.value = e.loaded;
 		        },
@@ -57,44 +58,44 @@
 		        		var data = JSON.parse(response.response);
 			            if(data.status == "success") {
 			            	progress_loaded();
-				            window.dialog.modal('hide');
+				            window.dialog.modal("hide");
 				            change_content({}, data.href);
 				            UIkit.notification({
 							    message: data.message,
 							    status: data.status,
-							    pos: 'top-right',
+							    pos: "top-right",
 							    timeout: 3000,
 							});
 			            } else {
 			            	progress_loaded();
-				            window.dialog.modal('hide');
+				            window.dialog.modal("hide");
 				            UIkit.notification({
 							    message: data.message,
 							    status: data.status,
-							    pos: 'top-right',
+							    pos: "top-right",
 							    timeout: 3000,
 							});
 			            }
 		        	} catch(ex) {
 		        		progress_loaded();
-		        		window.dialog.modal('hide');
+		        		window.dialog.modal("hide");
 		        		console.log(ex);
 		        		UIkit.notification({
-						    message: 'Some thing went wrong updating logo',
-						    status: 'danger',
-						    pos: 'top-right',
+						    message: "Some thing went wrong updating logo",
+						    status: "danger",
+						    pos: "top-right",
 						    timeout: 3000,
 						});
 		        	}
 		            setTimeout(function () {
-		                bar.setAttribute('hidden', 'hidden');
+		                bar.setAttribute("hidden", "hidden");
 		            }, 1000);
 		        },
 		        error: function() {
 		        	UIkit.notification({
-					    message: 'Failed to send request',
-					    status: 'danger',
-					    pos: 'top-right',
+					    message: "Failed to send request",
+					    status: "danger",
+					    pos: "top-right",
 					    timeout: 3000,
 					});
 					progress_loaded();
