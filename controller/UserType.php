@@ -2,31 +2,23 @@
 
 namespace controller;
 
-use queryBuilder\JsonQB as JQB;
-use stdClass;
+use connections\Database;
+use controller\QueryBuilder;
 
 class UserType {
 
 	public static function getAll() {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['user_type']
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$sql = "SELECT * FROM user_type;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
-
 	public static function getBy($column, $value) {
-		$result = JQB::Select([
-			"columns" => ["*"],
-			"from" => ["user_type"],
-			"where" => [
-				[
-					"columns" => [
-						"$column" => $value
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM user_type WHERE user_type.$column = $value;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
 	}
 }

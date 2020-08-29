@@ -64,6 +64,12 @@ class User extends Database {
 		$stmt = $conn->prepare($sql);
 		return ($stmt->execute() ? $stmt : null);
 	}
+	public static function getAllWithoutSu() {
+		$conn = Database::conn();
+		$sql = "SELECT * FROM user WHERE user.id <> 0;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
+	}
 
 	public static function authenticate($email, $password) {
 		if($user = self::getBy('email', $email)) {

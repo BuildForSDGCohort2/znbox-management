@@ -7,9 +7,3 @@ session_start();
 spl_autoload_register(function ($class_name) {
     require_once implode('/', explode('\\', __DIR__.'/'.$class_name .'.php'));
 });
-
-/* Initializing database */
-
-use connections\Database;
-
-Database::conn();

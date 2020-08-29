@@ -44,7 +44,7 @@ class Stock {
 		$purchase_total = Purchase::getTotalAmount($id);
 		$sale_total = SaleStock::getTotalAmount($id);
 		
-		$total = Stock::getBy('id', $id)->first->quantity + $purchase_total->first->total - $sale_total->first->total;
+		$total = Stock::getBy('id', $id)["quantity"] + $purchase_total["total"] - $sale_total["total"];
 		return $total;
 	}
 }
