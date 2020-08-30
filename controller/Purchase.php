@@ -2,59 +2,38 @@
 
 namespace controller;
 
-use queryBuilder\JsonQB as JQB;
-use controller\PurchaseItem;
-use stdClass;
+use connections\Database;
+use controller\QueryBuilder;
 
 class Purchase {
 
-	public static function add($request) {
-		$result = JQB::Insert('purchase', $request)->execute();
-		return $result;
+	public static function add($data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::insert("purchase", $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 
 	public static function getBy($column, $value) {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['purchase'],
-			'where' => [
-				[
-					"columns" => [
-						"$column" => $value,
-						"isDeleted" => 0
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM purchase WHERE purchase.$column = $value;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
 	}
 	public static function getAll() {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['purchase'],
-			'where' => [
-				[
-					"columns" => [
-						"isDeleted" => 0
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$sql = "SELECT * FROM purchase WHERE purchase.isDeleted = 0;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 
-	public static function update($id, $values) {
-		$result = JQB::Update('purchase', [
-			'value' => $values, 
-			'where' => [
-				[
-					"columns" => [
-						"id" => $id
-					]
-				]
-			]
-		])->execute();
-		return $result;
+	public static function update($id, $data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::update("purchase", "id", $id, $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 
 	public static function getTotalAmount($stock) {
@@ -84,6 +63,12 @@ class Purchase {
 			]
 		])->execute();
 		return $result;
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM purchase WHERE purchase.$column = $value;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
 	}
 	public static function getTotalPrice($id) {
 		$total = 0;
