@@ -37,42 +37,16 @@ class Purchase {
 	}
 
 	public static function getTotalAmount($stock) {
-		$result = JQB::Select([
-			'columns' => ['*', 'SUM(quantity) AS total'],
-			'from' => ['purchase_item'],
-			'join' =>[
-				'inner' => [
-					'table' => 'purchase',
-					'on' => [
-						[
-							'columns' => [
-								'purchase.id' => 'purchase_item.purchase',
-							]
-						]
-					],
-				]
-			],
-			'where' => [
-				[
-					"columns" => [
-						"stock" => $stock,
-						"purchase.isDeleted" => 0,
-						"purchase.isStock" => 1,
-					]
-				]
-			]
-		])->execute();
-		return $result;
 		$conn = Database::conn();
-		$value = $conn->quote($value);
-		$sql = "SELECT * FROM purchase WHERE purchase.$column = $value;";
+		$value = $conn->quote($stock);
+		$sql = "SELECT SUM(purchase_item.quantity) AS total FROM purchase_item INNER JOIN purchase ON purchase_item.purchase = purchase.id WHERE purchase.isDeleted = 0 AND purchase.isStock = 1 AND purchase_item.stock = $stock;";
 		$stmt = $conn->query($sql);
 		$fetch = $stmt->fetch();
 		return $fetch;
 	}
 	public static function getTotalPrice($id) {
 		$total = 0;
-		foreach(PurchaseItem::getBy("purchase", $id)->data as $item) {
+		foreach(PurchaseItem::getBy("purchase", $id) as $item) {
 			$total += $item["price_unity"];
 		}
 		return $total;
