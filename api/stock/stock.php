@@ -39,7 +39,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 		</div>
 	</div>
 	<div class="uk-margin-top" style="margin-left: 10px;">
-		<table class="ui small table color blue selectable stripped">
+		<table class="ui small table color blue inverted selectable stripped">
 			<thead>
 				<th><?=Translator::translate("Id");?></th>
 				<th><?=Translator::translate("name");?></th>
@@ -102,18 +102,18 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 							<?php } ?>
 							</td>
 						<td>
-							<a class="ui mini circular icon button blue zn-link" href="<?=Helper::url("api/price/price.php")?>" data-tooltip="<?=Translator::translate("Prices")?>" data="<?=$item["id"]?>">
+							<a class="ui mini circular icon button blue inverted zn-link" href="<?=Helper::url("api/price/price.php")?>" data-tooltip="<?=Translator::translate("Prices")?>" data="<?=$item["id"]?>">
 								<?=Translator::translate("Prices")?>
 							</a>
 						</td>
 						<td>
-							<a class="ui mini basic circular icon button blue zn-link-dialog" href="<?=Helper::url("api/stock/view.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("view details")?>">
+							<a class="ui mini circular icon button violet zn-link-dialog" href="<?=Helper::url("api/stock/view.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("view details")?>">
 								<i class="ui eye icon"></i>
 							</a>
-							<a class="ui mini basic circular icon button green zn-link-dialog" href="<?=Helper::url("api/stock/edit_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("edit details")?>">
+							<a class="ui mini circular icon button green zn-link-dialog" href="<?=Helper::url("api/stock/edit_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("edit details")?>">
 								<i class="ui edit icon"></i>
 							</a>
-							<a class="ui mini basic circular icon button red zn-link-dialog" href="<?=Helper::url("api/stock/delete_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("delete")?>">
+							<a class="ui mini circular icon button red zn-link-dialog" href="<?=Helper::url("api/stock/delete_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("delete")?>">
 								<i class="ui trash alternate icon"></i>
 							</a>
 						</td>

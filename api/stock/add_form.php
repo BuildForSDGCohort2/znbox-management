@@ -3,22 +3,18 @@
 
 	use controller\Translator;
 	use controller\User;
-	use controller\UserType;
-
 	use controller\Supplier;
-	use controller\_StockSupplier;
 	use controller\Warehouse;
 	use controller\Stock;
 	use controller\StockType;
 	use controller\StockCategory;
 	use controller\Helper;
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
+	if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
 		die("user_session");
 	}
 ?>
-
-<form class="ui small modal form zn-form" action="stock/add">
+<form class="ui small modal form zn-form" action="<?=Helper::url("api/stock/add.php")?>">
 	<i class="ui close icon"></i>
 	<div class="header">
 		<h3 class="ui header diviving color red"><i class="ui box icon"></i><?=Translator::translate("add stock");?></h3>
@@ -31,8 +27,8 @@
 		<div class="ui field required">
 			<label><?=Translator::translate("Stock type");?>:</label>
 			<select class="ui dropdown search" name="value[type]">
-				<?php foreach (StockType::getAll()->data as $item) { ?>
-				<option value="<?=$item['id']?>"><?=Translator::translate($item['name'])?></option>
+				<?php foreach (StockType::getAll() as $item) { ?>
+				<option value="<?=$item["id"]?>"><?=Translator::translate($item["name"])?></option>
 				<?php } ?>
 			</select>
 		</div>
@@ -51,24 +47,24 @@
 		<div class="ui field required">
 			<label><?=Translator::translate("Category");?>:</label>
 			<select class="ui dropdown search" name="value[category]">
-				<?php foreach (StockCategory::getAll()->data as $item) { ?>
-				<option value="<?=$item['id']?>"><?=$item['name']?></option>
+				<?php foreach (StockCategory::getAll() as $item) { ?>
+				<option value="<?=$item["id"]?>"><?=$item["name"]?></option>
 				<?php } ?>
 			</select>
 		</div>
 		<div class="ui field required">
 			<label><?=Translator::translate("Supplier");?>:</label>
 			<select class="ui dropdown multiple search" multiple name="supplier[]">
-				<?php foreach (Supplier::getAll()->data as $item) { ?>
-				<option value="<?=$item['id']?>"><?=$item['name']?></option>
+				<?php foreach (Supplier::getAll() as $item) { ?>
+				<option value="<?=$item["id"]?>"><?=$item["name"]?></option>
 				<?php } ?>
 			</select>
 		</div>
 		<div class="ui field required">
 			<label><?=Translator::translate("Warehouse");?>:</label>
 			<select class="ui dropdown search" name="value[warehouse]">
-				<?php foreach (Warehouse::getAll()->data as $item) { ?>
-				<option value="<?=$item['id']?>"><?=$item['name']?></option>
+				<?php foreach (Warehouse::getAll() as $item) { ?>
+				<option value="<?=$item["id"]?>"><?=$item["name"]?></option>
 				<?php } ?>
 			</select>
 		</div>
@@ -88,55 +84,53 @@
         </div>
 	</div>
 	<script type="text/javascript">
-		$('.dropdown').dropdown({
-			on : 'click'
-		});
+		$(".dropdown").dropdown({ on : "click" });
 		$("form").form({
-			on:'blur',
+			on:"blur",
 			inline:true,
 			fields:{
 				name:{
-					identifier:'value[name]',
+					identifier:"value[name]",
 					rules:[{
-						type:'empty',
-						prompt:'{name} <?=Translator::translate("Please fill this field")?>'
+						type:"empty",
+						prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 					}]
 				},
 				price_sell:{
-					identifier:'value[price_sell]',
+					identifier:"value[price_sell]",
 					rules:[{
-						type:'number',
-						prompt:'{name} <?=Translator::translate('Inserted value must be a number')?>' 
+						type:"number",
+						prompt:"{name} <?=Translator::translate("Inserted value must be a number")?>" 
 					},{
-						type:'empty',
-						prompt:'{name} <?=Translator::translate('Please fill this field')?>'
+						type:"empty",
+						prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 					}]
 				},
 				price_purchase:{
-					identifier:'value[price_purchase]',
+					identifier:"value[price_purchase]",
 					rules:[{
-						type:'number',
-						prompt:'{name} <?=Translator::translate('Inserted value must be a number')?>'
+						type:"number",
+						prompt:"{name} <?=Translator::translate("Inserted value must be a number")?>"
 					},{
-						type:'empty',
-						prompt:'{name} <?=Translator::translate('Please fill this field')?>'
+						type:"empty",
+						prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 					}]
 				},
 				supplier:{
-					identifier:'value[price_purchase]',
+					identifier:"value[price_purchase]",
 					rules:[{
-						type:'empty',
-						prompt:'{name} <?=Translator::translate('Please fill this field')?>'
+						type:"empty",
+						prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 					}]
 				},
 				quantity:{
-					identifier:'value[quantity]',
+					identifier:"value[quantity]",
 					rules:[{
-						type:'number',
-						prompt:'{name} <?=Translator::translate('Inserted value must be a number')?>'
+						type:"number",
+						prompt:"{name} <?=Translator::translate("Inserted value must be a number")?>"
 					},{
-						type:'empty',
-						prompt:'{name} <?=Translator::translate('Please fill this field')?>'
+						type:"empty",
+						prompt:"{name} <?=Translator::translate("Please fill this field")?>"
 					}]
 				}
 			}

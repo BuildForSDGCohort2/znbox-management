@@ -24,7 +24,7 @@ class StockType {
 	}
 	public static function getAll() {
 		$conn = Database::conn();
-		$sql = "SELECT * FROM stock_type WHERE stock_type.isDeleted = 0;";
+		$sql = "SELECT * FROM stock_type;";
 		$stmt = $conn->prepare($sql);
 		return ($stmt->execute() ? $stmt : null);
 	}
