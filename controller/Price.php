@@ -4,29 +4,22 @@ namespace controller;
 
 use connections\Database;
 use controller\QueryBuilder;
-use stdClass;
 
 class Price {
 
-	public static function add($request) {
-		$result = JQB::Insert('price', $request)->execute();
-		return $result;
+	public static function add($data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::insert("price", $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
-
 	public static function getBy($column, $value) {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['price'],
-			'where' => [
-				[
-					"columns" => [
-						"$column" => $value,
-						"isDeleted" => 0
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM price WHERE price.$column = $value;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
 	}
 	public static function getDefault($stock) {
 		$conn = Database::conn();
@@ -37,31 +30,22 @@ class Price {
 		return $fetch;
 	}
 	public static function getAll() {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['price'],
-			'where' => [
-				[
-					"columns" => [
-						"isDeleted" => 0
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$sql = "SELECT * FROM price WHERE price.isDeleted = 0;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
+	}
+	public static function getAllBy($column, $value) {
+		$conn = Database::conn();
+		$sql = "SELECT * FROM price WHERE price.isDeleted = 0;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 
-	public static function update($id, $values) {
-		$result = JQB::Update('price', [
-			'value' => $values, 
-			'where' => [
-				[
-					"columns" => [
-						"id" => $id
-					]
-				]
-			]
-		])->execute();
-		return $result;
+	public static function update($id, $data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::update("price", "id", $id, $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 }

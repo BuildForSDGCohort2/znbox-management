@@ -84,7 +84,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 							<?php $price = false; ?>
 
 							<!-- Check if there is a default price -->
-							<?php foreach(Price::getBy("stock", $item["id"]) as $item_price) { ?>
+							<?php foreach(Price::getAllBy("stock", $item["id"]) as $item_price) { ?>
 								<?php if($item_price["isDefault"]) { ?>
 									<?php $price = $item_price["price_sell"]; break; ?>
 								<?php } ?>

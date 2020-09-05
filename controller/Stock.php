@@ -2,7 +2,6 @@
 
 namespace controller;
 
-use queryBuilder\JsonQB as JQB;
 use controller\Purchase;
 use controller\SaleStock;
 use connections\Database;
