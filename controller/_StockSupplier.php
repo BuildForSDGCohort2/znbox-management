@@ -28,6 +28,13 @@ class _StockSupplier {
 		$stmt = $conn->prepare($sql);
 		return ($stmt->execute() ? $stmt : null);
 	}
+	public static function getAllBy($column, $value) {
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM _stock_supplier WHERE _stock_supplier.$column = $value;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
+	}
 
 	public static function update($id, $data) {
 		$conn = Database::conn();

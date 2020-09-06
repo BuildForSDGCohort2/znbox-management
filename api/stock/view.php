@@ -3,8 +3,6 @@
 
 	use controller\Translator;
 	use controller\User;
-	use controller\UserType;
-
 	use controller\Supplier;
 	use controller\_StockSupplier;
 	use controller\Warehouse;
@@ -13,19 +11,17 @@
 	use controller\StockCategory;
 	use controller\Helper;
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
+	if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
 		die("user_session");
 	}
 
-	if(!isset($_GET['id'])) {
+	if(!isset($_GET["id"])) {
 		die("404_request");
 	}
 
-	if(!$fetch = Stock::getBy('id', $_GET['id'])->first) {
+	if(!$fetch = Stock::getBy("id", $_GET["id"])) {
 		die("404_request");   
 	}
-
-	$fetch = (array) $fetch;
 ?>
 
 <div class="ui modal tiny">
@@ -49,19 +45,19 @@
 				</tr>
 				<tr>
 					<td><strong><?=Translator::translate("Name");?>:</strong></td>
-					<td><?=Translator::translate(StockType::getBy('id', $fetch['type'])->first->name)?></td>
+					<td><?=Translator::translate(StockType::getBy("id", $fetch["type"])["name"])?></td>
 				</tr>
 				<tr>
 					<td><strong><?=Translator::translate("Quantity");?>:</strong></td>
-					<td><?=Stock::getStockAmount($fetch['id'])?></td>
+					<td><?=Stock::getStockAmount($fetch["id"])?></td>
 				</tr>
 				<tr>
 					<td><strong><?=Translator::translate("supplier");?>:</strong></td>
 					<td>
-						<?php foreach(_StockSupplier::getAll()->data as $item) { ?>
-							<?php if($fetch['id'] == $item['stock']) { ?>
-								<a href="supplier/view" class="ui mini icon basic button zn-link-dialog" data="<?=$item['supplier']?>">
-									<i class="ui eye icon"></i> <?=Supplier::getBy('id', $item['supplier'])->first->name?>
+						<?php foreach(_StockSupplier::getAll() as $item) { ?>
+							<?php if($fetch["id"] == $item["stock"]) { ?>
+								<a href="<?=Helper::url("api/supplier/view.php")?>" class="ui mini icon basic button zn-link-dialog" data="<?=$item["supplier"]?>">
+									<i class="ui eye icon"></i> <?=Supplier::getBy("id", $item["supplier"])["name"]?>
 								</a>
 							<?php } ?>
 						<?php } ?>
@@ -69,11 +65,11 @@
 				</tr>
 				<tr>
 					<td><strong><?=Translator::translate("category");?>:</strong></td>
-					<td><?=StockCategory::getBy('id', $fetch["category"])->first->name?></td>
+					<td><?=StockCategory::getBy("id", $fetch["category"])["name"]?></td>
 				</tr>
 				<tr>
 					<td><strong><?=Translator::translate("warehouse");?>:</strong></td>
-					<td><?=Warehouse::getBy('id', $fetch['warehouse'])->first->name?></td>
+					<td><?=Warehouse::getBy("id", $fetch["warehouse"])["name"]?></td>
 				</tr>
 				<tr>
 					<td><strong><?=Translator::translate("Date Added");?>:</strong></td>
@@ -81,7 +77,7 @@
 				</tr>
 				<tr>
 					<td><strong><?=Translator::translate("User Added");?>:</strong></td>
-					<td><?=User::getBy('id', $fetch["user_added"])->first->username?></td>
+					<td><?=User::getBy("id", $fetch["user_added"])["username"]?></td>
 				</tr>
 				<tr>
 					<td><strong><?=Translator::translate("Date Modify");?>:</strong></td>
@@ -89,7 +85,7 @@
 				</tr>
 				<tr>
 					<td><strong><?=Translator::translate("User Modify");?>:</strong></td>
-					<td><?=User::getBy('id', $fetch["user_modify"])->first->username?></td>
+					<td><?=User::getBy("id", $fetch["user_modify"])["username"]?></td>
 				</tr>
 				<tr>
 					<td><strong><?=Translator::translate("Description");?>:</strong></td>
@@ -100,7 +96,7 @@
 	</div>
 	<div class="actions stackable">
 		<div class="ui negative labeled icon button mini">
-			<?=Translator::translate('close')?>
+			<?=Translator::translate("close")?>
 			<i class="close inverted icon"></i>
 		</div>
 	</div>
