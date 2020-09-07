@@ -1,28 +1,21 @@
 <?php 
-    require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-    use controller\Translator;
-    use controller\User;
-    use controller\UserType;
+use controller\Translator;
+use controller\User;
+use controller\Customer;
+use controller\Helper;
 
-    use controller\Customer;
-    use controller\Helper;
-
-    if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-        die("user_session");
-    }
-
-    if(!isset($_GET['id'])) {
-        die("404_request");
-    }
-
-    if(!$fetch = Customer::getBy('id', $_GET['id'])->first) {
-        die("404_request");   
-    }
-
-    $fetch = (array) $fetch;
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+    die("user_session");
+}
+if(!isset($_GET["id"])) {
+    die("404_request");
+}
+if(!$fetch = Customer::getBy("id", $_GET["id"])) {
+    die("404_request");   
+}
 ?>
-
 <div class="ui modal tiny">
     <i class="ui close icon"></i>
 	<div class="header">
@@ -66,7 +59,7 @@
                 </tr>
                 <tr>
                     <td><strong><?=Translator::translate("User Added");?>:</strong></td>
-                    <td><?=User::getBy('id', $fetch["user_added"])->first->username?></td>
+                    <td><?=User::getBy("id", $fetch["user_added"])->first->username?></td>
                 </tr>
                 <tr>
                     <td><strong><?=Translator::translate("Date Modify");?>:</strong></td>
@@ -74,7 +67,7 @@
                 </tr>
                 <tr>
                     <td><strong><?=Translator::translate("User Modify");?>:</strong></td>
-                    <td><?=User::getBy('id', $fetch["user_modify"])->first->username?></td>
+                    <td><?=User::getBy("id", $fetch["user_modify"])->first->username?></td>
                 </tr>
                 <tr>
                     <td><strong><?=Translator::translate("Observation");?>:</strong></td>
@@ -85,7 +78,7 @@
 	</div>
 	<div class="actions stackable">
         <div class="ui negative labeled icon button mini">
-            <?=Translator::translate('close')?>
+            <?=Translator::translate("close")?>
             <i class="close inverted icon"></i>
         </div>
 	</div>

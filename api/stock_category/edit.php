@@ -24,7 +24,8 @@ if(!$stock_category = StockCategory::getBy("id", $_POST["id"])) {
 }
 
 if(
-	!isset($_POST["value"])
+	!isset($_POST["value"]) ||
+	!isset($_POST["id"])
 ) {
 	die(json_encode([
 		"code" => "5000",

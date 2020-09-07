@@ -1,19 +1,16 @@
 <?php 
-    require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-    use controller\Translator;
-    use controller\User;
-    use controller\UserType;
+use controller\Translator;
+use controller\User;
+use controller\Warehouse;
+use controller\Helper;
 
-    use controller\Warehouse;
-    use controller\Helper;
-
-    if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-        die("user_session");
-    }
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+    die("user_session");
+}
 ?>
-
-<form class="ui small modal form zn-form" action="warehouse/add">
+<form class="ui small modal form zn-form" action="<?=Helper::url("api/warehouse/add.php")?>">
 	<div class="header">
 		<h3 class="ui header diviving color red"><i class="ui warehouse icon"></i><?=Translator::translate("add warehouse");?></h3>
 	</div>
@@ -42,18 +39,18 @@
         </div>
 	</div>
 	<script type="text/javascript">
-			$("form").form({
-				on:'blur',
-				inline:true,
-				fields:{
-					name:{
-						identifier:'value[name]',
-						rules:[{
-							type:'empty',
-							prompt:'{name} <?=Translator::translate("Please fill this field")?>'
-						}]
-					}
+		$("form").form({
+			on:"blur",
+			inline:true,
+			fields:{
+				name:{
+					identifier:"value[name]",
+					rules:[{
+						type:"empty",
+						prompt:"{name} <?=Translator::translate("Please fill this field")?>"
+					}]
 				}
-			});
+			}
+		});
 	</script>
 </form>
