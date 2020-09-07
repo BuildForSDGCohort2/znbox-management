@@ -4,6 +4,7 @@ namespace controller\report;
 
 use FPDF;
 use controller\Translator;
+use controller\Resources;
 
 class Invoice extends FPDF {
 
@@ -15,7 +16,7 @@ class Invoice extends FPDF {
 		$enterprise = (object) $config->enterprise;
 
 		$this->SetFont('Arial', '', 11);
-		$this->Image(__DIR__ . '/../../assets/img/'.$enterprise->logo, 10, 6, 40);
+		$this->Image(__DIR__ ."/../../res/enterprise/".$enterprise->logo, 10, 6, 40);
 		$this->SetFont('Arial', 'B', 11);
 
 		if(isset($config->enterprise)) {

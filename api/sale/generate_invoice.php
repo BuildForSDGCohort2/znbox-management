@@ -1,70 +1,68 @@
 <?php 
 
-	require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-	use queryBuilder\JsonQB as JQB;
+use controller\Translator;
+use controller\User;
+use controller\Sale;
+use controller\Stock;
+use controller\SaleStock;
+use controller\Enterprise;
+use controller\Customer;
+use controller\Invoice;
+use controller\Price;
+use controller\Helper;
 
-    use controller\Translator;
-    use controller\User;
-    use controller\UserType;
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+	die(json_encode([
+		"code" => "5000",
+		"title" => Translator::translate("Error"),
+		"message" => Translator::translate("Session Expired"),
+		"status" => "danger",
+	]));
+}
+if(!isset($_POST["value"]["sale"])) {
+    die("404_request");
+}
+if(!$sale = Sale::getBy("id", $_POST["value"]["sale"])) {
+	die("404_request");
+}
 
-    use controller\Sale;
-    use controller\Stock;
-    use controller\SaleStock;
-    use controller\Enterprise;
-    use controller\Customer;
-    use controller\Invoice;
-    use controller\Price;
-    use controller\Helper;
+$data = [];
+$data["user_added"] = $user["id"];
+$data["user_modify"] = $user["id"];
+$data["date_emitted"] = $_POST["value"]["date_emitted"];
+$data["date_due"] = $_POST["value"]["date_due"];
+$data["sale"] = $sale["id"];
+$data["status"] = 1;
+$data["enterprise"] = json_encode(Enterprise::getBy("id", 1));
+$data["customer"] = json_encode(Customer::getBy("id", $sale["customer"]));
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-		echo json_encode([
-			'code' => '5000',
-			'title' => Translator::translate("Error"),
-			'message' => Translator::translate("Session Expired"),
-			'status' => 'danger',
-		]); die();
-	}
+$data["itens"] = [];
+foreach (SaleStock::getAllBy("sale", $sale["id"]) as $key => $item) {
+	$data["itens"][$key] = $item;
+}
+foreach (SaleStock::getAllBy("sale", $sale["id"]) as $key => $item) {
+	$data["itens"][$key]["stock"] = Stock::getBy("id", $item["stock"]);
+}
+$data["itens"] = json_encode($data["itens"]);
 
-	if(!isset($_POST['value']['sale'])) {
-        die("404_request");
-    }
+$number = (Invoice::getLast() ? Invoice::getLast()["number"] + 1 : 1);
+$data["number"] = $number;
 
-    if(!$sale = Sale::getBy('id', $_POST['value']['sale'])->first) {
-    	die("404_request");
-    }
-
-	$_POST['value']['user_added'] = $user->id;
-	$_POST['value']['user_modify'] = $user->id;
-	$_POST['value']['sale'] = $sale->id;
-	$_POST['value']['status'] = 1;
-	$_POST['value']['enterprise'] = json_encode(Enterprise::getAll()->first);
-	$_POST['value']['customer'] = json_encode(Customer::getBy('id', $sale->customer)->first);
-	$_POST['value']['itens'] = SaleStock::getBy('sale', $sale->id)->data;
-
-	foreach ($_POST['value']['itens'] as $index => $item) {
-		$stock = $_POST['value']['itens'][$index]['stock'];
-		$_POST['value']['itens'][$index]['stock'] = (array) Stock::getBy('id', $stock)->first;
-	}
-	$_POST['value']['itens'] = json_encode($_POST['value']['itens']);
-
-	$number = (Invoice::getAll()->last) ? Invoice::getAll()->last->number + 1 : 1;
-	$_POST['value']['number'] = $number;
-
-	$invoice = Invoice::add($_POST);
-	if($invoice->success) {
-		echo json_encode([
-			'code' => '1102',
-			'title' => Translator::translate("Success"),
-			'message' => Translator::translate("Added successfuly"),
-			'status' => 'success',
-			'href' => 'sale/sale',
-		]); die();
-	} else {
-		echo json_encode([
-			'code' => '1103',
-			'title' => Translator::translate("Server error"),
-			'message' => Translator::translate("Error do servidor"),
-			'status' => 'danger',
-		]); die();
-	}
+if(Invoice::add($data)) {
+	die(json_encode([
+		"code" => "1102",
+		"title" => Translator::translate("Success"),
+		"message" => Translator::translate("Added successfuly"),
+		"status" => "success",
+		"href" => Helper::url("api/sale/sale.php"),
+	]));
+} else {
+	die(json_encode([
+		"code" => "1103",
+		"title" => Translator::translate("Server error"),
+		"message" => Translator::translate("Error do servidor"),
+		"status" => "danger",
+	]));
+}

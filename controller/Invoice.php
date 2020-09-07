@@ -49,6 +49,13 @@ class Invoice {
 		$fetch = $stmt->fetch();
 		return $fetch;
 	}
+	public static function getLast() {
+		$conn = Database::conn();
+		$sql = "SELECT * FROM invoice ORDER BY invoice.id DESC LIMIT 1;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
+	}
 	public static function getTotal($id) {
 		$invoice = self::getBy("id", $id);
 		$sale = Sale::getBy("id", $invoice["sale"]);

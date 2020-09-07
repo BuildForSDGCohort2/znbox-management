@@ -23,7 +23,7 @@ class Price {
 	}
 	public static function getDefault($stock) {
 		$conn = Database::conn();
-		$value = $conn->quote($value);
+		$stock = $conn->quote($stock);
 		$sql = "SELECT * FROM price WHERE price.stock = $stock AND price.isDefault = 1;";
 		$stmt = $conn->query($sql);
 		$fetch = $stmt->fetch();

@@ -1,33 +1,26 @@
 <?php 
-    require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-    use controller\Translator;
-    use controller\User;
-    use controller\UserType;
-    use controller\Stock;
+use controller\Translator;
+use controller\User;
+use controller\Stock;
+use controller\Sale;
+use controller\Invoice;
+use controller\Proforma;
+use controller\SaleStock;
+use controller\Customer;
+use controller\Helper;
 
-    use controller\Sale;
-    use controller\Invoice;
-    use controller\Proforma;
-    use controller\SaleStock;
-    use controller\Customer;
-    use controller\Helper;
-
-    if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-        die("user_session");
-    }
-
-    if(!isset($_GET['id'])) {
-        die("404_request");
-    }
-
-    if(!$fetch = Sale::getBy('id', $_GET['id'])->first) {
-        die("404_request");   
-    }
-
-    $fetch = (array) $fetch;
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+    die("user_session");
+}
+if(!isset($_GET["id"])) {
+    die("404_request");
+}
+if(!$fetch = Sale::getBy("id", $_GET["id"])) {
+    die("404_request");   
+}
 ?>
-
 <div class="ui modal tiny">
     <i class="ui close icon"></i>
 	<div class="header">
@@ -47,7 +40,7 @@
                     <td>
                         <strong><?=Translator::translate("Customer");?>:</strong>
                     </td>
-                    <td colspan="2"><?=Customer::getBy('id', $fetch["customer"])->first->name?></td>
+                    <td colspan="2"><?=Customer::getBy("id", $fetch["customer"])["name"]?></td>
                 </tr>
                 <tr class="center aligned">
                     <td colspan="3" class="active">
@@ -65,13 +58,13 @@
                         <strong><?=Translator::translate("Price per unity");?></strong>
                     </td>
                 </tr>
-                <?php foreach(SaleStock::getBy('sale', $fetch['id'])->data as $item): ?>
+                <?php foreach(SaleStock::getAllBy("sale", $fetch["id"]) as $item): ?>
                 <tr>
-                    <td><?=Stock::getBy('id', $item['stock'])->first->name?></td>
-                    <td class="right aligned"><?=$item['quantity']?></td>
+                    <td><?=Stock::getBy("id", $item["stock"])["name"]?></td>
+                    <td class="right aligned"><?=$item["quantity"]?></td>
                     <td class="right aligned">
                         <label class="ui label blue mini">
-                            <?=Helper::formatnumber($item['price_sale'])?>
+                            <?=Helper::formatnumber($item["price_sale"])?>
                         </label>
                     </td>
                 </tr>
@@ -82,7 +75,7 @@
                     </td>
                     <td colspan="2">
                         <label class="ui label blue mini">
-                            <?=Helper::formatnumber(Sale::getTotal($fetch['id']))?>
+                            <?=Helper::formatnumber(Sale::getTotal($fetch["id"]))?>
                         </label>
                     </td>
                 </tr>
@@ -90,13 +83,13 @@
                     <td>
                         <strong><?=Translator::translate("Date Added");?>:</strong>
                     </td>
-                    <td colspan="2"><?=Helper::datetime($fetch['date_added'])?></td>
+                    <td colspan="2"><?=Helper::datetime($fetch["date_added"])?></td>
                 </tr>
                 <tr>
                     <td>
                         <strong><?=Translator::translate("User Added");?>:</strong>
                     </td>
-                    <td colspan="2"><?=User::getBy('id', $fetch["user_added"])->first->username?></td>
+                    <td colspan="2"><?=User::getBy("id", $fetch["user_added"])["username"]?></td>
                 </tr>
                 <tr>
                     <td>
@@ -108,7 +101,7 @@
                     <td>
                         <strong><?=Translator::translate("User Modify");?>:</strong>
                     </td>
-                    <td colspan="2"><?=User::getBy('id', $fetch["user_modify"])->first->username?></td>
+                    <td colspan="2"><?=User::getBy("id", $fetch["user_modify"])["username"]?></td>
                 </tr>
                 <tr>
                     <td>
@@ -121,7 +114,7 @@
 	</div>
 	<div class="actions stackable">
         <div class="ui negative labeled icon button mini">
-            <?=Translator::translate('close')?>
+            <?=Translator::translate("close")?>
             <i class="close inverted icon"></i>
         </div>
 	</div>

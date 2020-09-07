@@ -1,30 +1,29 @@
 <?php 
-	require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-	use controller\Translator;
-	use controller\User;
-	use controller\Helper;
-	use controller\Stock;
-	use controller\Customer;
+use controller\Translator;
+use controller\User;
+use controller\Helper;
+use controller\Stock;
+use controller\Customer;
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-		die("user_session");
-	}
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+	die("user_session");
+}
 ?>
-
 <div class="ui segment">
 	<div class="ui dividing header large blue">
 		<h3><?=Translator::translate("New sale")?></h3>
 	</div>
 
-	<form class="zn-form" action="sale/add">
+	<form class="zn-form" action="<?=Helper::url("api/sale/add.php")?>">
 		<div class="uk-margin-large-top">
 			<div class="ui form">
 				<div class="four fields">
 					<div class="field">
 						<label><?=Translator::translate("customer")?></label>
 						<select class="ui dropdown search" required name="customer">
-							<?php foreach(Customer::getAll()->data as $item): ?>
+							<?php foreach(Customer::getAll() as $item): ?>
 							<option value="<?=$item["id"]?>">
 								<?=$item["name"]?>
 							</option>
@@ -123,6 +122,6 @@
 		</div>
 	</form>
 	<script type="text/javascript">
-		$('.ui.dropdown').dropdown();
+		$(".ui.dropdown").dropdown();
 	</script>
 </div>

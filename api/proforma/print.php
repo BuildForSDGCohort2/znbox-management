@@ -14,27 +14,22 @@ header("Content-type: application/pdf");
 //header("Content-Transfer-Encoding: Binary");
 //header("Content-disposition: attachment; filename=".time()."_invoice.pdf");
 
-if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
     die("user_session");
 }
-
-if(!isset($_GET['id'])) {
+if(!isset($_GET["id"])) {
     die("404_request");
 }
-
-if(!isset($_GET['type'])) {
+if(!isset($_GET["type"])) {
     die("404_request");
 }
-
-if(!$sale = Sale::getBy('id', $_GET['id'])->first) {
+if(!$sale = (object) Sale::getBy("id", $_GET["id"])) {
     die("404_request");
 }
-
-if(!$proforma = Proforma::getBy('sale', $sale->id)->first) {
+if(!$proforma = (object) Proforma::getBy("sale", $sale->id)) {
     die("404_request");
 }
-
-if($_GET['type'] != 1) {
+if($_GET["type"] != 1) {
     die("404_request");
 }
 
@@ -59,22 +54,22 @@ $discount = ($sale->discount_type == 1) ? ($subtotal * ($sale->discount / 100)) 
 
 
 $config = [
-	'enterprise' => [
-		'name' => $enterprise->name,
-		'address' => $enterprise->address,
-		'phone' => $enterprise->phone1,
-		'mobile' => $enterprise->phone2,
-		'email' => $enterprise->email,
-		'nuit' => $enterprise->nuit,
-		'currency' => $enterprise->currency,
-		'logo' => $enterprise->logo,
+	"enterprise" => [
+		"name" => $enterprise->name,
+		"address" => $enterprise->address,
+		"phone" => $enterprise->phone1,
+		"mobile" => $enterprise->phone2,
+		"email" => $enterprise->email,
+		"nuit" => $enterprise->nuit,
+		"currency" => $enterprise->currency,
+		"logo" => $enterprise->logo,
 	],
-	'document' => [
-		'number' => $proforma->number."/".date('Y', strtotime($proforma->date_emitted)),
-		'date' => $proforma->date_emitted,
-		'date_due' => $proforma->date_due,
-		'itens' => $invoice_itens,
-		'total' => [
+	"document" => [
+		"number" => $proforma->number."/".date("Y", strtotime($proforma->date_emitted)),
+		"date" => $proforma->date_emitted,
+		"date_due" => $proforma->date_due,
+		"itens" => $invoice_itens,
+		"total" => [
 			"subtotal" => Helper::formatNumber($subtotal),
 			"discount" => Helper::formatNumber($discount),
 			"subtotal_discount" => Helper::formatNumber($subtotal - $discount),
@@ -83,10 +78,12 @@ $config = [
 			"total" => Helper::formatNumber(($subtotal - $discount) + ($subtotal - $discount) * ($sale->tax_percentage / 100)),
 		]
 	],
-	'customer' => [
-		'name' => $customer->name,
-		'phone' => $customer->contact1,
-		'email' => $customer->email,
+	"customer" => [
+		"name" => $customer->name,
+		"phone" => $customer->contact1,
+		"email" => $customer->email,
+		"address" => $customer->address,
+		"postal_code" => (isset($customer->postal_code) ? $customer->postal_code : ""),
 	],
 ];
 

@@ -1,95 +1,110 @@
 <?php 
 
-	require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-	use queryBuilder\JsonQB as JQB;
+use controller\Translator;
+use controller\User;
+use controller\Sale;
+use controller\SaleStock;
+use controller\Price;
+use controller\Helper;
+use connections\Database;
 
-    use controller\Translator;
-    use controller\User;
-    use controller\UserType;
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+	die(json_encode([
+		"code" => "5000",
+		"title" => Translator::translate("Error"),
+		"message" => Translator::translate("Session Expired"),
+		"status" => "danger",
+	]));
+}
 
-    use controller\Sale;
-    use controller\SaleStock;
-    use controller\Price;
-    use controller\Helper;
+if(
+	(!isset($_POST["id"]) ||
+	!isset($_POST["discount"]) ||
+	!isset($_POST["customer"]) ||
+	!isset($_POST["quantity"]) ||
+	!isset($_POST["discount_type"]) ||
+	!isset($_POST["tax_percentage"]) ||
+	!isset($_POST["stock"])) && !isset($_POST["value"]["isDeleted"])
+) {
+	die(json_encode([
+		"code" => "5000",
+		"title" => Translator::translate("Error"),
+		"message" => Translator::translate("Invalid request"),
+		"status" => "danger",
+	]));
+}
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-		echo json_encode([
-			'code' => '5000',
-			'title' => Translator::translate("Error"),
-			'message' => Translator::translate("Session Expired"),
-			'status' => 'danger',
-		]); die();
-	}
+if(!$sale = Sale::getBy("id", $_POST["id"])) {
+    die("404_request");   
+}
 
-	if(!$sale = Sale::getBy('id', $_POST['id'])->first) {
-        die("404_request");   
-    }
+$data = [];
+if(!isset($_POST["value"]["isDeleted"])) {
+	$data["discount"] = $_POST["discount"];
+	$data["customer"] = $_POST["customer"];
+	$data["discount_type"] = $_POST["discount_type"];
+	$data["tax_percentage"] = $_POST["tax_percentage"];
+	$data["observation"] = "";
+} else {
+	$data["isDeleted"] = $_POST["value"]["isDeleted"];
+}
+$data["user_modify"] = $user["id"];
+$data["user_added"] = $user["id"];
 
-	if(!isset($_POST['value']['isDeleted'])) {
-		$_POST['value']['user_modify'] = $user->id;
-		$_POST['value']['user_added'] = $user->id;
-		$_POST['value']['discount'] = $_POST['discount'];
-		$_POST['value']['customer'] = $_POST['customer'];
-		$_POST['value']['discount_type'] = $_POST['discount_type'];
-		$_POST['value']['tax_percentage'] = $_POST['tax_percentage'];
-		$_POST['value']['observation'] = '';
-	}
+$conn = Database::conn();
+$conn->beginTransaction();
 
-	/* Map all itens in database */
-	JQB::begin();
-
-	
-	if(Sale::update($sale->id, $_POST['value'])) {
-		if(!isset($_POST['value']['isDeleted'])) {
-			SaleStock::deleteBySale($sale->id);
-			$stock = $_POST['stock'];
-			$quantity = $_POST['quantity'];
-			try {
-				foreach ($stock as $key => $value) {
-					SaleStock::add([
-						'value' => [
-							'sale' => $sale->id,
-							'stock' => $value,
-							'quantity' => $quantity[$key],
-							'price_sale' => Price::getDefault($value)->first->price_sell,
-							'price_purchase' => Price::getDefault($value)->first->price_purchase,
-						]
-					]);
-				}
-				JQB::commit();
-				echo json_encode([
-					'code' => '1102',
-					'title' => Translator::translate("Success"),
-					'message' => Translator::translate("Updated successfuly"),
-					'status' => 'success',
-					'href' => 'sale/sale',
-				]); die();
-			} catch(Exception $ex) {
-				JQB::rollback();
-				echo json_encode([
-					'code' => '1103',
-					'title' => Translator::translate("Server error"),
-					'message' => Translator::translate("Error do servidor"),
-					'status' => 'danger',
-				]); die();
+if(Sale::update($sale["id"], $data)) {
+	if(!isset($data["isDeleted"])) {
+		/* Delete all stock itens from this sale */
+		SaleStock::deleteBySale($sale["id"]);
+		$stock = $_POST["stock"];
+		$quantity = $_POST["quantity"];
+		try {
+			/* Add currently selected sales */
+			foreach ($stock as $key => $value) {
+				SaleStock::add([
+					"sale" => $sale["id"],
+					"stock" => $value,
+					"quantity" => $quantity[$key],
+					"price_sale" => Price::getDefault($value)["price_sell"],
+					"price_purchase" => Price::getDefault($value)["price_purchase"],
+				]);
 			}
-		} else {
-			JQB::commit();
-			echo json_encode([
-				'code' => '1102',
-				'title' => Translator::translate("Success"),
-				'message' => Translator::translate("Updated successfuly"),
-				'status' => 'success',
-				'href' => 'sale/sale',
-			]); die();
+			$conn->commit();
+			die(json_encode([
+				"code" => "1102",
+				"title" => Translator::translate("Success"),
+				"message" => Translator::translate("Updated successfuly"),
+				"status" => "success",
+				"href" => Helper::url("api/sale/sale.php"),
+			]));
+		} catch(Exception $ex) {
+			$conn->rollback();
+			die(json_encode([
+				"code" => "1103",
+				"title" => Translator::translate("Server error"),
+				"message" => Translator::translate("Server error"),
+				"status" => "danger",
+			]));
 		}
 	} else {
-		echo json_encode([
-			'code' => '1103',
-			'title' => Translator::translate("Server error"),
-			'message' => Translator::translate("Error do servidor"),
-			'status' => 'danger',
-		]); die();
+		$conn->commit();
+		die(json_encode([
+			"code" => "1102",
+			"title" => Translator::translate("Success"),
+			"message" => Translator::translate("Updated successfuly"),
+			"status" => "success",
+			"href" => Helper::url("api/sale/sale.php"),
+		]));
 	}
-	
+} else {
+	die(json_encode([
+		"code" => "1103",
+		"title" => Translator::translate("Server error"),
+		"message" => Translator::translate("Server error"),
+		"status" => "danger",
+	]));
+}

@@ -1,75 +1,86 @@
 <?php 
 
-	require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-	use queryBuilder\JsonQB as JQB;
+use controller\Translator;
+use controller\User;
+use controller\Sale;
+use controller\SaleStock;
+use controller\Price;
+use controller\Helper;
+use connections\Database;
 
-    use controller\Translator;
-    use controller\User;
-    use controller\UserType;
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+	die(json_encode([
+		"code" => "5000",
+		"title" => Translator::translate("Error"),
+		"message" => Translator::translate("Session Expired"),
+		"status" => "danger",
+	]));
+}
 
-    use controller\Sale;
-    use controller\SaleStock;
-    use controller\Price;
-    use controller\Helper;
+if(
+	!isset($_POST["discount"]) ||
+	!isset($_POST["customer"]) ||
+	!isset($_POST["quantity"]) ||
+	!isset($_POST["stock"])
+) {
+	die(json_encode([
+		"code" => "5000",
+		"title" => Translator::translate("Error"),
+		"message" => Translator::translate("Invalid request"),
+		"status" => "danger",
+	]));
+}
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-		echo json_encode([
-			'code' => '5000',
-			'title' => Translator::translate("Error"),
-			'message' => Translator::translate("Session Expired"),
-			'status' => 'danger',
-		]); die();
-	}
+$data = [];
+$data["user_modify"] = $user["id"];
+$data["user_added"] = $user["id"];
+$data["discount"] = $_POST["discount"];
+$data["customer"] = $_POST["customer"];
+$data["discount_type"] = 1;
+$data["tax_percentage"] = 17;
+$data["observation"] = "";
 
-	//print_r($_POST); die();
-	$_POST['value']['user_modify'] = $user->id;
-	$_POST['value']['user_added'] = $user->id;
-	$_POST['value']['discount'] = $_POST['discount'];
-	$_POST['value']['customer'] = $_POST['customer'];
-	$_POST['value']['discount_type'] = 1;
-	$_POST['value']['tax_percentage'] = 17;
-	$_POST['value']['observation'] = '';
+$conn = Database::conn();
+$conn->beginTransaction();
 
-	JQB::begin();
-	if($sale = Sale::add($_POST)) {
-		$stock = $_POST['stock'];
-		$quantity = $_POST['quantity'];
-		try {
-			foreach ($stock as $key => $value) {
-				SaleStock::add([
-					'value' => [
-						'sale' => $sale->id,
-						'stock' => $value,
-						'quantity' => $quantity[$key],
-						'price_sale' => Price::getDefault($value)->first->price_sell,
-						'price_purchase' => Price::getDefault($value)->first->price_purchase,
-					]
-				]);
-			}
-			JQB::commit();
-			echo json_encode([
-				'code' => '1102',
-				'title' => Translator::translate("Success"),
-				'message' => Translator::translate("Added successfuly"),
-				'status' => 'success',
-				'href' => 'sale/sale',
-			]); die();
-		} catch(Exception $ex) {
-			JQB::rollback();
-			echo json_encode([
-				'code' => '1103',
-				'title' => Translator::translate("Server error"),
-				'message' => Translator::translate("Error do servidor"),
-				'status' => 'danger',
-			]); die();
+if($sale = Sale::add($data)) {
+	$stock = $_POST["stock"];
+	$quantity = $_POST["quantity"];
+	try {
+		$id = $conn->lastInsertId();
+		foreach ($stock as $key => $value) {
+			SaleStock::add([
+				"sale" => $id,
+				"stock" => $value,
+				"quantity" => $quantity[$key],
+				"price_sale" => Price::getDefault($value)["price_sell"],
+				"price_purchase" => Price::getDefault($value)["price_purchase"],
+			]);
 		}
-	} else {
-		echo json_encode([
-			'code' => '1103',
-			'title' => Translator::translate("Server error"),
-			'message' => Translator::translate("Error do servidor"),
-			'status' => 'danger',
-		]); die();
+		$conn->commit();
+		die(json_encode([
+			"code" => "1102",
+			"title" => Translator::translate("Success"),
+			"message" => Translator::translate("Added successfuly"),
+			"status" => "success",
+			"href" => Helper::url("api/sale/sale.php"),
+		]));
+	} catch(Exception $ex) {
+		$conn->rollback();
+		die(json_encode([
+			"code" => "1103",
+			"title" => Translator::translate("Server error"),
+			"message" => Translator::translate("Error do servidor"),
+			"status" => "danger",
+		]));
 	}
-	
+} else {
+	die(json_encode([
+		"code" => "1103",
+		"title" => Translator::translate("Server error"),
+		"message" => Translator::translate("Error do servidor"),
+		"status" => "danger",
+	]));
+}

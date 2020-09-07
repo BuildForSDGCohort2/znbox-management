@@ -1,31 +1,27 @@
 <?php 
-    require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-    use controller\Translator;
-    use controller\User;
-    use controller\UserType;
+use controller\Translator;
+use controller\User;
+use controller\UserType;
 
-    use controller\Stock;
-    use controller\Customer;
-    use controller\Sale;
-    use controller\Helper;
+use controller\Stock;
+use controller\Customer;
+use controller\Sale;
+use controller\Helper;
 
-    if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-        die("user_session");
-    }
-
-    if(!isset($_GET['id'])) {
-        die("404_request");
-    }
-
-    if(!$fetch = Sale::getBy('id', $_GET['id'])->first) {
-        die("404_request");   
-    }
-
-    $fetch = (array) $fetch;
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+    die("user_session");
+}
+if(!isset($_GET["id"])) {
+    die("404_request");
+}
+if(!$fetch = Sale::getBy("id", $_GET["id"])) {
+    die("404_request");   
+}
 ?>
 
-<form class="ui small modal form zn-form" action="sale/generate_invoice" data="<?=$_GET['id']?>">
+<form class="ui small modal form zn-form" action="<?=Helper::url("api/sale/generate_invoice.php")?>" data="<?=$_GET["id"]?>">
     <div class="header">
         <h3 class="ui header red"><?=Translator::translate("Confirm to generate invoice")?></h3>
     </div>
@@ -53,9 +49,9 @@
         </div>
     </div>
     <script type="text/javascript">
-        $('.flatpickr').flatpickr({
+        $(".flatpickr").flatpickr({
             dateFormat: "Y-m-d",
-            locale: "<?=$_COOKIE['lang']?>",
+            locale: "<?=$_COOKIE["lang"]?>",
             altInput: true,
             altFormat: "F j, Y",
         });

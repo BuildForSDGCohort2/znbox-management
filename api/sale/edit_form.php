@@ -1,35 +1,30 @@
 <?php 
-	require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-	use controller\Translator;
-	use controller\User;
-	use controller\Helper;
-	use controller\Stock;
-	use controller\Price;
-	use controller\Sale;
-    use controller\SaleStock;
-    use controller\Customer;
+use controller\Translator;
+use controller\User;
+use controller\Helper;
+use controller\Stock;
+use controller\Price;
+use controller\Sale;
+use controller\SaleStock;
+use controller\Customer;
 
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-		die("user_session");
-	}
-
-	if(!isset($_GET['id'])) {
-        die("404_request");
-    }
-
-    if(!$fetch = Sale::getBy('id', $_GET['id'])->first) {
-        die("404_request");   
-    }
-
-    $fetch = (array) $fetch;
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+	die("user_session");
+}
+if(!isset($_GET["id"])) {
+    die("404_request");
+}
+if(!$fetch = Sale::getBy("id", $_GET["id"])) {
+    die("404_request");   
+}
 ?>
-
 <div class="ui segment">
 	<div class="ui dividing header large blue">
 		<h3><?=Translator::translate("New sale")?></h3>
 	</div>
-	<form class="zn-form-update" action="sale/edit" data="<?=$fetch['id']?>">
+	<form class="zn-form-update" action="<?=Helper::url("api/sale/edit.php")?>" data="<?=$fetch["id"]?>">
 		<!-- Sale info -->
 		<input type="hidden" id="tax_percentage" name="tax_percentage" value="<?=$fetch["tax_percentage"]?>">
 		<!-- Sale info end -->
@@ -39,8 +34,8 @@
 					<div class="field">
 						<label><?=Translator::translate("customer")?></label>
 						<select class="ui dropdown search" required name="customer">
-							<?php foreach(Customer::getAll()->data as $item): ?>
-							<option <?=($fetch['customer'] == $item['id']) ? 'selected' : ''?> value="<?=$item["id"]?>">
+							<?php foreach(Customer::getAll() as $item): ?>
+							<option <?=($fetch["customer"] == $item["id"]) ? "selected" : ""?> value="<?=$item["id"]?>">
 								<?=$item["name"]?>
 							</option>
 							<?php endforeach; ?>
@@ -83,7 +78,7 @@
 					<th><?=Translator::translate("Actions")?></th>
 				</thead>
 				<tbody>
-					<?php foreach(SaleStock::getBy('sale', $fetch['id'])->data as $item): ?>
+					<?php foreach(SaleStock::getAllBy("sale", $fetch["id"]) as $item): ?>
 	                <tr>
 						<td>
 							<label class="ui label circular mini orange">
@@ -92,33 +87,33 @@
 						</td>
 						<td>
 							<select class="ui dropdown search stock-table-line-stock" name="stock[]" disabled>
-								<?php foreach(Stock::getAll()->data as $stock):?>
+								<?php foreach(Stock::getAll() as $stock):?>
 									<option 
 										value="<?=$stock["id"]?>"
 										price="<?php
-											echo (isset(Price::getDefault($stock["id"])->first->price_sell)) ? Price::getDefault($stock["id"])->first->price_sell : 0
+											echo (isset(Price::getDefault($stock["id"])["price_sell"])) ? Price::getDefault($stock["id"])["price_sell"] : 0
 										?>"
 										<?php 
 											$total_quantity = Stock::getStockAmount($stock["id"]);
-											foreach(SaleStock::getBy('sale', $fetch['id'])->data as $_item) {
-												if($_item['stock'] == $item['stock']) {
+											foreach(SaleStock::getAllBy("sale", $fetch["id"]) as $_item) {
+												if($_item["stock"] == $item["stock"]) {
 													/* Sum all quantities from the same stock */
-													$total_quantity += $_item['quantity'];
+													$total_quantity += $_item["quantity"];
 												}
 											}
 										?>
 										stock="<?=$total_quantity?>"
-										<?=($stock['id'] == $item['stock']) ? "selected" : ''?>
+										<?=($stock["id"] == $item["stock"]) ? "selected" : ""?>
 									>
 										<?=$stock["name"]?>
 									</option>
 								<?php endforeach; ?>
 							</select>
-							<input type="hidden" name="stock[]" value="<?=$item['stock']?>">
+							<input type="hidden" name="stock[]" value="<?=$item["stock"]?>">
 						</td>
 						<td>
 							<label class="ui basic label small stock-table-line-stock-available">
-								<?=Stock::getStockAmount($item['stock']);?>
+								<?=Stock::getStockAmount($item["stock"]);?>
 							</label>
 						</td>
 						<td>
@@ -129,20 +124,20 @@
 									name="quantity[]"
 									placeholder="<?=Translator::translate("Quantity")?>"
 									required
-									value="<?=$item['quantity']?>"
-									max="<?=Stock::getStockAmount($item['stock']) + $item['quantity']?>"
+									value="<?=$item["quantity"]?>"
+									max="<?=Stock::getStockAmount($item["stock"]) + $item["quantity"]?>"
 									min="0"
 								>
 							</div>
 						</td>
 						<td>
 							<label class="ui basic label small stock-table-line-price-unity">
-								<?=$item['price_sale']?>
+								<?=$item["price_sale"]?>
 							</label>
 						</td>
 						<td>
 							<label class="ui basic label small stock-table-line-price">
-								<?=$item['quantity'] * $item['price_sale']?>
+								<?=$item["quantity"] * $item["price_sale"]?>
 							</label>
 						</td>
 						<td>
@@ -203,11 +198,11 @@
 				</div>
 			</div>
 			<button type="submit" class="ui button blue"><?=Translator::translate("Save")?></button>
-			<button type="submit" href="sale/sale" class="ui button white zn-link"><?=Translator::translate("Cancel")?></button>
+			<button type="submit" href="<?=Helper::url("api/sale/sale.php")?>" class="ui button white zn-link"><?=Translator::translate("Cancel")?></button>
 		</div>
 	</form>
 	<script type="text/javascript">
-		$('.ui.dropdown').dropdown();
+		$(".ui.dropdown").dropdown();
 		update();
 	</script>
 </div>

@@ -49,6 +49,13 @@ class Proforma {
 		$fetch = $stmt->fetch();
 		return $fetch;
 	}
+	public static function getLast() {
+		$conn = Database::conn();
+		$sql = "SELECT * FROM proforma ORDER BY proforma.id DESC LIMIT 1;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
+	}
 	public static function getTotal($id) {
 		$proforma = self::getBy("id", $id);
 		$sale = Sale::getBy("id", $proforma["sale"]);

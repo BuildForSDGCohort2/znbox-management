@@ -65,7 +65,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 							</a>
 							<?php $invoice = Invoice::getBy("sale", $item["id"]); ?>
 							<?php $proforma = Proforma::getBy("sale", $item["id"]); ?>
-							<?php if((!$invoice && !$proforma) || (($invoice && $invoice->status == 0) && ($invoice && $proforma->status == 0))): ?>
+							<?php if((!$invoice && !$proforma) || (($invoice && $invoice["status"] == 0) && ($invoice && $proforma["status"] == 0))): ?>
 							<a class="ui mini circular icon button green zn-link" href="<?=Helper::url("api/sale/edit_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("edit details")?>">
 								<i class="ui edit icon"></i>
 							</a>
