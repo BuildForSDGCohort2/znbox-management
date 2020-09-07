@@ -9,7 +9,7 @@ use controller\Stock;
 use controller\Price;
 use controller\Helper;
 
-if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])) {
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
 	die("user_session");
 }
 ?>

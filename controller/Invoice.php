@@ -2,85 +2,71 @@
 
 namespace controller;
 
-use queryBuilder\JsonQB as JQB;
-use stdClass;
+use connections\Database;
+use controller\QueryBuilder;
 
 class Invoice {
 
-	public static function add($request) {
-		$result = JQB::Insert('invoice', $request)->execute();
-		return $result;
+	public static function add($data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::insert("invoice", $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
-
+	public static function update($id, $data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::update("invoice", "id", $id, $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
+	}
 	public static function getBy($column, $value) {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['invoice'],
-			'where' => [
-				[
-					"columns" => [
-						"$column" => $value,
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM invoice WHERE invoice.$column = $value;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
+	}
+	public static function getAllBy($column, $value) {
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM invoice WHERE invoice.$column = $value;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 	public static function getAll() {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['invoice'],
-		])->execute();
-		return $result;
-	}
-
-	public static function update($id, $values) {
-		$result = JQB::Update('invoice', [
-			'value' => $values, 
-			'where' => [
-				[
-					"columns" => [
-						"id" => $id
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$sql = "SELECT * FROM invoice;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 
 	public static function getTotalAmount($stock) {
-		$result = JQB::Select([
-			'columns' => ['*', 'SUM(quantity) AS total'],
-			'from' => ['invoice'],
-			'where' => [
-				[
-					"columns" => [
-						"stock" => $stock,
-						"isDeleted" => 0,
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$stock = $conn->quote($stock);
+		$sql = "SELECT SUM(invoice.quantity) AS total FROM invoice WHERE invoice.stock = $stock AND invoice.isDeleted = 0;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
 	}
 	public static function getTotal($id) {
-		$invoice = self::getBy("id", $id)->first;
-		$sale = Sale::getBy('id', $invoice->sale)->first;
+		$invoice = self::getBy("id", $id);
+		$sale = Sale::getBy("id", $invoice["sale"]);
 
-		$itens = json_decode($invoice->itens);
+		$itens = (array) json_decode($invoice["itens"]);
 		$subtotal = 0;
 		$invoice_itens = [];
 		foreach($itens as $item) {
 			$invoice_itens[] = [
-				"description" => $item->stock->name,
-				"quantity" => $item->quantity,
-				"price" => $item->price_sale,
-				"total" => $item->quantity * $item->price_sale,
+				"description" => $item["stock"]->name,
+				"quantity" => $item["quantity"],
+				"price" => $item["price_sale"],
+				"total" => $item["quantity"] * $item["price_sale"],
 			];
-			$subtotal += (floatval($item->price_sale) * intval($item->quantity));
+			$subtotal += (floatval($item["price_sale"]) * intval($item["quantity"]));
 		}
 
-		$discount = ($sale->discount_type == 1) ? ($subtotal * ($sale->discount / 100)) : $sale->discount;
-		return ($subtotal - $discount) + ($subtotal - $discount) * ($sale->tax_percentage / 100);
+		$discount = ($sale["discount_type"] == 1) ? ($subtotal * ($sale["discount"] / 100)) : $sale["discount"];
+		return ($subtotal - $discount) + ($subtotal - $discount) * ($sale["tax_percentage"] / 100);
 	}
 }

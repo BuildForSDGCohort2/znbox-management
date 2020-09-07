@@ -12,8 +12,8 @@ RewriteRule ^(home)$ pages/index.php
 RewriteRule ^()/$ pages/index.php
 RewriteRule ^()$ pages/index.php
 
-RewriteRule ^(print-invoice)/$ endpoint/invoice/print.php
-RewriteRule ^(print-invoice)$ endpoint/invoice/print.php
+RewriteRule ^(print-invoice)/$ api/invoice/print.php
+RewriteRule ^(print-invoice)$ api/invoice/print.php
 
-RewriteRule ^(print-proforma)/$ endpoint/proforma/print.php
-RewriteRule ^(print-proforma)$ endpoint/proforma/print.php
+RewriteRule ^(print-proforma)/$ api/proforma/print.php
+RewriteRule ^(print-proforma)$ api/proforma/print.php

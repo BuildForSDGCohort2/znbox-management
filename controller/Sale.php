@@ -5,7 +5,6 @@ namespace controller;
 use controller\SaleStock;
 use connections\Database;
 use controller\QueryBuilder;
-use stdClass;
 
 class Sale {
 
@@ -45,21 +44,21 @@ class Sale {
 
 	public static function getTotal($id, $vat = false) {
 		$total = 0;
-		$sale = self::getBy('id', $id);
-		foreach(SaleStock::getBy('sale', $id) as $item) {
-			$total += ($sale->discount_type == 1) ? ($item['price_sale'] * $item['quantity']) - ($item['price_sale'] * $item['quantity']) * ($sale->discount / 100) : ($item['price_sale'] * $item['quantity']) - $sale->discount;
+		$sale = self::getBy("id", $id);
+		foreach(SaleStock::getAllBy("sale", $id) as $item) {
+			$total += ($sale["discount_type"] == 1) ? ($item["price_sale"] * $item["quantity"]) - ($item["price_sale"] * $item["quantity"]) * ($sale["discount"] / 100) : ($item["price_sale"] * $item["quantity"]) - $sale["discount"];
 		}
 		if($vat) {
-			$total += ($total * ($sale->tax_percentage / 100));
+			$total += ($total * ($sale["tax_percentage"] / 100));
 		}
 		return $total;
 	}
 
 	public static function getTotalDiscount($id) {
 		$total = 0;
-		$sale = self::getBy('id', $id);
-		foreach(SaleStock::getBy('sale', $id) as $item) {
-			$total += ($salesale["discount_type"] == 1) ? ($item['price_sale'] * $item['quantity']) * ($salesale["discount"] / 100) : $sale["discount"];
+		$sale = self::getBy("id", $id);
+		foreach(SaleStock::getAllBy("sale", $id) as $item) {
+			$total += ($sale["discount_type"] == 1) ? ($item["price_sale"] * $item["quantity"]) * ($sale["discount"] / 100) : $sale["discount"];
 		}
 		return $total;
 	}
