@@ -12,9 +12,7 @@ use controller\Helper;
 if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
 	die("user_session");
 }
-
 ?>
-
 <div class="ui segment blue">
 	<div class="uk-padding-small">
 		<div class="ui header dividing color blue">
@@ -24,7 +22,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 
 	</div>
 	<div class="uk-margin-top" style="margin-left: 10px;">
-		<table class="ui small table color blue selectable stripped">
+		<table class="ui small table color blue inverted selectable stripped">
 			<thead>
 				<th><?=Translator::translate("id");?></th>
 				<th><?=Translator::translate("Description");?></th>
@@ -36,7 +34,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 				<?php foreach(Purchase::getAll() as $item): ?>
 					<tr>
 						<td>
-							<label class="ui small orange basic ribbon label">
+							<label class="ui small orange ribbon label">
 								<?=$item["id"]?>
 							</label>
 						</td>
@@ -49,18 +47,18 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 						</td>
 						<td>
 							<?php if(!$item["isStock"]): ?>
-							<a class="ui mini basic circular icon button pink zn-link-dialog" href="<?=Helper::url("api/purchase/to_stock_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("Submit to stock")?>">
+							<a class="ui mini circular icon button pink zn-link-dialog" href="<?=Helper::url("api/purchase/to_stock_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("Submit to stock")?>">
 								<i class="ui send alternate icon"></i>
 							</a>
 							<?php endif; ?>
-							<a class="ui mini basic circular icon button blue zn-link-dialog" href="<?=Helper::url("api/purchase/view.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("view details")?>">
+							<a class="ui mini circular icon button violet zn-link-dialog" href="<?=Helper::url("api/purchase/view.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("view details")?>">
 								<i class="ui eye icon"></i>
 							</a>
 							<?php if(!$item["isStock"]): ?>
-							<a class="ui mini basic circular icon button green zn-link" href="<?=Helper::url("api/purchase/edit_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("edit details")?>">
+							<a class="ui mini circular icon button green zn-link" href="<?=Helper::url("api/purchase/edit_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("edit details")?>">
 								<i class="ui edit icon"></i>
 							</a>
-							<a class="ui mini basic circular icon button red zn-link-dialog" href="<?=Helper::url("api/purchase/delete_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("delete")?>">
+							<a class="ui mini circular icon button red zn-link-dialog" href="<?=Helper::url("api/purchase/delete_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("delete")?>">
 								<i class="ui trash alternate icon"></i>
 							</a>
 							<?php endif; ?>

@@ -64,6 +64,7 @@ class Invoice {
 		$subtotal = 0;
 		$invoice_itens = [];
 		foreach($itens as $item) {
+			$item = (array) $item;
 			$invoice_itens[] = [
 				"description" => $item["stock"]->name,
 				"quantity" => $item["quantity"],
