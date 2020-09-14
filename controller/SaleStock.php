@@ -4,7 +4,6 @@ namespace controller;
 
 use connections\Database;
 use controller\QueryBuilder;
-use stdClass;
 
 class SaleStock {
 

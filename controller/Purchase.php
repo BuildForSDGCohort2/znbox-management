@@ -46,7 +46,7 @@ class Purchase {
 	}
 	public static function getTotalPrice($id) {
 		$total = 0;
-		foreach(PurchaseItem::getBy("purchase", $id) as $item) {
+		foreach(PurchaseItem::getAllBy("purchase", $id) as $item) {
 			$total += $item["price_unity"];
 		}
 		return $total;

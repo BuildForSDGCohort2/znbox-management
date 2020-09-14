@@ -1,36 +1,28 @@
 <?php 
-    require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-    use controller\Translator;
-    use controller\User;
-    use controller\UserType;
-    use controller\Stock;
+use controller\Translator;
+use controller\User;
+use controller\Stock;
+use controller\Purchase;
+use controller\PurchaseItem;
+use controller\Helper;
 
-    use controller\Purchase;
-    use controller\PurchaseItem;
-    use controller\Helper;
-
-    if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-        die("user_session");
-    }
-
-    if(!isset($_GET['id'])) {
-        die("404_request");
-    }
-
-    if(!$fetch = Purchase::getBy('id', $_GET['id'])->first) {
-        die("404_request");   
-    }
-
-    $fetch = (array) $fetch;
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+    die("user_session");
+}
+if(!isset($_GET["id"])) {
+    die("404_request");
+}
+if(!$fetch = Purchase::getBy("id", $_GET["id"])) {
+    die("404_request");   
+}
 ?>
-
 <div class="ui segment blue">
 	<div class="ui dividing header large blue">
 		<h3 class="ui header blue"><?=Translator::translate("Edit purchase")?></h3>
 	</div>
-
-	<form class="zn-form-complex-update ui form" action="purchase/edit" data="<?=$fetch['id']?>">
+	<form class="zn-form-complex-update ui form" action="<?=Helper::url("api/purchase/edit.php")?>" data="<?=$fetch["id"]?>">
 		<div class="ui form small">
 			<div class="three fields">
 				<div class="field required">
@@ -54,7 +46,7 @@
 					<th><?=Translator::translate("Actions")?></th>
 				</thead>
 				<tbody>
-					<?php foreach(PurchaseItem::getBy("purchase", $fetch["id"])->data as $purchaseItem): ?>
+					<?php foreach(PurchaseItem::getAllBy("purchase", $fetch["id"]) as $purchaseItem): ?>
 						<tr class="zn-purchase-line">
 							<td>
 								<label class="ui label circular mini orange">
@@ -63,27 +55,27 @@
 							</td>
 							<td>
 								<select class="ui dropdown search zn-purchase-stock" name="stock[]" disabled>
-									<?php foreach(Stock::getAll()->data as $item):?>
+									<?php foreach(Stock::getAll() as $item):?>
 										<option
 											value="<?=$item["id"]?>"
-											<?=($purchaseItem['stock'] == $item['id']) ? "selected" : ''?>
+											<?=($purchaseItem["stock"] == $item["id"]) ? "selected" : ""?>
 										>
 											<?=$item["name"]?>
 										</option>
 									<?php endforeach; ?>
 								</select>
-								<input type="hidden" name="stock[]" value="<?=$purchaseItem['stock']?>">
+								<input type="hidden" name="stock[]" value="<?=$purchaseItem["stock"]?>">
 							</td>
 							<td>
 								<div class="ui input">
 									<input class="zn-purchase-quantity" type="number" name="quantity[]" placeholder="<?=Translator::translate("Quantity")?>" disabled required value="<?=$purchaseItem["quantity"]?>">
-									<input type="hidden" name="quantity[]" value="<?=$purchaseItem['quantity']?>">
+									<input type="hidden" name="quantity[]" value="<?=$purchaseItem["quantity"]?>">
 								</div>
 							</td>
 							<td>
 								<div class="ui input">
 									<input class="zn-purchase-price-unity" type="number" name="price_unity[]" placeholder="<?=Translator::translate("Price per unity")?>" disabled required value="<?=$purchaseItem["price_unity"]?>">
-									<input type="hidden" name="price_unity[]" value="<?=$purchaseItem['price_unity']?>">
+									<input type="hidden" name="price_unity[]" value="<?=$purchaseItem["price_unity"]?>">
 								</div>
 							</td>
 							<td>
@@ -119,13 +111,13 @@
 				</div>
 			</div>
 			<button type="submit" class="ui button blue"><?=Translator::translate("Save")?></button>
-			<button type="submit" href="purchase/purchase" class="ui button white zn-link"><?=Translator::translate("Cancel")?></button>
+			<button type="submit" href="<?=Helper::url("api/purchase/purchase.php")?>" class="ui button white zn-link"><?=Translator::translate("Cancel")?></button>
 		</div>
 	</form>
 	<script type="text/javascript">
-		$('.flatpickr').flatpickr({
+		$(".flatpickr").flatpickr({
 			dateFormat: "Y-m-d",
-			locale: "<?=$_COOKIE['lang']?>",
+			locale: "<?=$_COOKIE["lang"]?>",
 			altInput: true,
 			altFormat: "F j, Y",
 			defaultDate: "today",

@@ -10,15 +10,15 @@ use controller\Resources;
 use controller\Supplier;
 use controller\Helper;
 use controller\PurchaseItem;
-use queryBuilder\JsonQB as JQB;
+use connections\Database;
 
-if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])->first) {
-	echo json_encode([
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+	die(json_encode([
 		"code" => "5000",
 		"title" => Translator::translate("Error"),
 		"message" => Translator::translate("Session Expired"),
 		"status" => "danger",
-	]); die();
+	]));
 }
 
 if(
@@ -38,13 +38,13 @@ if(
 
 /* Purchase info */
 $data = [];
-$data["value"]["description"] = $_POST["description"];
-$data["value"]["purchase_date"] = $_POST["purchase_date"];
-$data["value"]["user_modify"] = $user->id;
+$data["description"] = $_POST["description"];
+$data["purchase_date"] = $_POST["purchase_date"];
+$data["user_modify"] = $user["id"];
 
 if(isset($_FILES["file"]) && $_FILES["file"]["name"]) {
 	if($file = Resources::upload("docs", $_FILES["file"])) {
-		$data["value"]["file"] = $file["name"];
+		$data["file"] = $file["name"];
 	} else {
 		die(json_encode([
 			"code" => "5000",
@@ -61,28 +61,29 @@ $itens["stock"] = $_POST["stock"];
 $itens["quantity"] = $_POST["quantity"];
 $itens["price_unity"] = $_POST["price_unity"];
 
-JQB::begin();
-if($insert = Purchase::add($data)) {
+$conn = Database::conn();
+$conn->beginTransaction();
+
+if(Purchase::add($data)) {
+	$id = $conn->lastInsertId();
 	foreach($itens["stock"] as $key => $value) {
 		PurchaseItem::add([
-			"value" => [
-				"purchase" => $insert->id,
-				"stock" => $value,
-				"price_unity" => $itens["price_unity"][$key],
-				"quantity" => $itens["quantity"][$key],
-			]
+			"purchase" => $id,
+			"stock" => $value,
+			"price_unity" => $itens["price_unity"][$key],
+			"quantity" => $itens["quantity"][$key],
 		]);
 	}
-	JQB::commit();
+	$conn->commit();
 	die(json_encode([
 		"code" => "1102",
 		"title" => Translator::translate("Success"),
 		"message" => Translator::translate("Added successfuly"),
 		"status" => "success",
-		"href" => "purchase/purchase",
+		"href" => Helper::url("api/purchase/purchase.php"),
 	]));
 } else {
-	JQB::rollback();
+	$conn->rollback();
 	die(json_encode([
 		"code" => "1103",
 		"title" => Translator::translate("Server error"),

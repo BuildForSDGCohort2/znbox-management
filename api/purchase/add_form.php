@@ -1,24 +1,22 @@
 <?php 
-	require __DIR__."/../../autoload.php";
+require __DIR__."/../../autoload.php";
 
-	use controller\Translator;
-	use controller\Stock;
-	use controller\User;
+use controller\Translator;
+use controller\Stock;
+use controller\User;
+use controller\Purchase;
+use controller\Helper;
 
-	use controller\Purchase;
-	use controller\Helper;
-
-	if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
-		die("user_session");
-	}
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
+	die("user_session");
+}
 ?>
-
 <div class="ui segment blue">
 	<div class="ui dividing header large blue">
 		<h3 class="ui header blue"><?=Translator::translate("New purchase")?></h3>
 	</div>
 
-	<form class="zn-form-complex ui form" action="purchase/add">
+	<form class="zn-form-complex ui form" action="<?=Helper::url("api/purchase/add.php")?>">
 		<div class="ui form small">
 			<div class="three fields">
 				<div class="field required">
@@ -64,13 +62,13 @@
 				</div>
 			</div>
 			<button type="submit" class="ui button blue"><?=Translator::translate("Submit")?></button>
-			<button type="submit" href="purchase/purchase" class="ui button white zn-link"><?=Translator::translate("Cancel")?></button>
+			<button type="submit" href="<?=Helper::url("api/purchase/purchase.php")?>" class="ui button white zn-link"><?=Translator::translate("Cancel")?></button>
 		</div>
 	</form>
 	<script type="text/javascript">
-		$('.flatpickr').flatpickr({
+		$(".flatpickr").flatpickr({
 			dateFormat: "Y-m-d",
-			locale: "<?=$_COOKIE['lang']?>",
+			locale: "<?=$_COOKIE["lang"]?>",
 			altInput: true,
 			altFormat: "F j, Y",
 			defaultDate: "today",

@@ -7,8 +7,7 @@ use controller\Helper;
 use controller\User;
 use controller\Translator;
 
-
-if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'])->first) {
+if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
 	die("user_session");
 }
 ?>
@@ -20,7 +19,7 @@ if(!$user = User::getBy('id', User::validate_token($_SESSION['token'])['user_id'
 	</td>
 	<td>
 		<select class="ui dropdown search zn-purchase-stock" name="stock[]">
-			<?php foreach(Stock::getAll()->data as $item):?>
+			<?php foreach(Stock::getAll() as $item):?>
 				<option value="<?=$item["id"]?>">
 					<?=$item["name"]?>
 				</option>

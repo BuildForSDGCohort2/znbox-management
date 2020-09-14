@@ -2,54 +2,55 @@
 
 namespace controller;
 
-use queryBuilder\JsonQB as JQB;
-use stdClass;
+use connections\Database;
+use controller\QueryBuilder;
 
 class PurchaseItem {
 
-	public static function add($request) {
-		$result = JQB::Insert('purchase_item', $request)->execute();
-		return $result;
+	public static function add($data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::insert("purchase_item", $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
-
+	public static function update($id, $data) {
+		$conn = Database::conn();
+		$sql = QueryBuilder::update("purchase_item", "id", $id, $data);
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
+	}
 	public static function getBy($column, $value) {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['purchase_item'],
-			'where' => [
-				[
-					"columns" => [
-						"$column" => $value
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM purchase_item WHERE purchase_item.$column = $value;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
+	}
+	public static function getAllBy($column, $value) {
+		$conn = Database::conn();
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM purchase_item WHERE purchase_item.$column = $value;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 	public static function getAll() {
-		$result = JQB::Select([
-			'columns' => ['*'],
-			'from' => ['purchase_item']
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$sql = "SELECT * FROM purchase_item;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 
-	public static function delete($where) {
-		$result = JQB::Delete('purchase_item', [
-			'where' => $where
-		])->execute();
-		return $result;
+	public static function delete($id) {
+		$conn = Database::conn();
+		$sql = "DELETE FROM purchase_item WHERE purchase_item.id = $id;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 	public static function deleteByPurchase($purchase) {
-		$result = JQB::Delete('purchase_item', [
-			'where' => [
-				[
-					"columns" => [
-						"purchase" => $purchase,
-					]
-				]
-			]
-		])->execute();
-		return $result;
+		$conn = Database::conn();
+		$sql = "DELETE FROM purchase_item WHERE purchase_item.purchase = $purchase;";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 }
