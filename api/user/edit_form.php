@@ -11,13 +11,12 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 	die("user_session");
 }
 ?>
-
 <div class="ui small modal">
 	<div class="header">
 		<h3 class="ui header diviving color red"><i class="ui users icon"></i><?=Translator::translate("Edit profile");?></h3>
 	</div>
 	<div class="scrolling content">
-		<form id="form" class="ui form zn-form-update-complex" action="<?=Helper::url("api/user/edit.php")?>" data="<?=$user["id"]?>">
+		<form id="form" class="ui form zn-form-update" action="<?=Helper::url("api/user/edit.php")?>" data="<?=$user["id"]?>">
 			<div class="ui field required">
 				<label><?=Translator::translate("First name");?>:</label>
 				<input type="text" value="<?=$user["first"]?>" name="first" placeholder="<?=Translator::translate("First Name");?>">

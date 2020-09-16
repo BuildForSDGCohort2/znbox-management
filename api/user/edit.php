@@ -21,6 +21,8 @@ if(
 	]));
 }
 
+$data = [];
+
 if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
 	die(json_encode([
 		"code" => "5000",
@@ -30,7 +32,12 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 	]));
 }
 
-if(User::update($user["id"], $_POST)) {
+$data["first"] = $_POST["first"];
+$data["last"] = $_POST["last"];
+$data["username"] = $_POST["username"];
+$data["email"] = $_POST["email"];
+
+if(User::update($user["id"], $data)) {
 	die(json_encode([
 		"code" => "1202",
 		"title" => Translator::translate("Success"),
