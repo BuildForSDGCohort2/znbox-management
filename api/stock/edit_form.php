@@ -78,7 +78,7 @@
 		</div>
 		<div class="ui field">
 			<label><?=Translator::translate("Description");?>:</label>
-			<textarea placeholder="<?=Translator::translate("Description");?>" name="value[description]"><?=nl2br($fetch["description"])?></textarea>
+			<textarea placeholder="<?=Translator::translate("Description");?>" name="value[description]"><?=$fetch["description"]?></textarea>
 		</div>
 	</div>
 	<div class="actions stackable">

@@ -3,7 +3,7 @@ require __DIR__."/../../autoload.php";
 
 use controller\Translator;
 use controller\User;
-use controller\price;
+use controller\Price;
 use controller\Helper;
 
 if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
@@ -12,7 +12,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 if(!isset($_GET["id"])) {
     die("404_request");
 }
-if(!$price = price::getBy("id", $_GET["id"])) {
+if(!$price = Price::getBy("id", $_GET["id"])) {
     die("404_request");
 }
 ?>

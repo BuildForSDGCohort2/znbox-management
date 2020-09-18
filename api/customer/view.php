@@ -59,7 +59,7 @@ if(!$fetch = Customer::getBy("id", $_GET["id"])) {
                 </tr>
                 <tr>
                     <td><strong><?=Translator::translate("User Added");?>:</strong></td>
-                    <td><?=User::getBy("id", $fetch["user_added"])->first->username?></td>
+                    <td><?=User::getBy("id", $fetch["user_added"])["username"]?></td>
                 </tr>
                 <tr>
                     <td><strong><?=Translator::translate("Date Modify");?>:</strong></td>
@@ -67,7 +67,7 @@ if(!$fetch = Customer::getBy("id", $_GET["id"])) {
                 </tr>
                 <tr>
                     <td><strong><?=Translator::translate("User Modify");?>:</strong></td>
-                    <td><?=User::getBy("id", $fetch["user_modify"])->first->username?></td>
+                    <td><?=User::getBy("id", $fetch["user_modify"])["username"]?></td>
                 </tr>
                 <tr>
                     <td><strong><?=Translator::translate("Observation");?>:</strong></td>

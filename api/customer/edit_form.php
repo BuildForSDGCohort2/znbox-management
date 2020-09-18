@@ -47,7 +47,7 @@ if(!$fetch = Customer::getBy("id", $_GET["id"])) {
 		</div>
 		<div class="ui field">
 			<label><?=Translator::translate("Observation");?>:</label>
-			<textarea placeholder="<?=Translator::translate("Observation");?>" name="value[observation]"><?=nl2br($fetch["observation"])?></textarea>
+			<textarea placeholder="<?=Translator::translate("Observation");?>" name="value[observation]"><?=$fetch["observation"]?></textarea>
 		</div>
 	</div>
 	<div class="actions stackable">
