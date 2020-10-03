@@ -443,6 +443,67 @@ $(document).on('click', '.zn-link-print', function(event) {
 	print.focus();
 });
 
+/* Visible columns stock_category */
+$(document).on("click", ".visible-columns-button", function(event) {
+	event.preventDefault();
+	var key = "stock_category_cols";
+	var columns = JSON.parse(localStorage.getItem(key));
+	var modal_html = "";
+	modal_html += "<div class=\"ui modal small\">";
+		modal_html += "<div class=\"header\">";
+			modal_html += "<h3 class=\"ui header diviving color\">";
+				modal_html += "<i class=\"list icon\"></i> Visible columns";
+			modal_html += "</h3>";
+		modal_html += "</div>";
+		modal_html += "<div class=\"scrolling content\">";
+			modal_html += "<table class=\"ui small table selectable celled striped\">";
+				modal_html += "<thead></thead>";
+				modal_html += "<tbody>";
+					for(var i = 0; i < columns.length; i ++) {
+						modal_html += "<tr>";
+							modal_html += "<td><b>" + columns[i].name + "</b></td>";
+							modal_html += "<td>";
+								modal_html += "<div class=\"ui fitted toggle checkbox\">";
+									modal_html += "<input " + (columns[i].visible ? "checked" : "") + " class=\"columns-switch-button\" type=\"checkbox\" key=" + key + " index=" + i + " name=\"status\">";
+									modal_html += "<label></label>";
+								modal_html += "</div>";
+							modal_html += "</td>";
+						modal_html += "</tr>";
+					}
+				modal_html += "</tbody>";
+			modal_html += "</table>";
+		modal_html += "</div>";
+		modal_html += "<div class=\"actions stackable\">";
+			modal_html += "<div class=\"ui primary labeled icon button mini confirm\">OK</div>";
+			modal_html += "<i class=\"check inverted icon\"></i>";
+		modal_html += "</div>";
+	modal_html += "</div>";
+
+	window.colunas_modal = $(modal_html).modal({
+		autofocus: false,
+		inverted: false,
+		observeChanges: true,
+		closable: false,
+		duration: 300,
+		allowMultiple: false,
+	}).modal("show");
+});
+
+$(document).on("change", ".columns-switch-button", function(event) {
+	event.preventDefault();
+	var key = $(this).attr("key");
+	var index = $(this).attr("index");
+	var columns = JSON.parse(localStorage.getItem(key));
+	columns[index].visible = ($(this).is(":checked") ? true : false);
+	localStorage.setItem(key, JSON.stringify(columns));
+});
+$(document).on("click", ".ui.modal.small div.confirm", function(event) {
+	event.preventDefault();
+	window.colunas_modal.modal("hide");
+	change_content({}, sessionStorage.getItem("route"));
+});
+
+
 /* Time counter */
 function startTime() {
 	var date = new Date();

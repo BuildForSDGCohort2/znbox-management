@@ -3,6 +3,7 @@
         "emagombe/json-qb": "^2.2",
         "rbdwllr/reallysimplejwt": "^2.1",
         "phpmailer/phpmailer": "~6.1",
-        "setasign/fpdf": "^1.8"
+        "setasign/fpdf": "^1.8",
+        "emagombe/datatable": "^3.1"
     }
 }
