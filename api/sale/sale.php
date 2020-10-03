@@ -60,23 +60,23 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 							</label>
 						</td>
 						<td>
-							<a class="ui mini circular icon button violet zn-link-dialog" href="<?=Helper::url("api/sale/view.php")?>" data="<?=$item["id"]?>" data-html="<?=Translator::translate("view details")?>">
+							<a class="ui mini circular icon button violet zn-link-dialog" href="<?=Helper::url("api/sale/view.php?id=".$item["id"])?>" data="<?=$item["id"]?>" data-html="<?=Translator::translate("view details")?>">
 								<i class="ui eye icon"></i>
 							</a>
 							<?php $invoice = Invoice::getBy("sale", $item["id"]); ?>
 							<?php $proforma = Proforma::getBy("sale", $item["id"]); ?>
 							<?php if((!$invoice && !$proforma) || (($invoice && $invoice["status"] == 0) && ($invoice && $proforma["status"] == 0))): ?>
-							<a class="ui mini circular icon button green zn-link" href="<?=Helper::url("api/sale/edit_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("edit details")?>">
+							<a class="ui mini circular icon button green zn-link" href="<?=Helper::url("api/sale/edit_form.php?id=".$item["id"])?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("edit details")?>">
 								<i class="ui edit icon"></i>
 							</a>
-							<a class="ui mini circular icon button red zn-link-dialog" href="<?=Helper::url("api/sale/delete_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("delete")?>">
+							<a class="ui mini circular icon button red zn-link-dialog" href="<?=Helper::url("api/sale/delete_form.php?id=".$item["id"])?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("delete")?>">
 								<i class="ui trash alternate icon"></i>
 							</a>
-							<a class="ui primary mini circular icon button zn-link-dialog" href="<?=Helper::url("api/sale/confirm_generate_invoice.php")?>" data="<?=$item["id"]?>">
+							<a class="ui primary mini circular icon button zn-link-dialog" href="<?=Helper::url("api/sale/confirm_generate_invoice.php?id=".$item["id"])?>" data="<?=$item["id"]?>">
 				                <i class="file alternate icon"></i>
 				                <?=Translator::translate("Generate invoice")?>
 				            </a>
-				            <a class="ui primary mini circular icon button zn-link-dialog" href="<?=Helper::url("api/sale/confirm_generate_proforma.php")?>" data="<?=$item["id"]?>">
+				            <a class="ui primary mini circular icon button zn-link-dialog" href="<?=Helper::url("api/sale/confirm_generate_proforma.php?id=".$item["id"])?>" data="<?=$item["id"]?>">
 				                <i class="file alternate icon"></i>
 				                <?=Translator::translate("Generate proforma")?>
 				            </a>
@@ -87,7 +87,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 						                <?=Translator::translate("Print invoice")?>
 						            </a>
 					            <?php else: ?>
-					            	<a class="ui primary mini circular icon button zn-link-dialog" href="<?=Helper::url("api/sale/confirm_generate_invoice.php")?>" data="<?=$item["id"]?>">
+					            	<a class="ui primary mini circular icon button zn-link-dialog" href="<?=Helper::url("api/sale/confirm_generate_invoice.php?id=".$item["id"])?>" data="<?=$item["id"]?>">
 						                <i class="file alternate icon"></i>
 						                <?=Translator::translate("Generate invoice")?>
 						            </a>
@@ -98,7 +98,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 						                <?=Translator::translate("Print proforma")?>
 						            </a>
 					            <?php else: ?>
-					            	<a class="ui primary mini circular icon button zn-link-dialog" href="<?=Helper::url("api/sale/confirm_generate_proforma.php")?>" data="<?=$item["id"]?>">
+					            	<a class="ui primary mini circular icon button zn-link-dialog" href="<?=Helper::url("api/sale/confirm_generate_proforma.php?id=".$item["id"])?>" data="<?=$item["id"]?>">
 						                <i class="file alternate icon"></i>
 						                <?=Translator::translate("Generate proforma")?>
 						            </a>

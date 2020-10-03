@@ -56,14 +56,14 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 						<td><?= $item["email"] ?></td>
 						<td><?= $item["address"] ?></td>
 						<td>
-							<a class="ui mini circular icon button violet zn-link-dialog" href="<?=Helper::url("api/customer/view.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("view details")?>">
+							<a class="ui mini circular icon button violet zn-link-dialog" href="<?=Helper::url("api/customer/view.php?id=".$item["id"])?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("view details")?>">
 								<i class="ui eye icon"></i>
 							</a>
-							<a class="ui mini circular icon button green zn-link-dialog" href="<?=Helper::url("api/customer/edit_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("edit details")?>">
+							<a class="ui mini circular icon button green zn-link-dialog" href="<?=Helper::url("api/customer/edit_form.php?id=".$item["id"])?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("edit details")?>">
 								<i class="ui edit icon"></i>
 							</a>
 							<?php if(!Sale::getBy("customer", $item["id"])): ?>
-							<a class="ui mini circular icon button red zn-link-dialog" href="<?=Helper::url("api/customer/delete_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("delete")?>">
+							<a class="ui mini circular icon button red zn-link-dialog" href="<?=Helper::url("api/customer/delete_form.php?id=".$item["id"])?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("delete")?>">
 								<i class="ui trash alternate icon"></i>
 							</a>
 							<?php endif; ?>

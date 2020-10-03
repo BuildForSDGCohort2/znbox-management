@@ -118,7 +118,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 				</div>
 			</div>
 			<button type="submit" class="ui button blue"><?=Translator::translate("Submit")?></button>
-			<button type="submit" href="sale/sale" class="ui button white zn-link"><?=Translator::translate("Cancel")?></button>
+			<button type="submit" href="<?=Helper::url("api/sale/sale.php")?>" class="ui button white zn-link"><?=Translator::translate("Cancel")?></button>
 		</div>
 	</form>
 	<script type="text/javascript">

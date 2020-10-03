@@ -29,7 +29,7 @@ if(!$stock = Stock::getBy("id", $_GET["id"])) {
 				<i class="ui box icon"></i> <?=$stock["name"]?>
 			</h3>
 		</div>
-		<a class="ui basic button blue zn-link-dialog" href="<?=Helper::url("api/price/add_form.php")?>" data="<?=$stock["id"]?>"><i class="ui plus icon"></i> <?=Translator::translate("Add price")?></a>
+		<a class="ui basic button blue zn-link-dialog" href="<?=Helper::url("api/price/add_form.php?id=".$stock["id"])?>" data="<?=$stock["id"]?>"><i class="ui plus icon"></i> <?=Translator::translate("Add price")?></a>
 	</div>
 	<div class="uk-margin">
 		<div align="center" class="ui segment spacked purple uk-width-small">
@@ -63,16 +63,16 @@ if(!$stock = Stock::getBy("id", $_GET["id"])) {
 					</td>
 					<td class="center aligned">
 						<div class="ui radio checkbox">
-							<input class="zn-radiobox" href="<?=Helper::url("api/price/edit.php")?>" data="<?=$item["id"]?>" type="radio" name="value[isDefault]" <?=($item["isDefault"]) ? "checked=\"checked\"" : "";?>>
+							<input class="zn-radiobox" href="<?=Helper::url("api/price/edit.php?id=".$item["id"])?>" data="<?=$item["id"]?>" type="radio" name="value[isDefault]" <?=($item["isDefault"]) ? "checked=\"checked\"" : "";?>>
 							<label></label>
 					    </div>
 					</td>
 					<td><?=$item["observation"]?></td>
 					<td>
-						<a class="ui mini basic circular icon button green zn-link-dialog" href="<?=Helper::url("api/price/edit_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("edit details")?>">
+						<a class="ui mini basic circular icon button green zn-link-dialog" href="<?=Helper::url("api/price/edit_form.php?id=".$item["id"])?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("edit details")?>">
 							<i class="ui edit icon"></i>
 						</a>
-						<a class="ui mini basic circular icon button red zn-link-dialog" href="<?=Helper::url("api/price/delete_form.php")?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("delete")?>">
+						<a class="ui mini basic circular icon button red zn-link-dialog" href="<?=Helper::url("api/price/delete_form.php?id=".$item["id"])?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("delete")?>">
 							<i class="ui times icon"></i>
 						</a>
 					</td>

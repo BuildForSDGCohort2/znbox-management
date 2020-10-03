@@ -16,7 +16,11 @@ var progress_loaded = function(xhr) {
 // When application initializes
 var init = function() {
 	if(!window.location.href.endsWith('authentication') && !window.location.href.endsWith('authentication/')) {
-		change_content({}, $("#znbox-init").attr("href"));
+		if(sessionStorage.getItem("route") && !sessionStorage.getItem("route").toString().endsWith("edit") && !sessionStorage.getItem("route").toString().endsWith("delete") && !sessionStorage.getItem("route").toString().endsWith("view")) {
+			change_content({}, sessionStorage.getItem("route"));
+		} else {
+			change_content({}, $("#znbox-init").attr("href"));
+		}
 		startTime();
 		setTimeout(function() {
 			$('.splashscreen').fadeOut();
@@ -38,6 +42,7 @@ var change_content = function(data, href) {
 		},
 		success: function(response) {
 			$('#content').html(response);
+			sessionStorage.setItem("route", href);
 			progress_loaded();
 		},
 		error: function(error) {
