@@ -188,10 +188,11 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 			$("div.loading").remove();
 			$(".dt-buttons.ui.basic.buttons").addClass("blue tiny").removeClass("basic");
 			$(".selection.ui.dropdown").addClass("tiny");
-
+			/* Add scroll bar */
+			$(".ui.table").parent().attr("style", "overflow-x: scroll; scrollbar-width: thin;");
 			/* Adiciona botão para filtar colunas */
 			$(".dt-buttons.ui.buttons").append(function() {
-				return (!$(".visible-columns-button").html() ? "<button class=\"visible-columns-button ui button tiny blue\"><i class=\"list icon\"></i> Visible columns</button>" : "");
+				return (!$(".visible-columns-button").html() ? "<button class=\"visible-columns-button ui button tiny blue\" key=\"stock_category_cols\"><i class=\"list icon\"></i> Visible columns</button>" : "");
 			});
 
 			/* Footer search */

@@ -446,7 +446,7 @@ $(document).on('click', '.zn-link-print', function(event) {
 /* Visible columns stock_category */
 $(document).on("click", ".visible-columns-button", function(event) {
 	event.preventDefault();
-	var key = "stock_category_cols";
+	var key = $(this).attr("key");
 	var columns = JSON.parse(localStorage.getItem(key));
 	var modal_html = "";
 	modal_html += "<div class=\"ui modal small\">";

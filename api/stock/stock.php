@@ -21,10 +21,13 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 <div class="ui segment blue">
 	<div class="uk-padding-small">
 		<div class="ui header dividing color blue">
-			<h3 class="ui header blue"><i class="ui box icon"></i> <?=Translator::translate("Stock")?></h3>
+			<h3 class="ui header blue">
+				<i class="ui box icon"></i> <?=Translator::translate("Stock")?>
+			</h3>
 		</div>
-		<a class="ui basic button blue zn-link-dialog" href="<?=Helper::url("api/stock/add_form.php")?>"><i class="ui plus icon"></i> <?=Translator::translate("Add Stock")?></a>
-
+		<a class="ui basic button blue zn-link-dialog" href="<?=Helper::url("api/stock/add_form.php")?>">
+			<i class="ui plus icon"></i> <?=Translator::translate("Add Stock")?>
+		</a>
 	</div>
 	<div class="uk-margin">
 		<div align="center" class="ui segment spacked purple uk-width-small">
@@ -41,97 +44,209 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 	<div class="uk-margin-top" style="margin-left: 10px;">
 		<table class="ui small table color blue inverted selectable stripped">
 			<thead>
+				<tr>
+					<th><?=Translator::translate("Id");?></th>
+					<th><?=Translator::translate("name");?></th>
+					<th><?=Translator::translate("Stock type");?></th>
+					<th><?=Translator::translate("Quantity");?></th>
+					<th><?=Translator::translate("Warehouse");?></th>
+					<th><?=Translator::translate("Price of sale");?></th>
+					<th><?=Translator::translate("Prices");?></th>
+					<th><?=Translator::translate("Date added")?></th>
+					<th><?=Translator::translate("User added");?></th>
+					<th><?=Translator::translate("Date modify");?></th>
+					<th><?=Translator::translate("User modify");?></th>
+					<th><?=Translator::translate("Actions");?></th>
+				</tr>
+				<tr>
+					<th><?=Translator::translate("Id");?></th>
+					<th><?=Translator::translate("name");?></th>
+					<th><?=Translator::translate("Stock type");?></th>
+					<th><?=Translator::translate("Quantity");?></th>
+					<th><?=Translator::translate("Warehouse");?></th>
+					<th><?=Translator::translate("Price of sale");?></th>
+					<th><?=Translator::translate("Prices");?></th>
+					<th><?=Translator::translate("Date added")?></th>
+					<th><?=Translator::translate("User added");?></th>
+					<th><?=Translator::translate("Date modify");?></th>
+					<th><?=Translator::translate("User modify");?></th>
+					<th><?=Translator::translate("Actions");?></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+			<tfoot>
 				<th><?=Translator::translate("Id");?></th>
 				<th><?=Translator::translate("name");?></th>
 				<th><?=Translator::translate("Stock type");?></th>
 				<th><?=Translator::translate("Quantity");?></th>
 				<th><?=Translator::translate("Warehouse");?></th>
-				<th><?=Translator::translate("Supplier");?></th>
-				<th><?=Translator::translate("Date added")?></th>
-				<th><?=Translator::translate("price of sale");?></th>
+				<th><?=Translator::translate("Price of sale");?></th>
 				<th><?=Translator::translate("Prices");?></th>
+				<th><?=Translator::translate("Date added")?></th>
+				<th><?=Translator::translate("User added");?></th>
+				<th><?=Translator::translate("Date modify");?></th>
+				<th><?=Translator::translate("User modify");?></th>
 				<th><?=Translator::translate("Actions");?></th>
-			</thead>
-			<tbody>
-				<?php foreach(Stock::getAll() as $item) { ?>
-					<tr>
-						<td>
-							<label class="ui small orange ribbon label">
-								<?=$item["id"]?>
-							</label>
-						</td>
-						<td><?=$item["name"]?></td>
-						<td>
-							<?=Translator::translate(StockType::getBy("id", $item["type"])["name"])?>
-						</td>
-						<td class="right aligned">
-							<label class="ui mini label basic blue">
-								<?=Stock::getStockAmount($item["id"])?>
-							</label>
-						</td>
-						<td><?=Warehouse::getBy("id", $item["warehouse"])["name"]?></td>
-						<td>
-							<?php foreach(_StockSupplier::getAll() as $_item) { ?>
-	                            <?php if($item["id"] == $_item["stock"]) { ?>
-	                                <a href="<?=Helper::url("api/supplier/view.php?id=".$item["id"])?>" data-tooltip="<?=Translator::translate("view details")?>" class="ui mini icon basic label purple zn-link-dialog" data="<?=$_item["supplier"]?>">
-	                                    <?=Supplier::getBy("id", $_item["supplier"])["name"]?>
-	                                </a>
-	                            <?php } ?>
-	                        <?php } ?>
-						</td>
-						<td><?=Helper::datetime($item["date_added"])?></td>
-						<td class="center aligned">
-							<?php $price = false; ?>
-
-							<!-- Check if there is a default price -->
-							<?php foreach(Price::getAllBy("stock", $item["id"]) as $item_price) { ?>
-								<?php if($item_price["isDefault"]) { ?>
-									<?php $price = $item_price["price_sell"]; break; ?>
-								<?php } ?>
-							<?php } ?>
-							<?php if($price) { ?>
-								<!-- Rendering price result -->
-								<label class="ui label mini blue">
-									<?=$price?>
-								</label>
-							<?php } else { ?>
-								<!-- No price found -->
-								<label class="ui label mini red">
-									<?=Translator::translate("No price")?>
-								</label>
-							<?php } ?>
-							</td>
-						<td>
-							<a class="ui mini circular icon button blue inverted zn-link" href="<?=Helper::url("api/price/price.php?id=".$item["id"])?>" data-tooltip="<?=Translator::translate("Prices")?>" data="<?=$item["id"]?>">
-								<?=Translator::translate("Prices")?>
-							</a>
-						</td>
-						<td>
-							<a class="ui mini circular icon button violet zn-link-dialog" href="<?=Helper::url("api/stock/view.php?id=".$item["id"])?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("view details")?>">
-								<i class="ui eye icon"></i>
-							</a>
-							<a class="ui mini circular icon button green zn-link-dialog" href="<?=Helper::url("api/stock/edit_form.php?id=".$item["id"])?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("edit details")?>">
-								<i class="ui edit icon"></i>
-							</a>
-							<a class="ui mini circular icon button red zn-link-dialog" href="<?=Helper::url("api/stock/delete_form.php?id=".$item["id"])?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("delete")?>">
-								<i class="ui trash alternate icon"></i>
-							</a>
-						</td>
-					</tr>
-				<?php } ?>
-			</tbody>
+			</tfoot>
 		</table>
 	</div>
 </div>
 
 <script type="text/javascript">
 	$(".ui.dropdown").dropdown();
-	$(".ui.table").DataTable({
-		//dom: "lBfrtip",
-		"bDestroy": true,
-		"order": [
-			[ 0, "desc" ]
+	/* Datatable */
+	var columns = [
+		{
+			name: "<?=Translator::translate("Id");?>",
+			data: "id",
+			visible: true,
+		},
+		{
+			name: "<?=Translator::translate("name");?>",
+			data: "name",
+			visible: true,
+		},
+		{
+			name: "<?=Translator::translate("Stock type");?>",
+			data: "type",
+			visible: true,
+		},
+		{
+			name: "<?=Translator::translate("Quantity");?>",
+			data: "quantity",
+			visible: true,
+		},
+		{
+			name: "<?=Translator::translate("Warehouse");?>",
+			data: "warehouse",
+			visible: false,
+		},
+		{
+			name: "<?=Translator::translate("Price of sale");?>",
+			data: "price_sale",
+			visible: true,
+		},
+		{
+			name: "<?=Translator::translate("Prices");?>",
+			data: "prices",
+			visible: true,
+		},
+		{
+			name: "<?=Translator::translate("Date added");?>",
+			data: "date_added",
+			visible: false,
+		},
+		{
+			name: "<?=Translator::translate("User added");?>",
+			data: "user_added",
+			visible: false,
+		},
+		{
+			name: "<?=Translator::translate("Date modify");?>",
+			data: "date_modify",
+			visible: false,
+		},
+		{
+			name: "<?=Translator::translate("User modify");?>",
+			data: "user_modify",
+			visible: false,
+		},
+		{
+			name: "<?=Translator::translate("Actions");?>",
+			data: "actions",
+			visible: true,
+		},
+	];
+	/* Gravando as colunas no local storage */
+	if(!localStorage.getItem("stock_cols")) {
+		localStorage.setItem("stock_cols", JSON.stringify(columns));
+	} else {
+		var colunas_local = JSON.parse(localStorage.getItem("stock_cols"));
+		/* Verificando actualização do json */
+		for(var i = 0; i < columns.length; i ++) {
+			if(
+				colunas_local[i].name != columns[i].name || 
+				colunas_local[i].data != columns[i].data ||
+				Object.keys(colunas_local[i])[0] != Object.keys(columns[i])[0] ||
+				Object.keys(colunas_local[i])[1] != Object.keys(columns[i])[1]
+			) {
+				localStorage.setItem("stock_cols", JSON.stringify(columns));
+				break;
+			}
+		}
+	}
+	/* Filtros no footer da tabela */
+	$(".ui.table thead tr:eq(1) th").each(function(index) {
+		var title = $(this).text();
+    	$(this).html("<div class=\"ui input mini compact\"><input class=\"\" type=\"text\" placeholder=\"Search " + title + "\"/></div>");
+    	/* Save index to element */
+    	$("input", this).attr("column_index", index);
+	});
+	var table = $(".ui.table").DataTable({
+		bDestroy: true,
+		lengthChange: true,
+		orderCellsTop: true,
+		lengthMenu: [
+			[10, 25, 50, 75, 100, 250, 500, 750, 1000, -1],
+			[10, 25, 50, 75, 100, 250, 500, 750, 1000, "Todos"],
 		],
+		buttons: [
+			{
+				extend: "excel",
+				title: "<?=Translator::translate("Stock")?>",
+				text: "<i class=\"icon file excel green\"></i> Excel",
+			},
+			{
+				extend: "pdf",
+				title: "<?=Translator::translate("Stock")?>",
+				text: "<i class=\"icon file pdf red\"></i> Pdf",
+			},
+			{
+				text: "<i class=\"icon sync\"></i>",
+				action: function (e, dt, node, config) {
+					dt.ajax.reload();
+				}
+			}
+		],
+		search: {
+			"case-insensitive": false,
+		},
+		processing: true,
+		serverSide: true,
+		responsive: true,
+		ajax: {
+	    	url: "<?=Helper::url("api/stock/get_list.php")?>",
+	        type: "post",
+	        enctype: "multipart/form-data",
+	    },
+		order: [
+			[ 1, "desc" ]
+		],
+		columns: JSON.parse(localStorage.getItem("stock_cols")),
+		initComplete: function(settings, json) {
+			table.buttons().container().appendTo($("div.eight.column:eq(0)", table.table().container()));
+			$("div.loading").remove();
+			$(".dt-buttons.ui.basic.buttons").addClass("blue tiny").removeClass("basic");
+			$(".selection.ui.dropdown").addClass("tiny");
+			/* Add scroll bar */
+			$(".ui.table").parent().attr("style", "overflow-x: scroll; scrollbar-width: thin;");
+			/* Adiciona botão para filtar colunas */
+			$(".dt-buttons.ui.buttons").append(function() {
+				return (!$(".visible-columns-button").html() ? "<button class=\"visible-columns-button ui button tiny blue\" key=\"stock_cols\"><i class=\"list icon\"></i> Visible columns</button>" : "");
+			});
+
+			/* Footer search */
+            $("input", table.table().header().closest("thead")).on("keyup change clear", function() {
+            	var that = this;
+            	table.columns().every(function (i) {
+            		if(table.column(this).index() == $(that).attr("column_index")) {
+            			if(table.column($(that).attr("column_index")).search() !== that.value) {
+							table.column($(that).attr("column_index")).search(that.value).draw();
+	                    }
+            		}
+	            });
+            });
+		},
 		language: {
 			"lengthMenu": "<?=Translator::translate("lengthMenu");?>",
 	        "zeroRecords": "<?=Translator::translate("zeroRecords");?>",
