@@ -48,6 +48,12 @@ use controller\User;
 		</div>
 		<!-- End Top Nav bar -->
 		<div class="uk-margin-xlarge-top" style="margin: auto; max-width: 500px;">
+			<div align="center">
+				Try a demo
+			</div>
+			<div align="center">
+				<small>E-malil: <b>demo@demo</b> password: <b>demo</b></small>
+			</div>
 			<div class="ui segment raised">
 				<div class="ui header dividing">
 					<h3><i class="ui users icon"></i> Authentication</h3>
