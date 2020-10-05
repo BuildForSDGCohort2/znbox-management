@@ -35,10 +35,16 @@ if(isset($_GET["d_start"]) && isset($_GET["d_end"])) {
             <div class="ui field">
                 <label><?=Translator::translate("invoice date");?></label>
                 <input class="flatpickr" value="<?=($use_from_proforma ? Helper::decrypt($_GET["d_start"]) : date("Y-m-d"))?>" type="date" name="value[date_emitted]" <?=($use_from_proforma ? "disabled" : "") ?>>
+                <?php if($use_from_proforma): ?>
+                    <input type="hidden" name="value[date_emitted]" value="<?=Helper::decrypt($_GET["d_start"])?>">
+                <?php endif; ?>
             </div>
             <div class="ui field">
                 <label><?=Translator::translate("invoice due date");?></label>
                 <input class="flatpickr" value="<?=($use_from_proforma ? Helper::decrypt($_GET["d_end"]) : date("Y-m-d", strtotime("+5 days")))?>" type="date" name="value[date_due]" <?=($use_from_proforma ? "disabled" : "") ?>>
+                <?php if($use_from_proforma): ?>
+                    <input type="hidden" name="value[date_due]" value="<?=Helper::decrypt($_GET["d_end"])?>">
+                <?php endif; ?>
             </div>
         </div>
         <input type="hidden" value="<?=$fetch["id"]?>" name="value[sale]">

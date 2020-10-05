@@ -4,6 +4,7 @@ namespace controller;
 
 use connections\Database;
 use controller\QueryBuilder;
+use controller\Receipt;
 
 class Invoice {
 
@@ -55,6 +56,12 @@ class Invoice {
 		$stmt = $conn->query($sql);
 		$fetch = $stmt->fetch();
 		return $fetch;
+	}
+	public static function getAllUnpaid() {
+		$conn = Database::conn();
+		$sql = "SELECT * FROM invoice WHERE invoice.id NOT IN (SELECT receipt.invoice FROM receipt);";
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
 	}
 	public static function getTotal($id) {
 		$invoice = self::getBy("id", $id);

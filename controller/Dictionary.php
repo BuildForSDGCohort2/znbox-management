@@ -751,6 +751,10 @@ class Dictionary {
 				if ($lang == "pt") { return "Recibo"; }
 				if ($lang == "eng") { return "Receipt"; }
 				break;
+			case "receipts":
+				if ($lang == "pt") { return "Recibos"; }
+				if ($lang == "eng") { return "Receipts"; }
+				break;
 			case "add receipt":
 				if ($lang == "pt") { return "Adicionar recibo"; }
 				if ($lang == "eng") { return "Add receipt"; }
@@ -1319,13 +1323,13 @@ class Dictionary {
 				if ($lang == "pt") { return "Não poderá reverter esta acção"; }
 				if ($lang == "eng") { return "You will not be able to revert this action"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "create receipt":
+				if ($lang == "pt") { return "Criar recibo"; }
+				if ($lang == "eng") { return "Create receipt"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "print receipt":
+				if ($lang == "pt") { return "Imprimir recibo"; }
+				if ($lang == "eng") { return "Print Receipt"; }
 				break;
 			case "":
 				if ($lang == "pt") { return ""; }

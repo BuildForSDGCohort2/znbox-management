@@ -96,8 +96,8 @@ use controller\Helper;
 		</h4>
 	</li>
 	<li>
-		<a class="zn-link" href="<?=Helper::url("api/payment/payment.php")?>" style="">
-			<i class="credit card icon"></i> <?=Translator::translate('Payments')?>
+		<a class="zn-link" href="<?=Helper::url("api/receipt/receipt.php")?>" style="">
+			<i class="file alternate icon"></i> <?=Translator::translate('Receipts')?>
 		</a>
 	</li>
 	<!-- Customer -->

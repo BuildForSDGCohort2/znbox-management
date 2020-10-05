@@ -17,3 +17,6 @@ RewriteRule ^(print-invoice)$ api/invoice/print.php
 
 RewriteRule ^(print-proforma)/$ api/proforma/print.php
 RewriteRule ^(print-proforma)$ api/proforma/print.php
+
+RewriteRule ^(print-receipt)/$ api/receipt/print.php
+RewriteRule ^(print-receipt)$ api/receipt/print.php
