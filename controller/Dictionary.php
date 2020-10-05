@@ -1331,17 +1331,17 @@ class Dictionary {
 				if ($lang == "pt") { return "Imprimir recibo"; }
 				if ($lang == "eng") { return "Print Receipt"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "unpaid invoices":
+				if ($lang == "pt") { return "Faturas não pagas"; }
+				if ($lang == "eng") { return "Unpaid invoices"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "paid invoices":
+				if ($lang == "pt") { return "Faturas pagas"; }
+				if ($lang == "eng") { return "Paid invoices"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "overdue invoices":
+				if ($lang == "pt") { return "Faturas vencidas"; }
+				if ($lang == "eng") { return "Overdue invoices"; }
 				break;
 			case "":
 				if ($lang == "pt") { return ""; }

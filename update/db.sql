@@ -1,2 +1,0 @@
-ALTER TABLE `purchase` ADD `supplier` INT NULL AFTER `purchase_date`, ADD INDEX (`supplier`); 
-ALTER TABLE `purchase` ADD FOREIGN KEY (`supplier`) REFERENCES `supplier`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT; 

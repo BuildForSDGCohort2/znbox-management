@@ -45,6 +45,7 @@ if(!$user = (object) User::getBy('id', User::validate_token($_SESSION['token'])[
 	<script type="text/javascript" src="<?=Helper::url("assets/libs/jquery/jquery.min.js")?>"></script>
 	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/css/app.css")?>">
 	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/datatable/datatables.min.css")?>">
+	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/chartsjs/chart.min.css")?>">
 </head>
 <body style="scrollbar-width: thin;">
 	<div id="root">
@@ -155,6 +156,7 @@ if(!$user = (object) User::getBy('id', User::validate_token($_SESSION['token'])[
 	<script type="text/javascript" src="<?=Helper::url("assets/libs/uikit/js/uikit-icons.min.js")?>"></script>
 	<script type="text/javascript" src="<?=Helper::url("assets/libs/flatpickr/flatpickr.min.js")?>"></script>
 	<script type="text/javascript" src="<?=Helper::url("assets/libs/flatpickr/lang/pt.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/libs/chartsjs/chart.min.js")?>"></script>
 	<script type="text/javascript" src="<?=Helper::url("assets/js/app.js")?>"></script>
 	<script type="text/javascript" src="<?=Helper::url("assets/js/sales.js")?>"></script>
 	<script type="text/javascript" src="<?=Helper::url("assets/js/purchase.js")?>"></script>

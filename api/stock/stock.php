@@ -113,7 +113,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 		},
 		{
 			name: "<?=Translator::translate("Quantity");?>",
-			data: "quantity",
+			data: "stock_quantity",
 			visible: true,
 		},
 		{

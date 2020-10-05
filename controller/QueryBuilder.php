@@ -45,4 +45,13 @@ class QueryBuilder {
 		$sql = $sql." $where;";
 		return $sql;
 	}
+	public static function exec($sql) {
+		$conn = Database::conn();
+		$stmt = $conn->prepare($sql);
+		return ($stmt->execute() ? $stmt : null);
+	}
+	public static function escape($string) {
+		$conn = Database::conn();
+		return rtrim(ltrim($conn->quote($string), "'"), "'");
+	}
 }
