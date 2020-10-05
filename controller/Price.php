@@ -37,7 +37,8 @@ class Price {
 	}
 	public static function getAllBy($column, $value) {
 		$conn = Database::conn();
-		$sql = "SELECT * FROM price WHERE price.isDeleted = 0;";
+		$value = $conn->quote($value);
+		$sql = "SELECT * FROM price WHERE price.$column = $value AND price.isDeleted = 0;";
 		$stmt = $conn->prepare($sql);
 		return ($stmt->execute() ? $stmt : null);
 	}

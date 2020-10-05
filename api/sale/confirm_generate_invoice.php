@@ -19,6 +19,11 @@ if(!isset($_GET["id"])) {
 if(!$fetch = Sale::getBy("id", $_GET["id"])) {
     die("404_request");   
 }
+
+$use_from_proforma = false;
+if(isset($_GET["d_start"]) && isset($_GET["d_end"])) {
+    $use_from_proforma = true;
+}
 ?>
 
 <form class="ui small modal form zn-form" action="<?=Helper::url("api/sale/generate_invoice.php")?>" data="<?=$_GET["id"]?>">
@@ -29,11 +34,11 @@ if(!$fetch = Sale::getBy("id", $_GET["id"])) {
         <div class="ui form">
             <div class="ui field">
                 <label><?=Translator::translate("invoice date");?></label>
-                <input class="flatpickr" value="<?=date("Y-m-d")?>" type="date" name="value[date_emitted]">
+                <input class="flatpickr" value="<?=($use_from_proforma ? Helper::decrypt($_GET["d_start"]) : date("Y-m-d"))?>" type="date" name="value[date_emitted]" <?=($use_from_proforma ? "disabled" : "") ?>>
             </div>
             <div class="ui field">
                 <label><?=Translator::translate("invoice due date");?></label>
-                <input class="flatpickr" value="<?=date("Y-m-d", strtotime("+5 days"))?>" type="date" name="value[date_due]">
+                <input class="flatpickr" value="<?=($use_from_proforma ? Helper::decrypt($_GET["d_end"]) : date("Y-m-d", strtotime("+5 days")))?>" type="date" name="value[date_due]" <?=($use_from_proforma ? "disabled" : "") ?>>
             </div>
         </div>
         <input type="hidden" value="<?=$fetch["id"]?>" name="value[sale]">

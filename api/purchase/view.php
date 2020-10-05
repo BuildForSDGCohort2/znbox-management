@@ -8,6 +8,7 @@ use controller\Purchase;
 use controller\PurchaseItem;
 use controller\Resources;
 use controller\Helper;
+use controller\Supplier;
 
 if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
     die("user_session");
@@ -31,6 +32,10 @@ if(!$fetch = Purchase::getBy("id", $_GET["id"])) {
                 <tr>
                     <td><strong><?=Translator::translate("Id");?>:</strong></td>
                     <td colspan="2"><?=$fetch["id"]?></td>
+                </tr>
+                <tr>
+                    <td><strong><?=Translator::translate("Supplier");?>:</strong></td>
+                    <td colspan="2"><?=($fetch["supplier"] ? Supplier::getBy("id", $fetch["supplier"])["name"] : "")?></td>
                 </tr>
                 <tr>
                     <td><strong><?=Translator::translate("description");?>:</strong></td>

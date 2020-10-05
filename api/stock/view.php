@@ -44,24 +44,12 @@
 					<td><?=$fetch["name"]?></td>
 				</tr>
 				<tr>
-					<td><strong><?=Translator::translate("Name");?>:</strong></td>
+					<td><strong><?=Translator::translate("Stock type");?>:</strong></td>
 					<td><?=Translator::translate(StockType::getBy("id", $fetch["type"])["name"])?></td>
 				</tr>
 				<tr>
 					<td><strong><?=Translator::translate("Quantity");?>:</strong></td>
 					<td><?=Stock::getStockAmount($fetch["id"])?></td>
-				</tr>
-				<tr>
-					<td><strong><?=Translator::translate("supplier");?>:</strong></td>
-					<td>
-						<?php foreach(_StockSupplier::getAll() as $item) { ?>
-							<?php if($fetch["id"] == $item["stock"]) { ?>
-								<a href="<?=Helper::url("api/supplier/view.php")?>" class="ui mini icon basic button zn-link-dialog" data="<?=$item["supplier"]?>">
-									<i class="ui eye icon"></i> <?=Supplier::getBy("id", $item["supplier"])["name"]?>
-								</a>
-							<?php } ?>
-						<?php } ?>
-					</td>
 				</tr>
 				<tr>
 					<td><strong><?=Translator::translate("category");?>:</strong></td>

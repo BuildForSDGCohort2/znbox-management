@@ -7,6 +7,7 @@ use controller\Stock;
 use controller\Purchase;
 use controller\PurchaseItem;
 use controller\Helper;
+use controller\Supplier;
 
 if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
     die("user_session");
@@ -28,6 +29,15 @@ if(!$fetch = Purchase::getBy("id", $_GET["id"])) {
 				<div class="field required">
 					<label><?=Translator::translate("description")?></label>
 					<input type="text" value="<?=$fetch["description"]?>" name="description" required minlength="3" maxlength="100" placeholder="<?=Translator::translate("description")?>">
+				</div>
+				<div class="field required">
+					<label><?=Translator::translate("Supplier");?>:</label>
+					<select class="ui dropdown search" name="supplier">
+						<option value=" "></option>
+						<?php foreach (Supplier::getAll() as $item): ?>
+							<option value="<?=$item["id"]?>" <?=($fetch["supplier"] == $item["id"]) ? "selected" : ""?>><?=$item["name"]?></option>
+						<?php endforeach; ?>
+					</select>
 				</div>
 				<div class="field required">
 					<label><?=Translator::translate("purchase date")?></label>

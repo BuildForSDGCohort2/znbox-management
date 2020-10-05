@@ -52,23 +52,6 @@
 			</select>
 		</div>
 		<div class="ui field required">
-			<label><?=Translator::translate("Supplier");?>:</label>
-			<select class="ui dropdown multiple search" multiple name="supplier[]">
-				<?php foreach (Supplier::getAll() as $item) { ?>
-					<?php $found = false; ?>
-					<?php foreach (_StockSupplier::getAllBy("stock", $fetch["id"]) as $_item) { ?>
-						<?php if($_item["supplier"] == $item["id"]) { ?>
-							<?php $found = true; ?>
-							<option <?=(($found) ? "selected" : "")?> value="<?=$item["id"]?>"><?=$item["name"]?></option>
-						<?php } ?>
-					<?php } ?>
-					<?php if(!$found) { ?>
-						<option value="<?=$item["id"]?>"><?=$item["name"]?></option>
-					<?php } ?>
-				<?php } ?>
-			</select>
-		</div>
-		<div class="ui field required">
 			<label><?=Translator::translate("Warehouse");?>:</label>
 			<select class="ui dropdown search" name="value[warehouse]">
 				<?php foreach (Warehouse::getAll() as $item) { ?>

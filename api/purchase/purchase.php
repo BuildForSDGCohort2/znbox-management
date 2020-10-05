@@ -18,7 +18,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 		<div class="ui header dividing color blue">
 			<h3 class="ui header blue"><i class="ui cart icon"></i> <?=Translator::translate("Purchases")?></h3>
 		</div>
-		<a class="ui basic small button blue zn-link" href="<?=Helper::url("api/purchase/add_form.php?id=".$item["id"])?>"><i class="ui plus icon"></i> <?=Translator::translate("Add purchase")?></a>
+		<a class="ui basic small button blue zn-link" href="<?=Helper::url("api/purchase/add_form.php")?>"><i class="ui plus icon"></i> <?=Translator::translate("Add purchase")?></a>
 
 	</div>
 	<div class="uk-margin-top" style="margin-left: 10px;">

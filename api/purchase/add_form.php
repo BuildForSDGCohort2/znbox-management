@@ -6,6 +6,7 @@ use controller\Stock;
 use controller\User;
 use controller\Purchase;
 use controller\Helper;
+use controller\Supplier;
 
 if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
 	die("user_session");
@@ -22,6 +23,15 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 				<div class="field required">
 					<label><?=Translator::translate("description")?></label>
 					<input type="text" name="description" required minlength="3" maxlength="100" placeholder="<?=Translator::translate("description")?>">
+				</div>
+				<div class="field required">
+					<label><?=Translator::translate("Supplier");?>:</label>
+					<select class="ui dropdown search" name="supplier">
+						<option value=" "></option>
+						<?php foreach (Supplier::getAll() as $item): ?>
+							<option value="<?=$item["id"]?>"><?=$item["name"]?></option>
+						<?php endforeach; ?>
+					</select>
 				</div>
 				<div class="field required">
 					<label><?=Translator::translate("purchase date")?></label>
@@ -66,6 +76,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 		</div>
 	</form>
 	<script type="text/javascript">
+		$(".ui.dropdown").dropdown({ on: "click" });
 		$(".flatpickr").flatpickr({
 			dateFormat: "Y-m-d",
 			locale: "<?=$_COOKIE["lang"]?>",

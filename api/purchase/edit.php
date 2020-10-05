@@ -85,6 +85,11 @@ if(!isset($_POST["id"])) {
 $data = [];
 $data["description"] = $_POST["description"];
 $data["purchase_date"] = $_POST["purchase_date"];
+if(trim($_POST["supplier"])) {
+	$data["supplier"] = $_POST["supplier"];
+} else {
+	$data["supplier"] = NULL;
+}
 $data["user_modify"] = $user["id"];
 
 if(isset($_FILES["file"]) && $_FILES["file"]["name"]) {

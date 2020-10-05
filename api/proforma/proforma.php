@@ -6,6 +6,7 @@ use controller\Proforma;
 use controller\Translator;
 use controller\User;
 use controller\Helper;
+use controller\Invoice;
 
 if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
 	die("user_session");
@@ -66,6 +67,18 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 				                <i class="file alternate icon"></i>
 				                <?=Translator::translate("Print proforma")?>
 				            </a>
+				            <?php $invoice = Invoice::getBy("sale", $item["sale"]); ?>
+				            <?php if($invoice && $invoice["status"] != 0): ?>
+					            <a class="ui mini circular icon button purple zn-link-print" data-href="<?=Helper::url("print-invoice?type=1&id=".$item["id"])?>">
+					                <i class="file alternate icon"></i>
+					                <?=Translator::translate("Print invoice")?>
+					            </a>
+				            <?php else: ?>
+				            	<a class="ui primary mini circular icon button zn-link-dialog" href="<?=Helper::url("api/sale/confirm_generate_invoice.php?id=".$item["id"]."&d_start=".Helper::encrypt($item["date_emitted"])."&d_end=".Helper::encrypt($item["date_due"]))?>" data="<?=$item["id"]?>">
+					                <i class="file alternate icon"></i>
+					                <?=Translator::translate("Generate invoice")?>
+					            </a>
+				            <?php endif; ?>
 						</td>
 					</tr>
 				<?php } ?>

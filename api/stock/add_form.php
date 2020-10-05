@@ -37,10 +37,6 @@
 			<input type="text" name="value[price_sell]" autocomplete="off" placeholder="<?=Translator::translate("Price of sell");?>">
 		</div>
 		<div class="ui field required">
-			<label><?=Translator::translate("Purchase price");?>:</label>
-			<input type="text" name="value[price_purchase]" autocomplete="off" placeholder="<?=Translator::translate("Purchase price");?>">
-		</div>
-		<div class="ui field required">
 			<label><?=Translator::translate("Quantity");?>:</label>
 			<input type="text" name="value[quantity]" autocomplete="off" placeholder="<?=Translator::translate("Quantity");?>">
 		</div>
@@ -48,14 +44,6 @@
 			<label><?=Translator::translate("Category");?>:</label>
 			<select class="ui dropdown search" name="value[category]">
 				<?php foreach (StockCategory::getAll() as $item) { ?>
-				<option value="<?=$item["id"]?>"><?=$item["name"]?></option>
-				<?php } ?>
-			</select>
-		</div>
-		<div class="ui field required">
-			<label><?=Translator::translate("Supplier");?>:</label>
-			<select class="ui dropdown multiple search" multiple name="supplier[]">
-				<?php foreach (Supplier::getAll() as $item) { ?>
 				<option value="<?=$item["id"]?>"><?=$item["name"]?></option>
 				<?php } ?>
 			</select>

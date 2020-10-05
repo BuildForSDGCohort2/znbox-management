@@ -35,7 +35,6 @@ $data["user_added"] = $user["id"];
 $data["user_modify"] = $user["id"];
 
 $price_sell = $data["price_sell"];
-$price_purchase = $data["price_purchase"];
 
 unset($data["price_sell"]);
 unset($data["price_purchase"]);
@@ -56,7 +55,6 @@ if($result = Stock::add($data)) {
 		Price::add([
 			"isDefault" => true,
 			"price_sell" => $price_sell,
-			"price_purchase" => $price_purchase,
 			"stock" => $id,
 			"user_added" => $user["id"],
 			"user_modify" => $user["id"],
