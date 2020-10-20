@@ -1343,9 +1343,9 @@ class Dictionary {
 				if ($lang == "pt") { return "Faturas vencidas"; }
 				if ($lang == "eng") { return "Overdue invoices"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "receipt date":
+				if ($lang == "pt") { return "Data do recibo"; }
+				if ($lang == "eng") { return "Receipt date"; }
 				break;
 			case "":
 				if ($lang == "pt") { return ""; }

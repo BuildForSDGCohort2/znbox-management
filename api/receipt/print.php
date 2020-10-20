@@ -71,8 +71,8 @@ $config = [
 	],
 	"document" => [
 		"number" => $invoice->number."/".date("Y", strtotime($invoice->date_emitted)),
-		"date" => $invoice->date_emitted,
-		"date_due" => $invoice->date_due,
+		"date" => date("Y-m-d", strtotime($receipt->date_added)),
+		"payment_date" => $receipt->date_payment,
 		"itens" => $invoice_itens,
 		"total" => [
 			"subtotal" => Helper::formatNumber($subtotal),

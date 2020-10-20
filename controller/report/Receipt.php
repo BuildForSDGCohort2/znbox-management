@@ -19,6 +19,12 @@ class Receipt extends FPDF {
 		$this->Image(__DIR__ ."/../../res/enterprise/".$enterprise->logo, 10, 6, 40);
 		$this->SetFont('Arial', 'B', 11);
 
+		$this->SetXY(180, 10);
+		$this->SetFont('Arial', 'B', 16);
+		$this->SetTextColor(0, 150, 0);
+		$this->MultiCell(20, 0, utf8_decode(strtoupper(Translator::translate("Paid"))), 0, "C", false);
+		$this->SetTextColor(0, 0, 0);
+
 		if(isset($config->enterprise)) {
 			$enterprise = (object) $config->enterprise;
 			$customer = (object) $config->customer;
@@ -61,16 +67,16 @@ class Receipt extends FPDF {
 			$col2x = 115;
 			$this->SetX($col2x);
 			$this->SetFont('Arial', 'B', 8);
-			$this->Cell(0, 40, utf8_decode(Translator::translate('Invoice').' Nº: ').utf8_decode($document->number), 0, 0, 'R');
+			$this->Cell(0, 40, utf8_decode(Translator::translate('Receipt').' Nº: ').utf8_decode($document->number), 0, 0, 'R');
 			$this->SetLineWidth(0.3);
 			$this->Line($col2x, 32, $col2x + 84, 32);
 			$this->Ln(0);
 			$this->SetX($col2x);
 			$this->SetFont('Arial', '', 8);
-			$this->Cell(0, 60, utf8_decode(Translator::translate('Invoice date').': ').utf8_decode($document->date));
+			$this->Cell(0, 60, utf8_decode(Translator::translate('Receipt date').': ').utf8_decode($document->date));
 			$this->SetFont('Arial', '', 8);
 			$this->SetX($col2x);
-			$this->Cell(0, 70, utf8_decode(Translator::translate('Invoice due date').': ').utf8_decode($document->date_due));
+			$this->Cell(0, 70, utf8_decode(Translator::translate('Payment date').': ').utf8_decode($document->payment_date));
 		}
 	}
 
