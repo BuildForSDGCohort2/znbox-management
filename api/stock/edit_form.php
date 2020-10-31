@@ -40,22 +40,10 @@
 			</select>
 		</div>
 		<div class="ui field required">
-			<label><?=Translator::translate("Quantity");?>:</label>
-			<input type="text" value="<?=$fetch["quantity"]?>" name="value[quantity]" autocomplete="off" placeholder="<?=Translator::translate("Quantity");?>">
-		</div>
-		<div class="ui field required">
 			<label><?=Translator::translate("Category");?>:</label>
 			<select class="ui dropdown search" name="value[category]">
 				<?php foreach (StockCategory::getAll() as $item) { ?>
 				<option <?=($fetch["category"] == $item["id"]) ? "selected" : ""?> value="<?=$item["id"]?>"><?=$item["name"]?></option>
-				<?php } ?>
-			</select>
-		</div>
-		<div class="ui field required">
-			<label><?=Translator::translate("Warehouse");?>:</label>
-			<select class="ui dropdown search" name="value[warehouse]">
-				<?php foreach (Warehouse::getAll() as $item) { ?>
-				<option <?=($fetch["warehouse"] == $item["id"]) ? "selected" : ""?> value="<?=$item["id"]?>"><?=$item["name"]?></option>
 				<?php } ?>
 			</select>
 		</div>
