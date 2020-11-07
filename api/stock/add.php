@@ -5,6 +5,8 @@ use controller\Translator;
 use controller\User;
 use controller\_StockSupplier;
 use controller\Stock;
+use controller\StockTransfer;
+use controller\StockTransferItem;
 use controller\Price;
 use controller\Helper;
 use connections\Database;
@@ -41,7 +43,17 @@ unset($data["price_purchase"]);
 
 $conn = Database::conn();
 $conn->beginTransaction();
-if($result = Stock::add($data)) {
+
+$data_stock = [
+	"name" => $data["name"],
+	"category" => $data["category"],
+	"type" => $data["type"],
+	"description" => $data["description"],
+	"user_added" => $user["id"],
+	"user_modify" => $user["id"],
+];
+
+if($result = Stock::add($data_stock)) {
 	try {
 		$id = $conn->lastInsertId();
 		if(isset($data["supplier"])) {
@@ -59,6 +71,21 @@ if($result = Stock::add($data)) {
 			"user_added" => $user["id"],
 			"user_modify" => $user["id"],
 		]);
+
+		StockTransfer::add([
+			"stock_register" => true,
+			"warehouse_from" => $data["warehouse"],
+			"warehouse_to" => $data["warehouse"],
+			"user_added" => $user["id"],
+			"user_modify" => $user["id"],
+		]);
+		$stock_transfer_id = $conn->lastInsertId();
+		StockTransferItem::add([
+			"stock_transfer" => $stock_transfer_id,
+			"stock" => $id,
+			"quantity" => $data["quantity"],
+		]);
+
 		$conn->commit();
 		die(json_encode([
 			"code" => "1102",

@@ -43,6 +43,11 @@ use controller\Helper;
 		</a>
 	</li>
 	<li>
+		<a class="zn-link" href="<?=Helper::url("api/stock_transfer/stock_transfer.php")?>" style="">
+			<i class="truck icon"></i> <?=Translator::translate('Stock transfer')?>
+		</a>
+	</li>
+	<li>
 		<a class="zn-link" href="<?=Helper::url("api/supplier/supplier.php")?>" style="">
 			<i class="ui dolly flatbed icon"></i> <?=Translator::translate('supplier')?>
 		</a>

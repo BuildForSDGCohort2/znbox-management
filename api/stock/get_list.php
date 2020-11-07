@@ -23,9 +23,6 @@ $table->addColumn("type", function($row) {
 $table->addColumn("stock_quantity", function($row) {
 	return Stock::getStockAmount($row["id"]);
 });
-$table->addColumn("warehouse", function($row) {
-	return Warehouse::getBy("id", $row["warehouse"])["name"];
-});
 $table->addColumn("price_sale", function($row) {
 	$price = false;
 	$content = Translator::translate("No price");

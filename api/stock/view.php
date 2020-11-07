@@ -56,10 +56,6 @@
 					<td><?=StockCategory::getBy("id", $fetch["category"])["name"]?></td>
 				</tr>
 				<tr>
-					<td><strong><?=Translator::translate("warehouse");?>:</strong></td>
-					<td><?=Warehouse::getBy("id", $fetch["warehouse"])["name"]?></td>
-				</tr>
-				<tr>
 					<td><strong><?=Translator::translate("Date Added");?>:</strong></td>
 					<td><?=Helper::datetime($fetch["date_added"])?></td>
 				</tr>

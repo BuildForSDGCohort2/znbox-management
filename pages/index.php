@@ -31,13 +31,13 @@ if(!$user = (object) User::getBy('id', User::validate_token($_SESSION['token'])[
 	<meta charset="utf-8" id="znbox" href="<?=Helper::url("")?>">
 	<meta charset="utf-8" id="znbox-init" href="<?=Helper::url("api/user/home.php")?>">
 	<meta id="znbox-sale-line" href="<?=Helper::url("api/sale/line.php")?>">
+	<meta id="znbox-stock_transfer-line" href="<?=Helper::url("api/stock_transfer/line.php")?>">
 	<meta id="znbox-purchase-line" href="<?=Helper::url("api/purchase/line.php")?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="shortcut icon" type="image/x-icon" href="znbox_mobile_app_icon.ico"/>
+	<link rel="shortcut icon" type="image/x-icon" href="<?=Helper::url("znbox_mobile_app_icon.ico")?>"/>
 	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/mdl/material.min.css")?>">
 	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/css/icons.css")?>">
 	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/semantic/semantic.min.css")?>">
-	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/datatable/dataTables.semanticui.min.css")?>">
 	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/flatpickr/flatpickr.min.css")?>">
 	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/flatpickr/theme/dark.css")?>">
 	<link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
@@ -159,6 +159,7 @@ if(!$user = (object) User::getBy('id', User::validate_token($_SESSION['token'])[
 	<script type="text/javascript" src="<?=Helper::url("assets/libs/chartsjs/chart.min.js")?>"></script>
 	<script type="text/javascript" src="<?=Helper::url("assets/js/app.js")?>"></script>
 	<script type="text/javascript" src="<?=Helper::url("assets/js/sales.js")?>"></script>
+	<script type="text/javascript" src="<?=Helper::url("assets/js/stock_transfer.js")?>"></script>
 	<script type="text/javascript" src="<?=Helper::url("assets/js/purchase.js")?>"></script>
 </body>
 </html>

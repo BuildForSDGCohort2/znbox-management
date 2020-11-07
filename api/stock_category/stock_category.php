@@ -180,7 +180,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 	        enctype: "multipart/form-data",
 	    },
 		order: [
-			[ 1, "desc" ]
+			[ 0, "desc" ]
 		],
 		columns: JSON.parse(localStorage.getItem("stock_category_cols")),
 		initComplete: function(settings, json) {

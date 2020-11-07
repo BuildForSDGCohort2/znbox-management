@@ -3,14 +3,8 @@ require __DIR__."/../../autoload.php";
 
 use controller\Translator;
 use controller\User;
-use controller\UserType;
-
-use controller\Price;
-use controller\Supplier;
-use controller\_StockSupplier;
-use controller\Warehouse;
+use controller\StockTransfer;
 use controller\Stock;
-use controller\StockType;
 use controller\Helper;
 
 if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
@@ -21,19 +15,15 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 <div class="ui segment blue">
 	<div class="uk-padding-small">
 		<div class="ui header dividing color blue">
-			<h3 class="ui header blue">
-				<i class="ui box icon"></i> <?=Translator::translate("Stock")?>
-			</h3>
+			<h3 class="ui header blue"><i class="truck icon"></i> <?=Translator::translate("Stock transfer")?></h3>
 		</div>
-		<a class="ui basic button blue zn-link-dialog" href="<?=Helper::url("api/stock/add_form.php")?>">
-			<i class="ui plus icon"></i> <?=Translator::translate("Add Stock")?>
-		</a>
+		<a class="ui basic button blue zn-link" href="<?=Helper::url("api/stock_transfer/add_form.php")?>"><i class="ui plus icon"></i> <?=Translator::translate("New transfer")?></a>
 	</div>
 	<div class="uk-margin">
 		<div align="center" class="ui segment spacked purple uk-width-small">
 			<div class="ui statistic purple">
 			    <div class="value">
-			      <?=Stock::getAll()->rowCount()?>
+			      <?=StockTransfer::getAll()->rowCount()?>
 			    </div>
 			    <div class="label">
 			      <?=Translator::translate("total")?>
@@ -46,12 +36,11 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 			<thead>
 				<tr>
 					<th><?=Translator::translate("Id");?></th>
-					<th><?=Translator::translate("name");?></th>
-					<th><?=Translator::translate("Stock type");?></th>
-					<th><?=Translator::translate("Quantity");?></th>
-					<th><?=Translator::translate("Price of sale");?></th>
-					<th><?=Translator::translate("Prices");?></th>
-					<th><?=Translator::translate("Date added")?></th>
+					<th><?=Translator::translate("From");?></th>
+					<th><?=Translator::translate("To");?></th>
+					<th><?=Translator::translate("Stock register");?></th>
+					<th><?=Translator::translate("Observation");?></th>
+					<th><?=Translator::translate("Date added");?></th>
 					<th><?=Translator::translate("User added");?></th>
 					<th><?=Translator::translate("Date modify");?></th>
 					<th><?=Translator::translate("User modify");?></th>
@@ -59,12 +48,11 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 				</tr>
 				<tr>
 					<th><?=Translator::translate("Id");?></th>
-					<th><?=Translator::translate("name");?></th>
-					<th><?=Translator::translate("Stock type");?></th>
-					<th><?=Translator::translate("Quantity");?></th>
-					<th><?=Translator::translate("Price of sale");?></th>
-					<th><?=Translator::translate("Prices");?></th>
-					<th><?=Translator::translate("Date added")?></th>
+					<th><?=Translator::translate("From");?></th>
+					<th><?=Translator::translate("To");?></th>
+					<th><?=Translator::translate("Stock register");?></th>
+					<th><?=Translator::translate("Observation");?></th>
+					<th><?=Translator::translate("Date added");?></th>
 					<th><?=Translator::translate("User added");?></th>
 					<th><?=Translator::translate("Date modify");?></th>
 					<th><?=Translator::translate("User modify");?></th>
@@ -74,12 +62,11 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 			<tbody></tbody>
 			<tfoot>
 				<th><?=Translator::translate("Id");?></th>
-				<th><?=Translator::translate("name");?></th>
-				<th><?=Translator::translate("Stock type");?></th>
-				<th><?=Translator::translate("Quantity");?></th>
-				<th><?=Translator::translate("Price of sale");?></th>
-				<th><?=Translator::translate("Prices");?></th>
-				<th><?=Translator::translate("Date added")?></th>
+				<th><?=Translator::translate("From");?></th>
+				<th><?=Translator::translate("To");?></th>
+				<th><?=Translator::translate("Stock register");?></th>
+				<th><?=Translator::translate("Observation");?></th>
+				<th><?=Translator::translate("Date added");?></th>
 				<th><?=Translator::translate("User added");?></th>
 				<th><?=Translator::translate("Date modify");?></th>
 				<th><?=Translator::translate("User modify");?></th>
@@ -91,6 +78,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 
 <script type="text/javascript">
 	$(".ui.dropdown").dropdown();
+
 	/* Datatable */
 	var columns = [
 		{
@@ -99,49 +87,44 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 			visible: true,
 		},
 		{
-			name: "<?=Translator::translate("name");?>",
-			data: "name",
+			name: "<?=Translator::translate("From");?>",
+			data: "from",
 			visible: true,
 		},
 		{
-			name: "<?=Translator::translate("Stock type");?>",
-			data: "type",
+			name: "<?=Translator::translate("To");?>",
+			data: "to",
 			visible: true,
 		},
 		{
-			name: "<?=Translator::translate("Quantity");?>",
-			data: "stock_quantity",
+			name: "<?=Translator::translate("Stock register");?>",
+			data: "stock_register",
 			visible: true,
 		},
 		{
-			name: "<?=Translator::translate("Price of sale");?>",
-			data: "price_sale",
-			visible: true,
-		},
-		{
-			name: "<?=Translator::translate("Prices");?>",
-			data: "prices",
-			visible: true,
+			name: "<?=Translator::translate("Observation");?>",
+			data: "observation",
+			visible: false,
 		},
 		{
 			name: "<?=Translator::translate("Date added");?>",
 			data: "date_added",
-			visible: false,
+			visible: true,
 		},
 		{
 			name: "<?=Translator::translate("User added");?>",
 			data: "user_added",
-			visible: false,
+			visible: true,
 		},
 		{
 			name: "<?=Translator::translate("Date modify");?>",
 			data: "date_modify",
-			visible: false,
+			visible: true,
 		},
 		{
 			name: "<?=Translator::translate("User modify");?>",
 			data: "user_modify",
-			visible: false,
+			visible: true,
 		},
 		{
 			name: "<?=Translator::translate("Actions");?>",
@@ -150,10 +133,10 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 		},
 	];
 	/* Gravando as colunas no local storage */
-	if(!localStorage.getItem("stock_cols")) {
-		localStorage.setItem("stock_cols", JSON.stringify(columns));
+	if(!localStorage.getItem("stock_transfer_cols")) {
+		localStorage.setItem("stock_transfer_cols", JSON.stringify(columns));
 	} else {
-		var colunas_local = JSON.parse(localStorage.getItem("stock_cols"));
+		var colunas_local = JSON.parse(localStorage.getItem("stock_transfer_cols"));
 		/* Verificando actualização do json */
 		for(var i = 0; i < columns.length; i ++) {
 			if(
@@ -162,7 +145,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 				Object.keys(colunas_local[i])[0] != Object.keys(columns[i])[0] ||
 				Object.keys(colunas_local[i])[1] != Object.keys(columns[i])[1]
 			) {
-				localStorage.setItem("stock_cols", JSON.stringify(columns));
+				localStorage.setItem("stock_transfer_cols", JSON.stringify(columns));
 				break;
 			}
 		}
@@ -185,12 +168,12 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 		buttons: [
 			{
 				extend: "excel",
-				title: "<?=Translator::translate("Stock")?>",
+				title: "<?=Translator::translate("category")?>",
 				text: "<i class=\"icon file excel green\"></i> Excel",
 			},
 			{
 				extend: "pdf",
-				title: "<?=Translator::translate("Stock")?>",
+				title: "<?=Translator::translate("category")?>",
 				text: "<i class=\"icon file pdf red\"></i> Pdf",
 			},
 			{
@@ -207,14 +190,14 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 		serverSide: true,
 		responsive: true,
 		ajax: {
-	    	url: "<?=Helper::url("api/stock/get_list.php")?>",
+	    	url: "<?=Helper::url("api/stock_transfer/get_list.php")?>",
 	        type: "post",
 	        enctype: "multipart/form-data",
 	    },
 		order: [
 			[ 0, "desc" ]
 		],
-		columns: JSON.parse(localStorage.getItem("stock_cols")),
+		columns: JSON.parse(localStorage.getItem("stock_transfer_cols")),
 		initComplete: function(settings, json) {
 			table.buttons().container().appendTo($("div.eight.column:eq(0)", table.table().container()));
 			$("div.loading").remove();
@@ -224,7 +207,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 			$(".ui.table").parent().attr("style", "overflow-x: scroll; scrollbar-width: thin;");
 			/* Adiciona botão para filtar colunas */
 			$(".dt-buttons.ui.buttons").append(function() {
-				return (!$(".visible-columns-button").html() ? "<button class=\"visible-columns-button ui button tiny blue\" key=\"stock_cols\"><i class=\"list icon\"></i> Visible columns</button>" : "");
+				return (!$(".visible-columns-button").html() ? "<button class=\"visible-columns-button ui button tiny blue\" key=\"stock_transfer_cols\"><i class=\"list icon\"></i> Visible columns</button>" : "");
 			});
 
 			/* Footer search */

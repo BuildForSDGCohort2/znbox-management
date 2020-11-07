@@ -1035,6 +1035,10 @@ class Dictionary {
 				if ($lang == "pt") { return "Sim"; }
 				if ($lang == "eng") { return "Yes"; }
 				break;
+			case "no":
+				if ($lang == "pt") { return "Não"; }
+				if ($lang == "eng") { return "No"; }
+				break;
 			case "do you wish to delete this item":
 				if ($lang == "pt") { return "Deseja apagar este item"; }
 				if ($lang == "eng") { return "Do you wish to delete this item"; }
@@ -1347,41 +1351,41 @@ class Dictionary {
 				if ($lang == "pt") { return "Data do recibo"; }
 				if ($lang == "eng") { return "Receipt date"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "transfer stock":
+				if ($lang == "pt") { return "Transferir estoque"; }
+				if ($lang == "eng") { return "Transfer stock"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "transfer to":
+				if ($lang == "pt") { return "Transferir para"; }
+				if ($lang == "eng") { return "Transfer to"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "transfer from":
+				if ($lang == "pt") { return "Transferir de"; }
+				if ($lang == "eng") { return "Transfer from"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "new transfer":
+				if ($lang == "pt") { return "Nova transferência"; }
+				if ($lang == "eng") { return "New transfer"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "stock transfer":
+				if ($lang == "pt") { return "Transferência de estoque"; }
+				if ($lang == "eng") { return "Stock transfer"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "from":
+				if ($lang == "pt") { return "De"; }
+				if ($lang == "eng") { return "From"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "to":
+				if ($lang == "pt") { return "Para"; }
+				if ($lang == "eng") { return "To"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "internal server error":
+				if ($lang == "pt") { return "Erro interno do servidor"; }
+				if ($lang == "eng") { return "Internal server error"; }
 				break;
-			case "":
-				if ($lang == "pt") { return ""; }
-				if ($lang == "eng") { return ""; }
+			case "stock register":
+				if ($lang == "pt") { return "Registo de estoque"; }
+				if ($lang == "eng") { return "Stock register"; }
 				break;
 			case "":
 				if ($lang == "pt") { return ""; }
