@@ -3,6 +3,7 @@
 require __DIR__."/../../autoload.php";
 
 use controller\Stock;
+use controller\Warehouse;
 use controller\Helper;
 use controller\User;
 use controller\Translator;

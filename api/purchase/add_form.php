@@ -7,6 +7,7 @@ use controller\User;
 use controller\Purchase;
 use controller\Helper;
 use controller\Supplier;
+use controller\Warehouse;
 
 if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
 	die("user_session");
@@ -19,7 +20,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 
 	<form class="zn-form-complex ui form" action="<?=Helper::url("api/purchase/add.php")?>">
 		<div class="ui form small">
-			<div class="three fields">
+			<div class="four fields">
 				<div class="field required">
 					<label><?=Translator::translate("description")?></label>
 					<input type="text" name="description" required minlength="3" maxlength="100" placeholder="<?=Translator::translate("description")?>">

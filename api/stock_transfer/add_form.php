@@ -11,9 +11,9 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 	die("user_session");
 }
 if(!isset($_GET["warehouse"])) {
-	#die("404_request");
+	die("404_request");
 }
-if(!$warehouse = Warehouse::getBy("id", 1)) {
+if(!$warehouse = Warehouse::getBy("id", $_GET["warehouse"])) {
 	die("404_request");
 }
 ?>
@@ -32,7 +32,7 @@ if(!$warehouse = Warehouse::getBy("id", 1)) {
 						<label><?=Translator::translate("From")?></label>
 						<select class="ui dropdown search disabled" required>
 							<?php foreach(Warehouse::getAll() as $item): ?>
-							<option value="<?=$item["id"]?>">
+							<option <?=($warehouse["id"] == $item["id"]) ? "selected" : ""?> value="<?=$item["id"]?>">
 								<?=$item["name"]?>
 							</option>
 							<?php endforeach; ?>
@@ -82,5 +82,6 @@ if(!$warehouse = Warehouse::getBy("id", 1)) {
 	</form>
 	<script type="text/javascript">
 		$(".ui.dropdown").dropdown();
+		get_stock_transfer_line("<?=Helper::url("api/stock_transfer/line.php?warehouse=".$warehouse["id"])?>");
 	</script>
 </div>

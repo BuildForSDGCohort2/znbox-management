@@ -13,9 +13,9 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 	die("user_session");
 }
 if(!isset($_GET["warehouse"])) {
-	#die("404_request");
+	die("404_request");
 }
-if(!$warehouse = Warehouse::getBy("id", 1)) {
+if(!$warehouse = Warehouse::getBy("id", $_GET["warehouse"])) {
 	die("404_request");
 }
 ?>
@@ -30,7 +30,7 @@ if(!$warehouse = Warehouse::getBy("id", 1)) {
 			<?php foreach(Stock::getAll() as $item):?>
 				<option 
 					value="<?=$item["id"]?>"
-					stock="<?=Stock::getStockAmount($item["id"]);?>"
+					stock="<?=Stock::getStockAmountByWarehouse($item["id"], $warehouse["id"]);?>"
 				>
 					<?=$item["name"]?>
 				</option>

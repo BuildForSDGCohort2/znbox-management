@@ -62,4 +62,41 @@ class Stock {
 		$total = $stock_transfer["total"] + $purchase_total["total"] - $sale_total["total"];
 		return $total;
 	}
+	public static function getStockAmountByWarehouse($id, $warehouse) {
+		$purchase_total = Purchase::getTotalAmount($id);
+		$sale_total = SaleStock::getTotalAmount($id);
+		$from = self::getTotalStockByWarehouseFrom($id, $warehouse)["total"];
+		$to = self::getTotalStockByWarehouseTo($id, $warehouse)["total"];
+		$stock_register = self::getTotalStockRegisterByWarehouse($id, $warehouse)["total"];
+		
+		$total = ($to - $from + $stock_register);
+		return $total;
+	}
+	public static function getTotalStockByWarehouseTo($stock, $warehouse) {
+		$conn = Database::conn();
+		$stock = $conn->quote($stock);
+		$warehouse = $conn->quote($warehouse);
+		$sql = "SELECT SUM(stock_transfer_item.quantity) AS total FROM stock_transfer_item INNER JOIN stock_transfer ON stock_transfer.id = stock_transfer_item.stock_transfer WHERE stock_transfer.warehouse_to = $warehouse AND stock_transfer_item.stock = $stock AND stock_transfer.stock_register = 0;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
+	}
+	public static function getTotalStockByWarehouseFrom($stock, $warehouse) {
+		$conn = Database::conn();
+		$stock = $conn->quote($stock);
+		$warehouse = $conn->quote($warehouse);
+		$sql = "SELECT SUM(stock_transfer_item.quantity) AS total FROM stock_transfer_item INNER JOIN stock_transfer ON stock_transfer.id = stock_transfer_item.stock_transfer WHERE stock_transfer.warehouse_from = $warehouse AND stock_transfer.warehouse_to != $warehouse AND stock_transfer_item.stock = $stock AND stock_transfer.stock_register = 0;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
+	}
+	public static function getTotalStockRegisterByWarehouse($stock, $warehouse) {
+		$conn = Database::conn();
+		$stock = $conn->quote($stock);
+		$warehouse = $conn->quote($warehouse);
+		$sql = "SELECT SUM(stock_transfer_item.quantity) AS total FROM stock_transfer_item INNER JOIN stock_transfer ON stock_transfer.id = stock_transfer_item.stock_transfer WHERE stock_transfer_item.stock = $stock AND stock_transfer.stock_register = 1 AND stock_transfer.warehouse_to = $warehouse;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
+	}
 }

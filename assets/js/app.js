@@ -105,7 +105,7 @@ var submit_simple_data = function(data, href) {
 			progress_loaded();
 			get_line();	// From sales.js to update itens line
 			getPurchaseLine();
-			get_stock_transfer_line();
+			
 		}
 	}).fail(function(error) {
 		if(error.status == 200) {
@@ -163,7 +163,7 @@ $(document).on('click', '.zn-link', function(event) {
 	change_content(data, _this.attr('href'));
 	get_line();	// From sales.js to update itens line
 	getPurchaseLine();
-	get_stock_transfer_line();
+	
 	return false;
 });
 
@@ -205,7 +205,7 @@ $(document).on('submit', 'form.zn-form-complex', function(event) {
 					change_content(response.data, response.href);
 					get_line();	// From sales.js to update itens line
 					getPurchaseLine();
-					get_stock_transfer_line();
+					
 					if(window.dialog) {
 						window.dialog.modal('hide');
 					}
@@ -249,17 +249,22 @@ $(document).on('submit', 'form.zn-form', function(event) {
 		success: function(response) {
 			if(response.status ==  'success') {
 				if(!window.location.href.endsWith('authentication') && !window.location.href.endsWith('authentication/')) {
-					UIkit.notification({
-					    message: response.message,
-					    status: response.status,
-					    pos: 'top-right',
-					    timeout: 3000,
-					});
-
-					change_content(response.data, response.href);
+					if(typeof response.status !== "undefined" && typeof response.message !== "undefined") {
+						UIkit.notification({
+						    message: response.message,
+						    status: response.status,
+						    pos: 'top-right',
+						    timeout: 3000,
+						});
+					}
+					if(typeof response.date !== "undefined") {
+						change_content(response.data, response.href);
+					} else {
+						change_content([], response.href);
+					}
 					get_line();	// From sales.js to update itens line
 					getPurchaseLine();
-					get_stock_transfer_line();
+					
 					if(window.dialog) {
 						window.dialog.modal('hide');
 					}
@@ -370,7 +375,7 @@ $(document).on('submit', 'form.zn-form-complex-update', function(event) {
 					change_content(response.data, response.href);
 					get_line();	// From sales.js to update itens line
 					getPurchaseLine();
-					get_stock_transfer_line();
+					
 					if(window.dialog) {
 						window.dialog.modal('hide');
 					}

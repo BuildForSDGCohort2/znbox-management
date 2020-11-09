@@ -1,5 +1,3 @@
-var stock_transfer_url = $("#znbox-stock_transfer-line").attr("href");
-
 /* Add item to table */
 var add_to_table = function(line) {
 	line = $('.stock_transfer-table tbody').append(line).children("tr:last-child");
@@ -18,7 +16,7 @@ var remove_from_table = function(line) {
 };
 
 
-function get_stock_transfer_line() {
+function get_stock_transfer_line(stock_transfer_url) {
 	/* get line of table sale */
 	$.ajax({
 		url: stock_transfer_url,

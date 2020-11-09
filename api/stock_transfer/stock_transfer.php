@@ -17,7 +17,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 		<div class="ui header dividing color blue">
 			<h3 class="ui header blue"><i class="truck icon"></i> <?=Translator::translate("Stock transfer")?></h3>
 		</div>
-		<a class="ui basic button blue zn-link" href="<?=Helper::url("api/stock_transfer/add_form.php")?>"><i class="ui plus icon"></i> <?=Translator::translate("New transfer")?></a>
+		<a class="ui basic button blue zn-link-dialog" href="<?=Helper::url("api/stock_transfer/add_from.php")?>"><i class="ui plus icon"></i> <?=Translator::translate("New transfer")?></a>
 	</div>
 	<div class="uk-margin">
 		<div align="center" class="ui segment spacked purple uk-width-small">

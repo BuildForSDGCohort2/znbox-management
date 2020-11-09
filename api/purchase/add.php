@@ -10,6 +10,8 @@ use controller\Resources;
 use controller\Supplier;
 use controller\Helper;
 use controller\PurchaseItem;
+use controller\StockTransfer;
+use controller\StockTransferItem;
 use connections\Database;
 
 if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {

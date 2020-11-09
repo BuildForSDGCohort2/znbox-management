@@ -24,7 +24,7 @@ class Warehouse {
 	}
 	public static function getAll() {
 		$conn = Database::conn();
-		$sql = "SELECT * FROM warehouse WHERE warehouse.isDeleted = 0;";
+		$sql = "SELECT * FROM warehouse WHERE warehouse.id != 0 AND warehouse.isDeleted = 0;";
 		$stmt = $conn->prepare($sql);
 		return ($stmt->execute() ? $stmt : null);
 	}
