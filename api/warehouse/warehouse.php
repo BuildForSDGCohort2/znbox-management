@@ -6,6 +6,8 @@ use controller\User;
 use controller\Warehouse;
 use controller\Helper;
 use controller\Stock;
+use controller\StockTransfer;
+use controller\PurchaseItem;
 
 if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
 	die("user_session");
@@ -60,7 +62,12 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 							<a class="ui mini circular icon button green zn-link-dialog" href="<?=Helper::url("api/warehouse/edit_form.php?id=".$item["id"])?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("edit details")?>">
 								<i class="ui edit icon"></i>
 							</a>
-							<?php if(!Stock::getBy("warehouse", $item["id"])): ?>
+							<?php if(
+									(
+										!StockTransfer::getBy("warehouse_to", $item["id"]) ||
+										!StockTransfer::getBy("warehouse_from", $item["id"])
+									) && 
+									!PurchaseItem::getBy("warehouse", $item["id"])): ?>
 							<a class="ui mini circular icon button red zn-link-dialog" href="<?=Helper::url("api/warehouse/delete_form.php?id=".$item["id"])?>" data="<?=$item["id"]?>" data-tooltip="<?=Translator::translate("delete")?>">
 								<i class="ui trash alternate icon"></i>
 							</a>

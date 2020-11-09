@@ -67,6 +67,7 @@ $itens = [];
 $itens["stock"] = $_POST["stock"];
 $itens["quantity"] = $_POST["quantity"];
 $itens["price_unity"] = $_POST["price_unity"];
+$itens["warehouse"] = $_POST["warehouse"];
 
 $conn = Database::conn();
 $conn->beginTransaction();
@@ -79,6 +80,7 @@ if(Purchase::add($data)) {
 			"stock" => $value,
 			"price_unity" => $itens["price_unity"][$key],
 			"quantity" => $itens["quantity"][$key],
+			"warehouse" => $itens["warehouse"][$key],
 		]);
 	}
 	$conn->commit();

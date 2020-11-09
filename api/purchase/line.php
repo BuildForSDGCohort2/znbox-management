@@ -41,6 +41,13 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 		<label class="ui basic label small zn-purchase-line-total">1</label>
 	</td>
 	<td>
+		<select name="warehouse[]" class="ui dropdown search">
+			<?php foreach (Warehouse::getAll() as $key => $value): ?>
+				<option value="<?=$value["id"]?>"><?=$value["name"]?></option>
+			<?php endforeach ?>
+		</select>
+	</td>
+	<td>
 		<button class="ui button mini red circular icon zn-pruchase-remove-line">
 			<i class="ui times icon"></i>
 		</button>

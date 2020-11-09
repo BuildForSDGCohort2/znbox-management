@@ -63,13 +63,13 @@ class Stock {
 		return $total;
 	}
 	public static function getStockAmountByWarehouse($id, $warehouse) {
-		$purchase_total = Purchase::getTotalAmount($id);
+		$purchase_total = Purchase::getTotalAmountByWarehouse($id, $warehouse)["total"];
 		$sale_total = SaleStock::getTotalAmount($id);
 		$from = self::getTotalStockByWarehouseFrom($id, $warehouse)["total"];
 		$to = self::getTotalStockByWarehouseTo($id, $warehouse)["total"];
 		$stock_register = self::getTotalStockRegisterByWarehouse($id, $warehouse)["total"];
 		
-		$total = ($to - $from + $stock_register);
+		$total = ($to - $from + $stock_register) + $purchase_total;
 		return $total;
 	}
 	public static function getTotalStockByWarehouseTo($stock, $warehouse) {

@@ -4,6 +4,7 @@ require __DIR__."/../../autoload.php";
 use controller\Translator;
 use controller\User;
 use controller\Stock;
+use controller\Warehouse;
 use controller\Purchase;
 use controller\PurchaseItem;
 use controller\Helper;
@@ -53,6 +54,7 @@ if(!$fetch = Purchase::getBy("id", $_GET["id"])) {
 					<th><?=Translator::translate("Quantity")?></th>
 					<th><?=Translator::translate("Price per unity")?></th>
 					<th><?=Translator::translate("Price")?></th>
+					<th><?=Translator::translate("Warehouse")?></th>
 					<th><?=Translator::translate("Actions")?></th>
 				</thead>
 				<tbody>
@@ -92,6 +94,19 @@ if(!$fetch = Purchase::getBy("id", $_GET["id"])) {
 								<label class="ui basic label small zn-purchase-line-total"><?=($purchaseItem["price_unity"] * $purchaseItem["quantity"])?></label>
 							</td>
 							<td>
+								<select class="ui dropdown search" name="warehouse[]" disabled>
+									<?php foreach(Warehouse::getAll() as $item):?>
+										<option
+											value="<?=$item["id"]?>"
+											<?=($purchaseItem["warehouse"] == $item["id"]) ? "selected" : ""?>
+										>
+											<?=$item["name"]?>
+										</option>
+									<?php endforeach; ?>
+								</select>
+								<input type="hidden" name="warehouse[]" value="<?=$purchaseItem["warehouse"]?>"
+							</td>
+							<td>
 								<button class="ui button mini red circular icon zn-pruchase-remove-line">
 									<i class="ui times icon"></i>
 								</button>
@@ -105,6 +120,7 @@ if(!$fetch = Purchase::getBy("id", $_GET["id"])) {
 							<i class="ui plus icon"></i>
 						</button>
 					</th>
+					<th></th>
 					<th></th>
 					<th></th>
 					<th></th>

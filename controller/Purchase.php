@@ -44,10 +44,19 @@ class Purchase {
 		$fetch = $stmt->fetch();
 		return $fetch;
 	}
+	public static function getTotalAmountByWarehouse($stock, $warehouse) {
+		$conn = Database::conn();
+		$stock = $conn->quote($stock);
+		$warehouse = $conn->quote($warehouse);
+		$sql = "SELECT SUM(purchase_item.quantity) AS total FROM purchase_item INNER JOIN purchase ON purchase_item.purchase = purchase.id WHERE purchase.isDeleted = 0 AND purchase.isStock = 1 AND purchase_item.stock = $stock AND purchase_item.warehouse = $warehouse;";
+		$stmt = $conn->query($sql);
+		$fetch = $stmt->fetch();
+		return $fetch;
+	}
 	public static function getTotalPrice($id) {
 		$total = 0;
 		foreach(PurchaseItem::getAllBy("purchase", $id) as $item) {
-			$total += $item["price_unity"];
+			$total += ($item["price_unity"] * $item["quantity"]);
 		}
 		return $total;
 	}
