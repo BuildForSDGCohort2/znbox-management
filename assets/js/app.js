@@ -9,7 +9,7 @@ var progress_loaded = function(xhr) {
 	setTimeout(function() {
 		$(".mdl-spinner.mdl-js-spinner").removeClass('is-active');
 		$(".zn-blocker").removeClass('active');
-	}, 1000);
+	}, 0);
 	UIkit.offcanvas('#mobile_sidebar').hide();
 };
 
