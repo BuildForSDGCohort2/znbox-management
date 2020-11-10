@@ -43,7 +43,7 @@ $table->addColumn("user_modify", function($row) {
 $table->addColumn("actions", function($row) {
 	$content = "";
 	$content .= '
-		<a class="ui mini circular icon button violet zn-link-dialog" href="'.Helper::url("api/sale/view.php?id=".$row["id"]).'" data-tooltip="'.Translator::translate("view details").'">
+		<a class="ui mini circular icon button violet zn-link" href="'.Helper::url("api/sale/view.php?id=".$row["id"]).'" data-tooltip="'.Translator::translate("view details").'">
 			<i class="ui eye icon"></i>
 		</a>';
 	$invoice = Invoice::getBy("sale", $row["id"]);
