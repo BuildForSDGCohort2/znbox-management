@@ -23,7 +23,8 @@ if(
 	!isset($_POST["discount"]) ||
 	!isset($_POST["customer"]) ||
 	!isset($_POST["quantity"]) ||
-	!isset($_POST["stock"])
+	!isset($_POST["stock"]) ||
+	!isset($_POST["warehouse"])
 ) {
 	die(json_encode([
 		"code" => "5000",
@@ -57,6 +58,7 @@ if($sale = Sale::add($data)) {
 				"quantity" => $quantity[$key],
 				"price_sale" => Price::getDefault($value)["price_sell"],
 				"price_purchase" => Price::getDefault($value)["price_purchase"],
+				"warehouse" => $_POST["warehouse"][$key],
 			]);
 		}
 		$conn->commit();

@@ -96,6 +96,6 @@ $table->addColumn("actions", function($row) {
 	return $content;
 });
 $table->addColumn("id", function($row) {
-	return Helper::toRef($row["id"]);
+	return $row["id"];
 });
 $table->stream();

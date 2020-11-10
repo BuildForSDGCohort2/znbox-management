@@ -27,7 +27,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 		<table class="ui small table color blue inverted selectable stripped">
 			<thead>
 				<tr>
-					<th><?=Translator::translate("Order");?></th>
+					<th><?=Translator::translate("id");?></th>
 					<th><?=Translator::translate("Customer");?></th>
 					<th><?=Translator::translate("Discount");?></th>
 					<th><?=Translator::translate("Total");?></th>
@@ -39,7 +39,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 					<th><?=Translator::translate("Actions");?></th>
 				</tr>
 				<tr>
-					<th><?=Translator::translate("Order");?></th>
+					<th><?=Translator::translate("id");?></th>
 					<th><?=Translator::translate("Customer");?></th>
 					<th><?=Translator::translate("Discount");?></th>
 					<th><?=Translator::translate("Total");?></th>
@@ -53,7 +53,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 			</thead>
 			<tbody></tbody>
 			<tfoot>
-				<th><?=Translator::translate("Order");?></th>
+				<th><?=Translator::translate("id");?></th>
 				<th><?=Translator::translate("Customer");?></th>
 				<th><?=Translator::translate("Discount");?></th>
 				<th><?=Translator::translate("Total");?></th>
