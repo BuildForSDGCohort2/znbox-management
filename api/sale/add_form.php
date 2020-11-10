@@ -63,6 +63,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 					<th><?=Translator::translate("Quantity")?></th>
 					<th><?=Translator::translate("Price per unity")?></th>
 					<th><?=Translator::translate("Price")?></th>
+					<th><?=Translator::translate("Warehouse")?></th>
 					<th><?=Translator::translate("Actions")?></th>
 				</thead>
 				<tbody>
@@ -74,6 +75,7 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 							<i class="ui plus icon"></i>
 						</button>
 					</th>
+					<th></th>
 					<th></th>
 					<th></th>
 					<th></th>

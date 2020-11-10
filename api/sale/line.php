@@ -7,13 +7,14 @@ use controller\User;
 use controller\UserType;
 use controller\Stock;
 use controller\Price;
+use controller\Warehouse;
 use controller\Helper;
 
 if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
 	die("user_session");
 }
 ?>
-<tr>
+<tr class="">
 	<td>
 		<label class="ui label circular mini orange">
 			<i class="ui arrow right icon"></i>
@@ -51,6 +52,13 @@ if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"
 		<label class="ui basic label small stock-table-line-price">
 			0
 		</label>
+	</td>
+	<td>
+		<select name="warehouse[]" class="ui dropdown search stock-table-line-warehouse" required>
+			<?php foreach (Warehouse::getAll() as $warehouse): ?>
+				<option value="<?=$warehouse["id"]?>"><?=$warehouse["name"]?></option>
+			<?php endforeach ?>
+		</select>
 	</td>
 	<td>
 		<button class="ui button mini red circular icon stock-table-remove-line">

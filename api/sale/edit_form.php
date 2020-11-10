@@ -9,6 +9,7 @@ use controller\Price;
 use controller\Sale;
 use controller\SaleStock;
 use controller\Customer;
+use controller\Warehouse;
 
 if(!$user = User::getBy("id", User::validate_token($_SESSION["token"])["user_id"])) {
 	die("user_session");
@@ -75,6 +76,7 @@ if(!$fetch = Sale::getBy("id", $_GET["id"])) {
 					<th><?=Translator::translate("Quantity")?></th>
 					<th><?=Translator::translate("Price per unity")?></th>
 					<th><?=Translator::translate("Price")?></th>
+					<th><?=Translator::translate("Warehouse")?></th>
 					<th><?=Translator::translate("Actions")?></th>
 				</thead>
 				<tbody>
@@ -141,6 +143,19 @@ if(!$fetch = Sale::getBy("id", $_GET["id"])) {
 							</label>
 						</td>
 						<td>
+							<select class="ui dropdown search" name="warehouse[]" disabled>
+								<?php foreach(Warehouse::getAll() as $warehouse_item):?>
+									<option
+										value="<?=$warehouse_item["id"]?>"
+										<?=($purchaseItem["warehouse"] == $warehouse_item["id"]) ? "selected" : ""?>
+									>
+										<?=$warehouse_item["name"]?>
+									</option>
+								<?php endforeach; ?>
+							</select>
+							<input type="hidden" name="warehouse[]" value="<?=$item["warehouse"]?>">
+						</td>
+						<td>
 							<button class="ui button mini red circular icon stock-table-remove-line">
 								<i class="ui times icon"></i>
 							</button>
@@ -154,6 +169,7 @@ if(!$fetch = Sale::getBy("id", $_GET["id"])) {
 							<i class="ui plus icon"></i>
 						</button>
 					</th>
+					<th></th>
 					<th></th>
 					<th></th>
 					<th></th>

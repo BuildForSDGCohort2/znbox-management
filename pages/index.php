@@ -33,6 +33,7 @@ if(!$user = (object) User::getBy('id', User::validate_token($_SESSION['token'])[
 	<meta id="znbox-sale-line" href="<?=Helper::url("api/sale/line.php")?>">
 	<meta id="znbox-stock_transfer-line" href="<?=Helper::url("api/stock_transfer/line.php")?>">
 	<meta id="znbox-purchase-line" href="<?=Helper::url("api/purchase/line.php")?>">
+	<meta id="znbox-get-available-stock" href="<?=Helper::url("api/sale/get_available_stock.php")?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" type="image/x-icon" href="<?=Helper::url("znbox_mobile_app_icon.ico")?>"/>
 	<link rel="stylesheet" type="text/css" href="<?=Helper::url("assets/libs/mdl/material.min.css")?>">

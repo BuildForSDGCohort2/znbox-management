@@ -1,5 +1,5 @@
 /* Add item to table */
-var add_to_table = function(line) {
+var add_to_table_stock_transfer = function(line) {
 	line = $('.stock_transfer-table tbody').append(line).children("tr:last-child");
 
 	var stock = $(line).find(".stock_transfer-table-line-stock")[0];
@@ -11,7 +11,7 @@ var add_to_table = function(line) {
 };
 
 /* Remove item from table */
-var remove_from_table = function(line) {
+var remove_from_table_stock_transfer = function(line) {
 	line.parent().parent().remove();
 };
 
@@ -122,12 +122,12 @@ $(document).on('keyup paste blur', '.stock_transfer-table-line-quantity', functi
 /* Add line to table */
 $(document).on('click', '.stock_transfer-table-add-line', function(e) {
 	e.preventDefault();
-	add_to_table(window.stock_transfer_table_line);
+	add_to_table_stock_transfer(window.stock_transfer_table_line);
 	$(".ui.dropdown").dropdown({ on: "click" });
 });
 
 /* Remove line from table */
 $(document).on('click', '.stock_transfer-table-remove-line', function(e) {
 	e.preventDefault();
-	remove_from_table($(this));
+	remove_from_table_stock_transfer($(this));
 });

@@ -104,7 +104,7 @@ if(!$fetch = Purchase::getBy("id", $_GET["id"])) {
 										</option>
 									<?php endforeach; ?>
 								</select>
-								<input type="hidden" name="warehouse[]" value="<?=$purchaseItem["warehouse"]?>"
+								<input type="hidden" name="warehouse[]" value="<?=$purchaseItem["warehouse"]?>">
 							</td>
 							<td>
 								<button class="ui button mini red circular icon zn-pruchase-remove-line">

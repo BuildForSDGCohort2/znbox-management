@@ -6,17 +6,35 @@ var vat_tax = 0.17;
 var sale_line_url = $("#znbox-sale-line").attr("href");
 
 /* Add item to table */
-var add_to_table = function(line) {
+var add_to_table_sale = function(line) {
 	line = $('.stock-table tbody').append(line).children("tr:last-child");
 
-	var stock = $(line).find(".stock-table-line-stock")[0];
-	var price_value = $('option:selected', stock).attr("price");
+	var stock_element = $(line).find(".stock-table-line-stock")[0];
+	var price_value = $('option:selected', stock_element).attr("price");
 	var quantity = $(line).find(".stock-table-line-quantity")[0];
-	var stock_available = $('option:selected', stock).attr("stock");
+
+	var quantity = $(line).find(".stock-table-line-quantity")[0];
+	var warehouse_element = $(line).find(".stock-table-line-warehouse")[0];
+
+	var _data = {
+		warehouse: $('option:selected', warehouse_element).attr("value"),
+		stock: $('option:selected', stock_element).attr("value"),
+	};
+	var _url = $("#znbox-get-available-stock").attr("href");
+	var that = this;
+	send_request("POST", "json", _data, _url, function(res) {
+		/* Stock available */
+		var stock_av = $(line).find(".stock-table-line-stock-available")[0];
+		$(stock_av).text(parseFloat(res.value));
+		/* update stock available value attribute */
+		$('option:selected', stock_element).attr("stock", res.value);
+		/* Update values */
+		$(quantity).trigger('paste');
+	});
 
 	if(typeof $(".stock-table").find('tbody tr')[0] != "undefined") {
 		var aux_stock = $(".stock-table").find('tbody tr')[0].children[1];
-		$(stock).html($(aux_stock).html());
+		$(stock_element).html($(aux_stock).html());
 	}
 	
 	/* Price */
@@ -27,14 +45,7 @@ var add_to_table = function(line) {
 	var price_unity = $(line).find(".stock-table-line-price-unity")[0];
 	$(price_unity).text(price_value);
 
-	/* Stock available */
-	//var stock_av = $(line).find(".stock-table-line-stock-available")[0];
-	//$(stock_av).text(parseFloat(stock_available) - $(quantity).val());
-
-	/* set max */
-	//$(stock_av).attr('max', parseFloat(stock_available));
-
-	stock = $(".stock-table").find('tbody tr');
+	var stock = $(".stock-table").find('tbody tr');
 	subtotal = 0;
 	for (var i = 0; i < stock.length; i++) {
 		var row = stock[i];
@@ -59,7 +70,7 @@ var add_to_table = function(line) {
 };
 
 /* Remove item from table */
-var remove_from_table = function(line) {
+var remove_from_table_sale = function(line) {
 	stock = line.parent().parent().find(".stock-table-line-stock")[0];
 	var price_value = $('option:selected', stock).attr("price");
 
@@ -145,8 +156,27 @@ var stock_previous = 0;
 /* On change of stock */
 $(document).on('change', '.stock-table-line-stock', function(e) {
 	e.preventDefault();
-
 	stock_previous = $('option:selected', this).attr("price");
+});
+
+$(document).on("change", ".stock-table-line-warehouse", function(e) {
+	var quantity = $(this).parent().parent().find(".stock-table-line-quantity")[0];
+	var stock_element = $(this).parent().parent().find(".stock-table-line-stock")[0];
+	var _data = {
+		warehouse: $('option:selected', this).attr("value"),
+		stock: $('option:selected', stock_element).attr("value"),
+	};
+	var _url = $("#znbox-get-available-stock").attr("href");
+	var that = this;
+	send_request("POST", "json", _data, _url, function(res) {
+		/* Stock available */
+		var stock_av = $(that).parent().parent().find(".stock-table-line-stock-available")[0];
+		$(stock_av).text(parseFloat(res.value));
+		/* update stock available value attribute */
+		$('option:selected', stock_element).attr("stock", res.value);
+		/* Update values */
+		$(quantity).trigger('paste');
+	});
 });
 
 /* On change of stock */
@@ -156,10 +186,6 @@ $(document).on('change', '.stock-table-line-stock', function(e) {
 	var stock_available = $('option:selected', this).attr("stock");
 	var quantity = $(this).parent().parent().find(".stock-table-line-quantity")[0];
 
-	/* Stock available */
-	var stock_av = $(this).parent().parent().find(".stock-table-line-stock-available")[0];
-	$(stock_av).text(parseFloat(stock_available));
-
 	/* Price */
 	var price = $(this).parent().parent().find(".stock-table-line-price")[0];
 	$(price).text(price_value * $(quantity).val());
@@ -167,6 +193,23 @@ $(document).on('change', '.stock-table-line-stock', function(e) {
 	/* Price per unity */
 	var price_unity = $(this).parent().parent().find(".stock-table-line-price-unity")[0];
 	$(price_unity).text(price_value);
+
+	var warehouse_element = $(this).parent().parent().find(".stock-table-line-warehouse")[0];
+	var _data = {
+		warehouse: $('option:selected', warehouse_element).attr("value"),
+		stock: $('option:selected', this).attr("value"),
+	};
+	var _url = $("#znbox-get-available-stock").attr("href");
+	var that = this;
+	send_request("POST", "json", _data, _url, function(res) {
+		/* Stock available */
+		var stock_av = $(that).parent().parent().find(".stock-table-line-stock-available")[0];
+		$(stock_av).text(parseFloat(res.value));
+		/* update stock available value attribute */
+		$('option:selected', that).attr("stock", res.value);
+		/* Update values */
+		$(quantity).trigger('paste');
+	});
 
 	var stock = $(".stock-table").find('tbody tr');
 	subtotal = 0;
@@ -176,9 +219,6 @@ $(document).on('change', '.stock-table-line-stock', function(e) {
 		/* Sum subtotal */
 		subtotal += Number(price_value);
 	}
-
-	/* Update values */
-	$(quantity).trigger('paste');
 
 	/* Total */
 	vat = parseFloat((subtotal * vat_tax).toFixed(2));
@@ -275,14 +315,14 @@ $(document).on('keyup paste blur', '.stock-table-line-quantity', function(e) {
 /* Add line to table */
 $(document).on('click', '.stock-table-add-line', function(e) {
 	e.preventDefault();
-	add_to_table(window.stock_table_line);
+	add_to_table_sale(window.stock_table_line);
 	$(".ui.dropdown").dropdown({ on: "click" });
 });
 
 /* Remove line from table */
 $(document).on('click', '.stock-table-remove-line', function(e) {
 	e.preventDefault();
-	remove_from_table($(this));
+	remove_from_table_sale($(this));
 });
 
 
